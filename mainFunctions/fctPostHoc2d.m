@@ -63,9 +63,9 @@ if nEffects==1
     
     nComp=size(Comp,2);
     if ~isempty(nT)
-        alpha=0.05/nT;
+        alphaOriginal=0.05/nT;
     else
-        alpha=alphaT/nComp;
+        alphaOriginal=alphaT/nComp;
     end
     
     for comp=1:nComp
@@ -103,7 +103,7 @@ if nEffects==1
         ES{comp}=reshape(ES{comp},dimensions(1),dimensions(2));
         
         % inference
-        [testTtests.nWarning{comp},iterations,alphaOriginal,alpha]=fctWarningIterations(Ttest,alpha,multiIterations,maximalIT,IT);
+        [testTtests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
         testTtests.alphaOriginal{comp}=alphaOriginal;
         testTtests.alpha{comp}=alpha;
         testTtests.nIterations{comp}=iterations;
@@ -248,13 +248,13 @@ if nEffects==2
         
         nComp=size(Comp,2);
         if ~isempty(nT)
-            alpha=0.05/nT;
+            alphaOriginal=0.05/nT;
         else
-            alpha=alphaT/nComp;
+            alphaOriginal=alphaT/nComp;
         end
         
         for comp=1:nComp
-            alpha=alphaT/nComp;
+            alphaOriginal=alphaT/nComp;
             for i=1:2
                 % comparison + name
                 DATA{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1),:);
@@ -288,7 +288,7 @@ if nEffects==2
             ES{comp}=reshape(ES{comp},dimensions(1),dimensions(2));
             
             % inference
-            [testTtests.nWarning{comp},iterations,alphaOriginal,alpha]=fctWarningIterations(Ttest,alpha,multiIterations,maximalIT,IT);
+            [testTtests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
             testTtests.alphaOriginal{comp}=alphaOriginal;
             testTtests.alpha{comp}=alpha;
             testTtests.nIterations{comp}=iterations;
@@ -438,13 +438,13 @@ if nEffects==3
         
         nComp=size(Comp,2);
         if ~isempty(nT)
-            alpha=0.05/nT;
+            alphaOriginal=0.05/nT;
         else
-            alpha=alphaT/nComp;
+            alphaOriginal=alphaT/nComp;
         end
         
         for comp=1:nComp
-            alpha=alphaT/nComp;
+            alphaOriginal=alphaT/nComp;
             
             for i=1:2
                 % comparison + name
@@ -475,7 +475,7 @@ if nEffects==3
             ES{comp}=reshape(ES{comp},dimensions(1),dimensions(2));
             
             % inference
-            [testTtests.nWarning{comp},iterations,alphaOriginal,alpha]=fctWarningIterations(Ttest,alpha,multiIterations,maximalIT,IT);
+            [testTtests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
             testTtests.alphaOriginal{comp}=alphaOriginal;
             testTtests.alpha{comp}=alpha;
             testTtests.nIterations{comp}=iterations;
@@ -636,16 +636,16 @@ if nEffects==3
             
             nComp=size(Comp,2);
             if ~isempty(nT)
-                alpha=0.05/nT;
+                alphaOriginal=0.05/nT;
             else
-                alpha=alphaT/nComp;
+                alphaOriginal=alphaT/nComp;
             end
             
             isPlot=find(isPlot==1);
             
             for comp=1:nComp
                 
-                alpha=alphaT/nComp;
+                alphaOriginal=alphaT/nComp;
                 
                 for i=1:2
                     % comparison + name
@@ -678,7 +678,7 @@ if nEffects==3
                 ES{comp}=reshape(ES{comp},dimensions(1),dimensions(2));
                 
                 % inference
-                [testTtests.nWarning{comp},iterations,alphaOriginal,alpha]=fctWarningIterations(Ttest,alpha,multiIterations,maximalIT,IT);
+                [testTtests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
                 testTtests.alphaOriginal{comp}=alphaOriginal;
                 testTtests.alpha{comp}=alpha;
                 testTtests.nIterations{comp}=iterations;
@@ -914,9 +914,9 @@ if nEffects>1
         
         nComp=size(Comp,2);
         if ~isempty(nT)
-            alpha=0.05/nT;
+            alphaOriginal=0.05/nT;
         else
-            alpha=alphaT/nComp;
+            alphaOriginal=alphaT/nComp;
         end
         
         isPlot=find(isPlot==1);
@@ -960,7 +960,7 @@ if nEffects>1
             ES{comp}=reshape(ES{comp},dimensions(1),dimensions(2));
             
             % inference
-            [testTtests.nWarning{comp},iterations,alphaOriginal,alpha]=fctWarningIterations(Ttest,alpha,multiIterations,maximalIT,IT);
+            [testTtests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
             testTtests.alphaOriginal{comp}=alphaOriginal;
             testTtests.alpha{comp}=alpha;
             testTtests.nIterations{comp}=iterations;

@@ -5,7 +5,7 @@ close all
 clc
 
 % path (change to your own path)
-addpath(genpath('C:\Users\LIBM_yb\Google Drive\Thèse\MATLAB\library_matlab\FCT_SPM'));
+addpath(genpath('C:\Users\LIBM_yb\Google Drive\Thèse\MATLAB\library_matlab\fctSPM'));
 
 % data
 load ExampleDatas
@@ -16,7 +16,7 @@ DATA=DATA(:,[1 4]);
 EFFET_ind{1}={'M','M','M','F','M','F','F','M','F','M','M','F','F','M','F','F','M','F','F','M'}; % same number than participants
 EFFET_rm{1}={'D','G'};
 effectNames={'Sex','Side'};
-% There is 20 subjects
+% There are 20 subjects
 
 savedir='Results//1D_ANOVA2_1rm';
 xlab='Angle (°)';

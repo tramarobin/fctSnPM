@@ -5,7 +5,7 @@ close all
 clc
 
 % path (change to your own path)
-addpath(genpath('C:\Users\LIBM_yb\Google Drive\Thèse\MATLAB\library_matlab\FCT_SPM'));
+addpath(genpath('C:\Users\LIBM_yb\Google Drive\Thèse\MATLAB\library_matlab\fctSPM'));
 
 % data
 load ExampleDatas

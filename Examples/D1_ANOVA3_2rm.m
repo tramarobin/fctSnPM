@@ -5,7 +5,7 @@ close all
 clc
 
 % path (change to your own path)
-addpath(genpath('C:\Users\LIBM_yb\Google Drive\Thèse\MATLAB\library_matlab\FCT_SPM'));
+addpath(genpath('C:\Users\LIBM_yb\Google Drive\Thèse\MATLAB\library_matlab\fctSPM'));
 
 % data
 load ExampleDatas
@@ -16,7 +16,7 @@ EFFET_ind{1}={'M','M','M','F','M','F','F','M','F','M','M','F','F','M','F','F','M
 EFFET_rm{1}={'RC60','RC180','RFKF','RFKE','RC60','RC180','RFKF','RFKE'};
 EFFET_rm{2}={'D','D','D','D','G','G','G','G'};
 effectNames={'Sex','Speed','Side'};
-% There is 20 subjects
+% There are 20 subjects
 % ANOVA3 does not accept unbalanced data (10 males, 10 females)
 
 savedir='Results//1D_ANOVA3_2rm';

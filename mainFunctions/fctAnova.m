@@ -1,4 +1,4 @@
-function [anovaEffects]=fctAnova(maps1d,dimensions,indicesEffects,sujets,nEffects,nRm,eNames,alpha,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nx,ny,imageResolution,xlimits,maximalIT,ignoreAnova,displayContour,contourColor,dashedColor,transparency,lineWidth,linestyle,colorMap,imageSize,imageFontSize)
+function [anovaEffects]=fctAnova(maps1d,dimensions,indicesEffects,sujets,nEffects,nRm,eNames,alphaOriginal,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nx,ny,imageResolution,xlimits,maximalIT,ignoreAnova,displayContour,contourColor,dashedColor,transparency,lineWidth,linestyle,colorMap,imageSize,imageFontSize)
 %% SETUP
 close all
 
@@ -13,7 +13,7 @@ if ~ignoreAnova
         
         mkdir([savedir '\' testANOVA.name] )
         % Verify the number of iterations
-        [nWarning,iterations,alpha,alphaOriginal]=fctWarningIterations(ANOVA,alpha,multiIterations,maximalIT,IT);
+        [nWarning,iterations,alpha]=fctWarningIterations(ANOVA,alphaOriginal,multiIterations,maximalIT,IT);
         testANOVA.alpha=alpha;
         testANOVA.alphaOriginal=alphaOriginal;
         testANOVA.nIterations=iterations;

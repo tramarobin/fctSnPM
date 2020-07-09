@@ -1,4 +1,4 @@
-% Trama Robin (LIBM) 06/07/2020
+% Trama Robin (LIBM) 09/07/2020
 % trama.robin@gmail.com
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -7,9 +7,13 @@
 % Using spm1d package (v.0.4.3), compute anova and post-hoc tests from anova1 to anova3rm, with a non-parametric approach (permutation tests)
 % The type of anova (if required) and post-hoc are choosen regarding the independant or repeated measure effect given in parameters.
 % The function automatically adapts to 1D and 2D data
+% Examples are in ...\fctSPM\Examples
+% 1D examples are torque ratios
+% 2D examples are maps obtained with continuous wavelet transforms
 
 % Please visit http://spm1d.org/index.html for information
 % spm1d package for matlab : https://github.com/0todd0000/spm1dmatlab
+% this function cab be download at : 
 
 % please cite for spm1d : Pataky TC (2010). Generalized n-dimensional biomechanical field analysis using statistical parametric mapping. Journal of Biomechanics 43, 1976-1982.
 % please cite for permutation tests : Nichols TE, Holmes AP (2002). Nonparametric permutation tests for functional neuroimaging: a primer with examples. Human Brain Mapping 15(1), 1–25.
@@ -22,6 +26,7 @@
 
 % Post-hoc tests with Bonferonni correction are only approximate
 
+% Effect sizes and confidence intervals are not validated
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -44,7 +49,6 @@
 % Post-hoc are corrected with Bonferonni and paired or not in fuction of the effect(s) tested (WARNING : Post-hoc tests with Bonferonni correction are only approximate)
 % The SPM results displayed in 1D or 2D correspond to the intersection of the ANOVA and the t-test (a t-test is only significant if the anova is significant at the same location)
 % for the interactions, main effects at the location where only main effects are located are used to display a global map of main effects+interaction on the same figure
-
 %% Informations
 % All the dataset must be balanced for ANOVA 2 and 3
 % Post-hoc tests with Bonferonni correction are only approximate
@@ -68,7 +72,7 @@ addParameter(p,'effectsNames',{'A','B','C'},@iscell); % name of the different ef
 
 % statistical parameters
 addParameter(p,'alpha',0.05,@isnumeric); % alpha used for the ANOVA
-addParameter(p,'multiIterations',10,@isnumeric); % the number of permutations is multiIterations/alpha.
+addParameter(p,'multiIterations',10,@isnumeric); % the number of permutations is multiIterations/alpha. Must be increased for better reproductibility
 addParameter(p,'IT',[],@isnumeric); % fixed number of iterations (override the multiIterations - not recommanded)
 % specified either multiIterations or IT, but not both
 addParameter(p,'maximalIT',10000,@isnumeric); % limits the number of maximal permutations in case of too many multiple comparisons.

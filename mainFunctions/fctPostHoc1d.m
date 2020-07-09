@@ -47,9 +47,9 @@ if nEffects==1
         
         nComp=size(Comp,2);
         if ~isempty(nT)
-            alpha=0.05/nT;
+            alphaOriginal=0.05/nT;
         else
-            alpha=alphaT/nComp;
+            alphaOriginal=alphaT/nComp;
         end
         
         for comp=1:nComp
@@ -84,7 +84,7 @@ if nEffects==1
             mapsDifferences{2,comp}=relativeDifferencesData{1};
             
             % inference
-            [testTtests.nWarning{comp},iterations,alphaOriginal,alpha]=fctWarningIterations(Ttest,alpha,multiIterations,maximalIT,IT);
+            [testTtests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
             testTtests.alphaOriginal{comp}=alphaOriginal;
             testTtests.alpha{comp}=alpha;
             testTtests.nIterations{comp}=iterations;
@@ -183,9 +183,9 @@ if nEffects==2
             
             nComp=size(Comp,2);
             if ~isempty(nT)
-                alpha=0.05/nT;
+                alphaOriginal=0.05/nT;
             else
-                alpha=alphaT/nComp;
+                alphaOriginal=alphaT/nComp;
             end
             
             for comp=1:nComp
@@ -230,7 +230,7 @@ if nEffects==2
                 close
                 
                 % inference
-                [testTtests.nWarning{comp},iterations,alphaOriginal,alpha]=fctWarningIterations(Ttest,alpha,multiIterations,maximalIT,IT);
+                [testTtests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
                 testTtests.alphaOriginal{comp}=alphaOriginal;
                 testTtests.alpha{comp}=alpha;
                 testTtests.nIterations{comp}=iterations;
@@ -324,9 +324,9 @@ if nEffects==3
             
             nComp=size(Comp,2);
             if ~isempty(nT)
-                alpha=0.05/nT;
+                alphaOriginal=0.05/nT;
             else
-                alpha=alphaT/nComp;
+                alphaOriginal=alphaT/nComp;
             end
             
             for comp=1:nComp
@@ -374,7 +374,7 @@ if nEffects==3
                 
                 
                 % inference
-                [testTtests.nWarning{comp},iterations,alphaOriginal,alpha]=fctWarningIterations(Ttest,alpha,multiIterations,maximalIT,IT);
+                [testTtests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
                 testTtests.alphaOriginal{comp}=alphaOriginal;
                 testTtests.alpha{comp}=alpha;
                 testTtests.nIterations{comp}=iterations;
@@ -474,9 +474,9 @@ if nEffects==3
             
             nComp=size(Comp,2);
             if ~isempty(nT)
-                alpha=0.05/nT;
+                alphaOriginal=0.05/nT;
             else
-                alpha=alphaT/nComp;
+                alphaOriginal=alphaT/nComp;
             end
             
             for comp=1:nComp
@@ -524,7 +524,7 @@ if nEffects==3
                 close
                 
                 % inference
-                [testTtests.nWarning{comp},iterations,alphaOriginal,alpha]=fctWarningIterations(Ttest,alpha,multiIterations,maximalIT,IT);
+                [testTtests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
                 testTtests.alphaOriginal{comp}=alphaOriginal;
                 testTtests.alpha{comp}=alpha;
                 testTtests.nIterations{comp}=iterations;
@@ -712,9 +712,9 @@ if nEffects>1
         
         nComp=size(Comp,2);
         if ~isempty(nT)
-            alpha=0.05/nT;
+            alphaOriginal=0.05/nT;
         else
-            alpha=alphaT/nComp;
+            alphaOriginal=alphaT/nComp;
         end
         
         for comp=1:nComp
@@ -767,7 +767,7 @@ if nEffects>1
             close
             
             % inference
-            [testTtests.nWarning{comp},iterations,alphaOriginal,alpha]=fctWarningIterations(Ttest,alpha,multiIterations,maximalIT,IT);
+            [testTtests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
             testTtests.alphaOriginal{comp}=alphaOriginal;
             testTtests.alpha{comp}=alpha;
             testTtests.nIterations{comp}=iterations;

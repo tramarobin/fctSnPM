@@ -86,15 +86,15 @@ set(gca,'FontSize',imageFontSize)
 y=get(gca,'ylim');
 
 for c=1:numel(tTest)
-    isSignificant(c)=sum(tTest{c})>=1;
+    isSignificant(c)=sum(tTest{c})>=2;
 end
 totalSignificant=sum(isSignificant);
 whichSignificant=find(isSignificant);
 
-loop=1;
+loop=totalSignificant;
 for c=whichSignificant
     ylimits(c,:)=[(1+0.05*loop)*y(2) (1+0.05*loop)*y(2)+0.04*y(2)];
-    loop=loop+1;
+    loop=loop-1;
 end
 
 if isempty(colorSPM)
@@ -118,7 +118,7 @@ for c=whichSignificant
                 if min(size(diffNames))>1
                     vertShadeSPM([timeCluster(1),timeCluster(end)],...
                         'label',[diffNames{c,1} ' \neq ' diffNames{c,2}],...
-                        'color',colorLabel(c,:),'vLimits',ylimits(totalSignificant-c+1,:),'transparency',0.5);
+                        'color',colorLabel(c,:),'vLimits',ylimits(c,:),'transparency',1);
                     
                 else
                     
@@ -135,14 +135,14 @@ for c=whichSignificant
                     end
                     vertShadeSPM([timeCluster(1),timeCluster(end)],...
                         'label',diffName,...
-                        'color',colorLabel(c,:),'vLimits',ylimits(totalSignificant-c+1,:),'transparency',0.5);
+                        'color',colorLabel(c,:),'vLimits',ylimits(c,:),'transparency',1);
                     
                 end
                 legendDone=legendDone+1;
             else
                 
                 vertShadeSPM([timeCluster(1),timeCluster(end)],...
-                    'color',colorLabel(c,:),'vLimits',ylimits(totalSignificant-c+1,:),'transparency',0.5);
+                    'color',colorLabel(c,:),'vLimits',ylimits(c,:),'transparency',1);
             end
         end
     end
