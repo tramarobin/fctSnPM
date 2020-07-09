@@ -1,8 +1,5 @@
-% Trama Robin (LIBM) 09/07/2020
-% trama.robin@gmail.com
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Trama Robin (LIBM) 09/07/2020
+trama.robin@gmail.com
 
 
 Using spm1d package (v.0.4.3), compute anova and post-hoc tests from anova1 to anova3rm, with a non-parametric approach (permutation tests)
