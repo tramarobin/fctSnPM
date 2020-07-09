@@ -13,7 +13,6 @@
 
 % Please visit http://spm1d.org/index.html for information
 % spm1d package for matlab : https://github.com/0todd0000/spm1dmatlab
-% this function cab be download at : 
 
 % please cite for spm1d : Pataky TC (2010). Generalized n-dimensional biomechanical field analysis using statistical parametric mapping. Journal of Biomechanics 43, 1976-1982.
 % please cite for permutation tests : Nichols TE, Holmes AP (2002). Nonparametric permutation tests for functional neuroimaging: a primer with examples. Human Brain Mapping 15(1), 1–25.
