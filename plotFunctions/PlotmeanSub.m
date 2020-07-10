@@ -5,7 +5,7 @@ if isempty(nameSub)
         nameSub{i}=num2str(i);
     end
 end
-
+colorLine=[];
 for i=1:nSuj
     for cond=1:size(effectsRm{1},2)
         if min(size(mapsAll{i,cond}))==1
