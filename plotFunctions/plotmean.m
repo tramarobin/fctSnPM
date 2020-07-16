@@ -41,18 +41,18 @@ for i=1:size(Data,2)
 end
 for i=1:size(Data,2)
     if min(size(Data{i}))>1
-        plot(time,MData{i},'color',colors(i,:),'LineWidth',1.5); hold on
+        plot(time(noNan),MData{i}(noNan),'color',colors(i,:),'LineWidth',1.5); hold on
         if isempty(IC)
-            plot(time,SDsup{i},'--','color',colors(i,:),'handlevisibility','off')
-            plot(time,SDinf{i},'--','color',colors(i,:),'handlevisibility','off')
+            plot(time(noNan),SDsup{i}(noNan),'--','color',colors(i,:),'handlevisibility','off')
+            plot(time(noNan),SDinf{i}(noNan),'--','color',colors(i,:),'handlevisibility','off')
             title('Means \pm standard deviation')
         else
-            plot(time,MData{i}(noNan)+std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'--','color',colors(i,:),'handlevisibility','off')
-            plot(time,MData{i}(noNan)-std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'--','color',colors(i,:),'handlevisibility','off')
+            plot(time(noNan),MData{i}(noNan)+std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'--','color',colors(i,:),'handlevisibility','off')
+            plot(time(noNan),MData{i}(noNan)-std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'--','color',colors(i,:),'handlevisibility','off')
             title(['Means \pm IC' num2str(100*IC) '%'])
         end
     elseif ~isempty(Data{i})
-        plot(time,Data{i},'color',colors(i,:),'LineWidth',1.5); hold on
+        plot(time(noNan),Data{i}(noNan),'color',colors(i,:),'LineWidth',1.5); hold on
     end
 end
 

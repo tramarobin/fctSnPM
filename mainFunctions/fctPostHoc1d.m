@@ -26,7 +26,7 @@ if nEffects==1
         end
         
         % full plot of means
-        colorPlot=chooseColor(colorLine,1);
+        [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,1);
         plotmean(meansData,IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,transparancy1D)
         legend(legendPlot,'Location','eastoutside','box','off')
         print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{1} '.tiff'])
@@ -121,7 +121,7 @@ if nEffects==1
         end
         
         % full plot of means + SPM
-        plotmeanSPM(mapsConditions,mapsT(2,:),legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,colorSPM,transparancy1D)
+        plotmeanSPM(mapsConditions,mapsT(2,:),legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D)
         print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{1} ' + SPM.tiff'])
         close
         
@@ -162,7 +162,7 @@ if nEffects==2
             end
             
             % full plot of means
-            colorPlot=chooseColor(colorLine,mainEffect);
+            [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,mainEffect);
             plotmean(meansData,IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,transparancy1D)
             legend(legendPlot,'Location','eastoutside','box','off')
             print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' eNames{mainEffect(1)} '.tiff'])
@@ -257,8 +257,8 @@ if nEffects==2
             end
             
             % full plot of means + SPM
-            colorPlot=chooseColor(colorLine,mainEffect);
-            plotmeanSPM(mapsConditions,mapsT(2,:),legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,colorSPM,transparancy1D)
+            [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,mainEffect);
+            plotmeanSPM(mapsConditions,mapsT(2,:),legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D)
             print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPM.tiff'])
             close
             
@@ -303,7 +303,7 @@ if nEffects==3
             end
             
             % full plot of means
-            colorPlot=chooseColor(colorLine,mainEffect);
+            [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,mainEffect);
             plotmean(meansData,IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,transparancy1D)
             legend(legendPlot,'Location','eastoutside','box','off')
             print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' eNames{mainEffect(1)} '.tiff'])
@@ -401,7 +401,7 @@ if nEffects==3
             end
             
             % full plot of means + SPM
-            plotmeanSPM(mapsConditions,mapsT(2,:),legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,colorSPM,transparancy1D)
+            plotmeanSPM(mapsConditions,mapsT(2,:),legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D)
             print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPM.tiff'])
             close
             
@@ -449,7 +449,7 @@ if nEffects==3
             % full plot of means
             [nPlot,whichPlot,whichFixed,whichModal]=findNPlot(combi);
             for p=1:nPlot
-                colorPlot=chooseColor(colorLine,mainEffect(whichFixed(2,p)));
+                [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,mainEffect(whichFixed(2,p)));
                 plotmean(meansData(whichPlot{p}),IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,transparancy1D)
                 legend(legendPlot(whichPlot{p}),'Location','eastoutside','box','off')
                 print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\'  modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} '.tiff'])
@@ -581,8 +581,8 @@ if nEffects==3
                     whichCompare(nC)=strcmp(sameName,namesDifferences{nC}(1:sizeSname));
                 end
                 
-                colorPlot=chooseColor(colorLine,mainEffect(whichFixed(2,p)));
-                plotmeanSPM(mapsConditions(whichPlot{p}),mapsT(2,whichCompare),legendPlot(whichPlot{p}),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,colorSPM,transparancy1D)
+                [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,mainEffect(whichFixed(2,p)));
+                plotmeanSPM(mapsConditions(whichPlot{p}),mapsT(2,whichCompare),legendPlot(whichPlot{p}),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D)
                 print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\'  modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} ' + SPM.tiff'])
                 close
                 clear isEmptydata findT capPos whichCompare
@@ -650,7 +650,7 @@ if nEffects>1
             % full plot of means
             [nPlot,whichPlot,whichFixed,whichModal]=findNPlot(combi);
             for p=1:nPlot
-                colorPlot=chooseColor(colorLine,whichFixed(2,p));
+                [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,whichFixed(2,p));
                 plotmean(meansData(whichPlot{p}),IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,transparancy1D)
                 data4empty=meansData(whichPlot{p});
                 for i=1:numel(whichPlot{p})
@@ -686,7 +686,7 @@ if nEffects>1
             
             [nPlot,whichPlot,whichFixed,whichModal]=findNPlot(combi);
             for p=1:nPlot
-                colorPlot=chooseColor(colorLine,whichFixed(1,p));
+                [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,whichFixed(1,p));
                 plotmean(meansData(whichPlot{p}),IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,transparancy1D)
                 legend(legendPlot(whichPlot{p}),'Location','eastoutside','box','off')
                 print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(1,p)} '\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} '.tiff'])
@@ -868,11 +868,11 @@ if nEffects>1
             end
             
             if nEffects==2
-                colorPlot=chooseColor(colorLine,whichFixed(2,p));
+                [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,whichFixed(2,p));
             else
-                colorPlot=chooseColor(colorLine,whichFixed(1,p));
+                [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,whichFixed(1,p));
             end
-            plotmeanSPM(mapsConditions(whichPlot{p}),mapsT(2,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,colorSPM,transparancy1D)
+            plotmeanSPM(mapsConditions(whichPlot{p}),mapsT(2,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D)
             if nEffects==2
                 print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(2,p)} '\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPM.tiff'])
             else

@@ -36,6 +36,9 @@
 % For 1D data, data MUST be of size (X,1), X being the number of nodes
 % Independant effects : 1 cell by effect. Must correspond to the number of subjects
 % Repeated measures effects : 1 cell by effect. Must correspond to the number of columns in the dataset.
+% avoid the same typo (e.g., POST, POST2) for the effect names, it affects
+% the recognition for the fi with SPM implemented
+% also avoid underscore (_) or minus (-) sign. Spaces are OK
 
 % OPTIONAL
 % see the description at begining of the function (inputParser)
@@ -48,6 +51,7 @@
 % Post-hoc are corrected with Bonferonni and paired or not in fuction of the effect(s) tested (WARNING : Post-hoc tests with Bonferonni correction are only approximate)
 % The SPM results displayed in 1D or 2D correspond to the intersection of the ANOVA and the t-test (a t-test is only significant if the anova is significant at the same location)
 % for the interactions, main effects at the location where only main effects are located are used to display a global map of main effects+interaction on the same figure
+
 %% Informations
 % All the dataset must be balanced for ANOVA 2 and 3
 % Post-hoc tests with Bonferonni correction are only approximate
