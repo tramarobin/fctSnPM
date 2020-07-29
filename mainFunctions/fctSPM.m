@@ -96,11 +96,11 @@ addParameter(p,'nTicksY',4,@isnumeric); % number of yticks displayed
 addParameter(p,'imageresolution',100,@isnumeric); % resolution in ppp of the tiff images
 addParameter(p,'imageSize',[],@isnumeric) % size of the image in cm. X --> X*X images, [X Y] X*Y imgages. By default the unit is normalized [0 0 1 1].
 addParameter(p,'imageFontSize',12,@isnumeric) % font size of images
+addParameter(p,'ylimits',[],@isnumeric); % change yticks to correspond to the specified range
 
 % 2d plot parameters
 addParameter(p,'colorMap',jet) % colormap used for means and differences plot
 addParameter(p,'colorbarLabel','',@ischar); % name of the colorbar label
-addParameter(p,'ylimits',[],@isnumeric); % change yticks to correspond to the specified range
 addParameter(p,'limitMeanMaps',[],@isnumeric); % limit of the colorbar. the value of X will make the colorbar going from 0 to X for all plots (easier to compare). If not specified, the maps wont necessery be with the same range but will be automatically scaled
 addParameter(p,'displaycontour',1,@isnumeric); % display contour map on differences and size effect maps (0 to not display)
 addParameter(p,'contourcolor','w'); % color of the line for the contour plot

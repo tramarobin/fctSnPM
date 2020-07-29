@@ -1,4 +1,4 @@
-function []=plotmeanSPM(Data,tTest,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,colorLine,imageFontSize,imageSize,colorSPM,transparancy1D)
+function []=plotmeanSPM(Data,tTest,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,colorLine,imageFontSize,imageSize,colorSPM,transparancy1D,ylimits)
 
 if isempty(imageSize)
     figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
@@ -52,6 +52,7 @@ for i=1:size(Data,2)
             title(['Means \pm IC' num2str(100*IC) '%'])
         end
     elseif ~isempty(Data{i})
+        noNan=~isnan(Data{i});
         plot(time(noNan),Data{i}(noNan),'color',colors(i,:),'LineWidth',1.5); hold on
     end
 end
@@ -83,6 +84,9 @@ set(gca,'FontSize',imageFontSize)
 
 
 %% add SPM shaded zones
+if ~isempty(ylimits)
+    ylim(ylimits)
+end
 y=get(gca,'ylim');
 
 for c=1:numel(tTest)

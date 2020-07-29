@@ -22,7 +22,7 @@ if dimensions(1)==1 | dimensions(2)==1 %1D
     plot(time,mapF,'--k','linewidth',1); hold on
     hline(Fthreshold,':k')
     
-     clusters=find(abs(diff(anovaEffects))==1);
+    clusters=find(abs(diff(anovaEffects))==1);
     clusters=[0,clusters,max(size(mapF))];
     for t=1:size(clusters,2)-1
         timeCluster=time(clusters(t)+1:clusters(t+1));
@@ -43,9 +43,9 @@ if dimensions(1)==1 | dimensions(2)==1 %1D
     end
     xticks(linspace(0,(max(size(mapF))-1)/Fs,nx))
     for i=1:nx
-       if xlabels(i)<0 && xlabels(i)>-1e-16
+        if xlabels(i)<0 && xlabels(i)>-1e-16
             xlabs{i}='0';
-        elseif abs(xlabels(i))==0 | abs(xlabels(i))>=1 & abs(xlabels(i))<100            
+        elseif abs(xlabels(i))==0 | abs(xlabels(i))>=1 & abs(xlabels(i))<100
             xlabs{i}=sprintf('%0.2g',xlabels(i));
         elseif abs(xlabels(i))>=100
             xlabs{i}=sprintf('%d',round(xlabels(i)));

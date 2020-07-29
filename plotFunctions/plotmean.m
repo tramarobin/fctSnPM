@@ -1,4 +1,4 @@
-function []=plotmean(Data,IC,xlab,ylab,Fs,xlimits,nx,colorLine,imageFontSize,imageSize,transparancy1D)
+function []=plotmean(Data,IC,xlab,ylab,Fs,xlimits,nx,colorLine,imageFontSize,imageSize,transparancy1D,ylimits)
 
 if isempty(imageSize)
     figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
@@ -52,6 +52,7 @@ for i=1:size(Data,2)
             title(['Means \pm IC' num2str(100*IC) '%'])
         end
     elseif ~isempty(Data{i})
+        noNan=~isnan(Data{i});
         plot(time(noNan),Data{i}(noNan),'color',colors(i,:),'LineWidth',1.5); hold on
     end
 end
@@ -80,5 +81,9 @@ end
     xticklabels(xlabs)
     
 set(gca,'FontSize',imageFontSize)
+
+if ~isempty(ylimits)
+    ylim(ylimits)
+end
 
 end

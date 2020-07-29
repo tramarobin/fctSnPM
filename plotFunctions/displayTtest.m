@@ -60,7 +60,7 @@ if dimensions(1)==1 | dimensions(2)==1 %1D
     if max(anovaEffects)==0
         legend('t-value','Location','eastoutside','Box','off');
     else
-        legend({'t-value','Real effect (blue)'},'Location','eastoutside','Box','off');
+        legend({'t-value','Significant cluster'},'Location','eastoutside','Box','off');
     end
     
     
