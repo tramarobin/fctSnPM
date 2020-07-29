@@ -1,11 +1,11 @@
-% This function takes ~275 seconds on i5 processor and files takes 600 Mo of space
+% This function takes ~275 seconds on i5 processor and files takes 80 Mo of space
 
 clear
 close all
 clc
 
-% path (change to your own path)
-addpath(genpath('C:\Users\LIBM_yb\Google Drive\Thèse\MATLAB\library_matlab\fctSPM'));
+% path
+addAbovePath
 
 % data
 load ExampleDatas
@@ -23,6 +23,7 @@ savedir='Results//1D_ANOVA3_2rm';
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];
+ylimits=[0 1.6];
 colorLine{1}=[rgb('cyan'); rgb('magenta')];
 colorLine{2}=[rgb('green'); rgb('blue'); rgb('red'); rgb('black')];
 colorLine{3}=[rgb('gray'); rgb('darkgray')];
@@ -32,6 +33,6 @@ fctSPM(DATA,EFFET_ind,EFFET_rm,'multiIteration',1,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...
-    'xlimits',xlimits,'colorline',colorLine);
+    'xlimits',xlimits,'ylimits',ylimits,'colorline',colorLine);
 
 
