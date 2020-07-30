@@ -27,7 +27,7 @@ if nEffects==1
         
         % full plot of means
         [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,1);
-        plotmean(meansData,IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
+        plotmean(meansData,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
         legend(legendPlot,'Location','eastoutside','box','off')
         print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{1} '.tiff'])
         close
@@ -96,7 +96,7 @@ if nEffects==1
             mapLogical=abs(mapsT{1,comp})>=Tthreshold{comp};
             mapsT{2,comp}(anovaEffects{1})=mapLogical(anovaEffects{1});
             
-            plotmean(differencesData,IC,xlab,ylab,Fs,xlimits,nx,[],imageFontSize,imageSize,transparancy1D,[])
+            plotmean(differencesData,IC,xlab,ylab,Fs,xlimits,nx,[],[],imageFontSize,imageSize,transparancy1D,[])
             legend([namesDifferences{comp,1} ' - ' namesDifferences{comp,2}],'Location','eastoutside','box','off')
             print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{1} ' (' char(namesDifferences{comp,1}) ' - ' char(namesDifferences{comp,2}) ') diff.tiff'])
             close
@@ -121,7 +121,7 @@ if nEffects==1
         end
         
         % full plot of means + SPM
-        plotmeanSPM(mapsConditions,mapsT(2,:),legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits)
+        plotmeanSPM(mapsConditions,mapsT(2,:),legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits)
         print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{1} ' + SPM.tiff'])
         close
         
@@ -163,7 +163,7 @@ if nEffects==2
             
             % full plot of means
             [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,mainEffect);
-            plotmean(meansData,IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
+            plotmean(meansData,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
             legend(legendPlot,'Location','eastoutside','box','off')
             print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' eNames{mainEffect(1)} '.tiff'])
             close
@@ -219,7 +219,7 @@ if nEffects==2
                 mapsDifferences{1,comp}=differencesData{1};
                 mapsDifferences{2,comp}=relativeDifferencesData{1};
                 
-                plotmean(differencesData,IC,xlab,ylab,Fs,xlimits,nx,[],imageFontSize,imageSize,transparancy1D,[])
+                plotmean(differencesData,IC,xlab,ylab,Fs,xlimits,nx,[],[],imageFontSize,imageSize,transparancy1D,[])
                 legend([namesDifferences{comp,1} ' - ' namesDifferences{comp,2}],'Location','eastoutside','box','off')
                 print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' char(namesDifferences{comp,1}) ' - ' char(namesDifferences{comp,2}) ' diff.tiff'])
                 close
@@ -258,7 +258,7 @@ if nEffects==2
             
             % full plot of means + SPM
             [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,mainEffect);
-            plotmeanSPM(mapsConditions,mapsT(2,:),legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits)
+            plotmeanSPM(mapsConditions,mapsT(2,:),legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits)
             print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPM.tiff'])
             close
             
@@ -304,7 +304,7 @@ if nEffects==3
             
             % full plot of means
             [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,mainEffect);
-            plotmean(meansData,IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
+            plotmean(meansData,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
             legend(legendPlot,'Location','eastoutside','box','off')
             print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' eNames{mainEffect(1)} '.tiff'])
             close
@@ -362,7 +362,7 @@ if nEffects==3
                 mapsDifferences{2,comp}=relativeDifferencesData{1};
                 
                 
-                plotmean(differencesData,IC,xlab,ylab,Fs,xlimits,nx,[],imageFontSize,imageSize,transparancy1D,[])
+                plotmean(differencesData,IC,xlab,ylab,Fs,xlimits,nx,[],[],imageFontSize,imageSize,transparancy1D,[])
                 legend([namesDifferences{comp,1} ' - ' namesDifferences{comp,2}],'Location','eastoutside','box','off')
                 print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' char(namesDifferences{comp,1}) ' - ' char(namesDifferences{comp,2}) ' diff.tiff'])
                 close
@@ -401,7 +401,7 @@ if nEffects==3
             end
             
             % full plot of means + SPM
-            plotmeanSPM(mapsConditions,mapsT(2,:),legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits)
+            plotmeanSPM(mapsConditions,mapsT(2,:),legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits)
             print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPM.tiff'])
             close
             
@@ -450,7 +450,7 @@ if nEffects==3
             [nPlot,whichPlot,whichFixed,whichModal]=findNPlot(combi);
             for p=1:nPlot
                 [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,mainEffect(whichFixed(2,p)));
-                plotmean(meansData(whichPlot{p}),IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
+                plotmean(meansData(whichPlot{p}),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
                 legend(legendPlot(whichPlot{p}),'Location','eastoutside','box','off')
                 print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\'  modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} '.tiff'])
                 close
@@ -513,7 +513,7 @@ if nEffects==3
                 mapsDifferences{1,comp}=differencesData{1};
                 mapsDifferences{2,comp}=relativeDifferencesData{1};
                 
-                plotmean(differencesData,IC,xlab,ylab,Fs,xlimits,nx,[],imageFontSize,imageSize,transparancy1D,[])
+                plotmean(differencesData,IC,xlab,ylab,Fs,xlimits,nx,[],[],imageFontSize,imageSize,transparancy1D,[])
                 legend([namesDifferences{comp}],'Location','eastoutside','box','off')
                 print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(eTested)} '\' namesDifferences{comp} ' diff.tiff'])
                 close
@@ -582,7 +582,7 @@ if nEffects==3
                 end
                 
                 [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,mainEffect(whichFixed(2,p)));
-                plotmeanSPM(mapsConditions(whichPlot{p}),mapsT(2,whichCompare),legendPlot(whichPlot{p}),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits)
+                plotmeanSPM(mapsConditions(whichPlot{p}),mapsT(2,whichCompare),legendPlot(whichPlot{p}),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits)
                 print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\'  modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} ' + SPM.tiff'])
                 close
                 clear isEmptydata findT capPos whichCompare
@@ -651,7 +651,7 @@ if nEffects>1
             [nPlot,whichPlot,whichFixed,whichModal]=findNPlot(combi);
             for p=1:nPlot
                 [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,whichFixed(2,p));
-                plotmean(meansData(whichPlot{p}),IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
+                plotmean(meansData(whichPlot{p}),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
                 data4empty=meansData(whichPlot{p});
                 for i=1:numel(whichPlot{p})
                     isEmptydata(i)=~isempty(data4empty{i});
@@ -687,7 +687,7 @@ if nEffects>1
             [nPlot,whichPlot,whichFixed,whichModal]=findNPlot(combi);
             for p=1:nPlot
                 [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,whichFixed(1,p));
-                plotmean(meansData(whichPlot{p}),IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
+                plotmean(meansData(whichPlot{p}),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
                 legend(legendPlot(whichPlot{p}),'Location','eastoutside','box','off')
                 print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(1,p)} '\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} '.tiff'])
                 close
@@ -756,7 +756,7 @@ if nEffects>1
             mapsDifferences{1,comp}=differencesData{1};
             mapsDifferences{2,comp}=relativeDifferencesData{1};
             
-            plotmean(differencesData,IC,xlab,ylab,Fs,xlimits,nx,[],imageFontSize,imageSize,transparancy1D,[])
+            plotmean(differencesData,IC,xlab,ylab,Fs,xlimits,nx,[],[],imageFontSize,imageSize,transparancy1D,[])
             legend([namesDifferences{comp}],'Location','eastoutside','box','off')
             print('-dtiff',imageResolution,[savedir savedir2 eNames{testedEffect{comp}} '\' namesDifferences{comp} ' diff.tiff'])
             close
@@ -872,7 +872,7 @@ if nEffects>1
             else
                 [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,whichFixed(1,p));
             end
-            plotmeanSPM(mapsConditions(whichPlot{p}),mapsT(2,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits)
+            plotmeanSPM(mapsConditions(whichPlot{p}),mapsT(2,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits)
             if nEffects==2
                 print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(2,p)} '\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPM.tiff'])
             else

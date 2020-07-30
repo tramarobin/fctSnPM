@@ -1,4 +1,4 @@
-function []=plotmeanSPM(Data,tTest,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,colorLine,imageFontSize,imageSize,colorSPM,transparancy1D,ylimits)
+function []=plotmeanSPM(Data,tTest,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,ny,colorLine,imageFontSize,imageSize,colorSPM,transparancy1D,ylimits)
 
 if isempty(imageSize)
     figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
@@ -13,7 +13,13 @@ if ~isempty(IC)
     coeff=[1.04 1.15 1.28 1.44 1.645 1.75 1.96 2.05 2.33 2.58 2.81 3.29];
     coeff=interp1(indices,coeff,0.7:0.001:0.999);
     indices=0.7:0.001:0.999;
-    z=coeff(find(IC==indices));
+    if IC>=0.7
+        z=coeff(find(IC==indices));
+    elseif IC==0
+        z=1;
+    else
+        error('Chose CI between 0.7 and 0.999, or 0 to display SEM')
+    end
 end
 
 if ~isempty(colorLine)
@@ -49,7 +55,11 @@ for i=1:size(Data,2)
         else
             plot(time(noNan),MData{i}(noNan)+std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'--','color',colors(i,:),'handlevisibility','off')
             plot(time(noNan),MData{i}(noNan)-std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'--','color',colors(i,:),'handlevisibility','off')
-            title(['Means \pm IC' num2str(100*IC) '%'])
+            if IC==0
+                title('Means \pm SEM')
+            else
+                title(['Means \pm IC' num2str(100*IC) '%'])
+            end
         end
     elseif ~isempty(Data{i})
         noNan=~isnan(Data{i});
@@ -97,7 +107,7 @@ whichSignificant=find(isSignificant);
 
 loop=totalSignificant;
 for c=whichSignificant
-    ylimits(c,:)=[(1+0.05*loop)*y(2) (1+0.05*loop)*y(2)+0.04*y(2)];
+    ylimitsSPM(c,:)=[(1+0.05*loop)*y(2) (1+0.05*loop)*y(2)+0.04*y(2)];
     loop=loop-1;
 end
 
@@ -122,7 +132,7 @@ for c=whichSignificant
                 if min(size(diffNames))>1
                     vertShadeSPM([timeCluster(1),timeCluster(end)],...
                         'label',[diffNames{c,1} ' \neq ' diffNames{c,2}],...
-                        'color',colorLabel(c,:),'vLimits',ylimits(c,:),'transparency',1);
+                        'color',colorLabel(c,:),'vLimits',ylimitsSPM(c,:),'transparency',1);
                     
                 else
                     
@@ -139,14 +149,14 @@ for c=whichSignificant
                     end
                     vertShadeSPM([timeCluster(1),timeCluster(end)],...
                         'label',diffName,...
-                        'color',colorLabel(c,:),'vLimits',ylimits(c,:),'transparency',1);
+                        'color',colorLabel(c,:),'vLimits',ylimitsSPM(c,:),'transparency',1);
                     
                 end
                 legendDone=legendDone+1;
             else
                 
                 vertShadeSPM([timeCluster(1),timeCluster(end)],...
-                    'color',colorLabel(c,:),'vLimits',ylimits(c,:),'transparency',1);
+                    'color',colorLabel(c,:),'vLimits',ylimitsSPM(c,:),'transparency',1);
             end
         end
     end
@@ -154,8 +164,14 @@ for c=whichSignificant
     
 end
 
+
+if ~isempty(ny)
+    yticks(linspace(y(1),y(2),ny))
+end
+
+y=get(gca,'ylim');
 if ~isempty(whichSignificant)
-    ylim([y(1) 1.05*max(max(ylimits))]);
+    ylim([y(1) 1.05*max(max(ylimitsSPM))]);
 end
 
 end

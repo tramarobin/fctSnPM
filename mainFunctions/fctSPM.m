@@ -92,7 +92,7 @@ addParameter(p,'samplefrequency',1,@isnumeric); % change xticks to correspond at
 addParameter(p,'xlimits',[],@isnumeric); % change xticks to correspond to the specified range (can be negative)
 % specified either samplefrequency or xlimits, but not both
 addParameter(p,'nTicksX',5,@isnumeric); % number of xticks displayed
-addParameter(p,'nTicksY',4,@isnumeric); % number of yticks displayed
+addParameter(p,'nTicksY',[],@isnumeric); % number of yticks displayed
 addParameter(p,'imageresolution',100,@isnumeric); % resolution in ppp of the tiff images
 addParameter(p,'imageSize',[],@isnumeric) % size of the image in cm. X --> X*X images, [X Y] X*Y imgages. By default the unit is normalized [0 0 1 1].
 addParameter(p,'imageFontSize',12,@isnumeric) % font size of images
@@ -114,7 +114,7 @@ addParameter(p,'plotSub',0,@isnumeric) % 1 to plot the mean of each subject
 addParameter(p,'nameSub',[],@iscell) % names of the different subjects
 
 % 1d plot parameters
-addParameter(p,'CI',[],@isnumeric); % confidence interval is used instead of standard deviation (0.7-->0.999)
+addParameter(p,'CI',[],@isnumeric); % confidence interval is used instead of standard deviation (0.7-->0.999), 0 to display SEM
 addParameter(p,'colorLine',[]); % colorline for plots (default  is "lines") // rgb triplet, if in cell, apply each color to each effect (independant effect first)
 addParameter(p,'transparancy1D',0.10); % transparancy of SD for 1D plot
 addParameter(p,'colorSPM',[]); % color of significant effect on mean + SPM plot (rgb triplet)

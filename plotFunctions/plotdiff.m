@@ -13,7 +13,13 @@ if ~isempty(IC)
     coeff=[1.04 1.15 1.28 1.44 1.645 1.75 1.96 2.05 2.33 2.58 2.81 3.29];
     coeff=interp1(indices,coeff,0.7:0.001:0.999);
     indices=0.7:0.001:0.999;
-    z=coeff(find(IC==indices));
+    if IC>=0.7
+        z=coeff(find(IC==indices));
+    elseif IC==0
+        z=1;
+    else
+        error('Chose CI between 0.7 and 0.999, or 0 to display SEM')
+    end
 end
 
 colors=lines(size(Data,2));
@@ -47,7 +53,11 @@ for i=1:size(Data,2)
         else
             plot(time,MData{i}+std(Data{i})*z/sqrt(size(Data{i},1)),'--','color',colors(i,:))
             plot(time,MData{i}-std(Data{i})*z/sqrt(size(Data{i},1)),'--','color',colors(i,:))
+            if IC==0
+            title('Means \pm SEM')
+            else
             title(['Means \pm IC' num2str(100*IC) '%'])
+            end
         end
     else
         plot(time,Data{i},'color',colors(i,:),'LineWidth',1.5); hold on

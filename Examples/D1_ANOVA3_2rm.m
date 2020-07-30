@@ -24,6 +24,7 @@ xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];
 ylimits=[0 1.6];
+nTicksY=17;
 colorLine{1}=[rgb('cyan'); rgb('magenta')];
 colorLine{2}=[rgb('green'); rgb('blue'); rgb('red'); rgb('black')];
 colorLine{3}=[rgb('gray'); rgb('darkgray')];
@@ -33,6 +34,6 @@ fctSPM(DATA,EFFET_ind,EFFET_rm,'multiIteration',1,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...
-    'xlimits',xlimits,'ylimits',ylimits,'colorline',colorLine);
+    'xlimits',xlimits,'ylimits',ylimits,'nTicksY',nTicksY,'colorline',colorLine);
 
 

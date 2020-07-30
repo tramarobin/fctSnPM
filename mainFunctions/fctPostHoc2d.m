@@ -1,5 +1,11 @@
 function []=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,contourColor,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nx,ny,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalIT,doAllInteractions,dashedColor,transparency,lineWidth,imageFontSize,imageSize,colorMap,diffRatio,relativeRatio,alphaT,nT,linestyle)
 close all
+if isempty(nx)
+    nx=5;
+end
+if isempty(ny)
+    ny=4;
+end
 set(0, 'DefaultFigureVisible', 'off');
 
 %% T-TEST 1 EFFECT = MAIN EFFECT

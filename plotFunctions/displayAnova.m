@@ -56,7 +56,11 @@ if dimensions(1)==1 | dimensions(2)==1 %1D
     xticklabels(xlabs)
     box off
     
-else
+else %2D
+    
+    if isempty(ny)
+        ny=4;
+    end
     
     if isempty(ylimits)
         ylimits=[0 size(mapF,1)];
