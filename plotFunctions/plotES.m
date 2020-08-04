@@ -6,7 +6,7 @@
 %% OUTPUT
 % Figure of the anova results
 
-function []=plotES(mapT,sdT,Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D)
+function []=plotES(mapT,sdT,Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
 
 if isempty(imageSize)
     figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
@@ -19,11 +19,13 @@ end
 ESup=mapT+1.96*sdT;
 ESinf=mapT-1.96*sdT;
 time=0:1/Fs:(max(size(mapT))-1)/Fs;
-plot(time,mapT,':k','linewidth',1); hold on
-fill([time,fliplr(time)], [ESup,fliplr(ESinf)],'b','EdgeColor','none','facealpha',transparancy1D);
-plot(time,ESup,'--b')
-plot(time,ESinf,'--b')
+noNan=~isnan(mapT);
+plot(time(noNan),mapT(noNan),'b','linewidth',1.2); hold on
+fill([time(noNan),fliplr(time(noNan))], [ESup(noNan),fliplr(ESinf(noNan))],'b','EdgeColor','none','facealpha',transparancy1D);
+plot(time(noNan),ESup(noNan),'--b')
+plot(time(noNan),ESinf(noNan),'--b')
 
+hline(0,'r')
 hline([0.2 0.5 0.8],':k')
 xlabel(xlab)
 ylabel('Effect Size \pm 95% CI')
@@ -46,6 +48,16 @@ for i=1:nx
 end
 xticklabels(xlabs)
 box off
+
+
+y=get(gca,'ylim');
+if ~isempty(yLimitES)
+    if numel(yLimitES)==1
+        ylim([y(1), yLimitES])
+    else
+        ylim(yLimitES)
+    end
+end
 
 set(gca,'FontSize',imageFontSize)
 

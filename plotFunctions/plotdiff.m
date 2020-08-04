@@ -34,57 +34,60 @@ for i=1:size(Data,2)
 end
 for i=1:size(Data,2)
     time = 0:1/Fs:(size(Data{i},2)-1)/Fs;
+    noNan=~isnan(SDsup{i});
     f=1:size(Data{i},2);
     if size(Data{i},1)>1
         if isempty(IC)
-            fill([time,fliplr(time)], [SDsup{i},fliplr(SDinf{i})],colors(i,:),'EdgeColor','none','facealpha',transparancy1D); hold on
+            fill([time(noNan),fliplr(time(noNan))], [SDsup{i}(noNan),fliplr(SDinf{i}(noNan))],colors(i,:),'EdgeColor','none','facealpha',transparancy1D); hold on
         else
-            fill([time,fliplr(time)], [MData{i}+std(Data{i})*z/sqrt(size(Data{i},1)),fliplr(MData{i}-std(Data{i})*z/sqrt(size(Data{i},1)))],colors(i,:),'EdgeColor','none','facealpha',transparancy1D); hold on
+            fill([time(noNan),fliplr(time(noNan))], [MData{i}(noNan)+std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),fliplr(MData{i}(noNan)-std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)))],colors(i,:),'EdgeColor','none','facealpha',transparancy1D); hold on
         end
     end
 end
 for i=1:size(Data,2)
+    noNan=~isnan(SDsup{i});
     if size(Data{i},1)>1
-        plot(time,MData{i},'color',colors(i,:),'LineWidth',1.5); hold on
+        plot(time(noNan),MData{i}(noNan),'color',colors(i,:),'LineWidth',1.5); hold on
         if isempty(IC)
-            plot(time,SDsup{i},'--','color',colors(i,:))
-            plot(time,SDinf{i},'--','color',colors(i,:))
+            plot(time(noNan),SDsup{i}(noNan),'--','color',colors(i,:))
+            plot(time(noNan),SDinf{i}(noNan),'--','color',colors(i,:))
             title('Means \pm standard deviation')
         else
-            plot(time,MData{i}+std(Data{i})*z/sqrt(size(Data{i},1)),'--','color',colors(i,:))
-            plot(time,MData{i}-std(Data{i})*z/sqrt(size(Data{i},1)),'--','color',colors(i,:))
+            plot(time(noNan),MData{i}(noNan)+std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'--','color',colors(i,:))
+            plot(time(noNan),MData{i}(noNan)-std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'--','color',colors(i,:))
             if IC==0
-            title('Means \pm SEM')
+                title('Means \pm SEM')
             else
-            title(['Means \pm IC' num2str(100*IC) '%'])
+                title(['Means \pm IC' num2str(100*IC) '%'])
             end
         end
     else
-        plot(time,Data{i},'color',colors(i,:),'LineWidth',1.5); hold on
+        plot(time(noNan),Data{i}(noNan),'color',colors(i,:),'LineWidth',1.5); hold on
     end
-    box off
-    xlabel(xlab)
-    ylabel('Differences (%)')
-    if ~isempty(xlimits)
-        xlabels=linspace(xlimits(1),xlimits(end),nx);
-    else
-        xlabels=linspace(0,(max(size(Data{i})))/Fs,nx);
-    end
-    xticks(linspace(0,(max(size(Data{i}))-1)/Fs,nx))
-    for i=1:nx
-        if xlabels(i)<0 && xlabels(i)>-1e-16
-            xlabs{i}='0';
-        elseif abs(xlabels(i))==0 | abs(xlabels(i))>=1 & abs(xlabels(i))<100
-            xlabs{i}=sprintf('%0.2g',xlabels(i));
-        elseif abs(xlabels(i))>=100
-            xlabs{i}=sprintf('%d',round(xlabels(i)));
-        else
-            xlabs{i}=sprintf('%0.2f',xlabels(i));
-        end
-    end
-    xticklabels(xlabs)
-    
 end
+
+box off
+xlabel(xlab)
+ylabel('Differences (%)')
+if ~isempty(xlimits)
+    xlabels=linspace(xlimits(1),xlimits(end),nx);
+else
+    xlabels=linspace(0,(max(size(Data{i})))/Fs,nx);
+end
+xticks(linspace(0,(max(size(Data{i}))-1)/Fs,nx))
+for i=1:nx
+    if xlabels(i)<0 && xlabels(i)>-1e-16
+        xlabs{i}='0';
+    elseif abs(xlabels(i))==0 | abs(xlabels(i))>=1 & abs(xlabels(i))<100
+        xlabs{i}=sprintf('%0.2g',xlabels(i));
+    elseif abs(xlabels(i))>=100
+        xlabs{i}=sprintf('%d',round(xlabels(i)));
+    else
+        xlabs{i}=sprintf('%0.2f',xlabels(i));
+    end
+end
+xticklabels(xlabs)
+
 set(gca,'FontSize',imageFontSize)
 
 end

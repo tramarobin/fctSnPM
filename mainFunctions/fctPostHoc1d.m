@@ -1,4 +1,4 @@
-function []=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,IC,ylimits,nx,ny,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,nT,colorSPM,transparancy1D)
+function []=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,IC,ylimits,nx,ny,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,nT,colorSPM,transparancy1D,ratioSPM,yLimitES)
 close all
 set(0, 'DefaultFigureVisible', 'off');
 
@@ -113,7 +113,7 @@ if nEffects==1
             close
             
             %     ES
-            plotES(ES{comp},ESsd{comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D)
+            plotES(ES{comp},ESsd{comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
             title([char(namesDifferences{comp,1}) ' - ' char(namesDifferences{comp,2})])
             print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{1} ' (' char(namesDifferences{comp,1}) ' - ' char(namesDifferences{comp,2}) ') ES.tiff'])
             close
@@ -123,6 +123,14 @@ if nEffects==1
         % full plot of means + SPM
         plotmeanSPM(mapsConditions,mapsT(2,:),legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits)
         print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{1} ' + SPM.tiff'])
+        close
+        
+        plotmeanSPMv2(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits,anovaEffects,eNames,ratioSPM)
+        print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{1} ' + SPMv2.tiff'])
+        close
+        
+        plotmeanSPMv2(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits,[],[],ratioSPM)
+        print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{1} ' + SPMv2noAnova.tiff'])
         close
         
         
@@ -249,7 +257,7 @@ if nEffects==2
                 close
                 
                 %   ES
-                plotES(ES{comp},ESsd{comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D)
+                plotES(ES{comp},ESsd{comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
                 title([char(namesDifferences{comp,1}) ' - ' char(namesDifferences{comp,2})])
                 print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' char(namesDifferences{comp,1}) ' - ' char(namesDifferences{comp,2}) ' ES.tiff'])
                 close
@@ -262,6 +270,13 @@ if nEffects==2
             print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPM.tiff'])
             close
             
+            plotmeanSPMv2(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits,anovaEffects(mainEffect),eNames(mainEffect),ratioSPM)
+            print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPMv2.tiff'])
+            close
+            
+            plotmeanSPMv2(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits,[],[],ratioSPM)
+            print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPMv2noAnova.tiff'])
+            close
             
             mainForInteraction{mainEffect}=mapsT(2,:);
             save([savedir '\Post_Hoc\' eNames{mainEffect(1)}],  'mapsT' , 'Tthreshold', 'namesDifferences', 'mapsDifferences','mapsConditions','namesConditions','testTtests','clustersT','ES')
@@ -393,7 +408,7 @@ if nEffects==3
                 close
                 
                 %     ES
-                plotES(ES{comp},ESsd{comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D)
+                plotES(ES{comp},ESsd{comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
                 title(strrep([char(namesDifferences{comp,1}) ' - ' char(namesDifferences{comp,2})],' x ',' \cap '))
                 print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' char(namesDifferences{comp,1}) ' - ' char(namesDifferences{comp,2}) ' ES.tiff'])
                 close
@@ -405,6 +420,13 @@ if nEffects==3
             print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPM.tiff'])
             close
             
+            plotmeanSPMv2(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits,anovaEffects(mainEffect(1)),eNames(mainEffect(1)),ratioSPM)
+            print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPMv2.tiff'])
+            close
+            
+            plotmeanSPMv2(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits,[],[],ratioSPM)
+            print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPMv2noAnova.tiff'])
+            close
             
             mainForInteraction{mainEffect}=mapsT(2,:);
             save([savedir '\Post_Hoc\' eNames{mainEffect(1)}], 'mapsT' , 'Tthreshold', 'namesDifferences', 'mapsDifferences','mapsConditions','namesConditions','testTtests','clustersT','ES')
@@ -549,7 +571,7 @@ if nEffects==3
                 close
                 
                 %     ES
-                plotES(ES{comp},ESsd{comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D)
+                plotES(ES{comp},ESsd{comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
                 title(namesDifferences{comp})
                 print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(eTested)} '\' namesDifferences{comp} ' ES.tiff'])
                 close
@@ -585,6 +607,16 @@ if nEffects==3
                 plotmeanSPM(mapsConditions(whichPlot{p}),mapsT(2,whichCompare),legendPlot(whichPlot{p}),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits)
                 print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\'  modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} ' + SPM.tiff'])
                 close
+                
+                nAnova=whichAnova(mainEffect);
+                plotmeanSPMv2(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits,anovaEffects([mainEffect(whichFixed(2,p)), nAnova]),{eNames{mainEffect(whichFixed(2,p))},[eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]},ratioSPM)
+                print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\'  modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} ' + SPMv2.tiff'])
+                close
+                
+                plotmeanSPMv2(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits,[],[],ratioSPM)
+                print('-dtiff',imageResolution,[savedir '\Post_Hoc\' eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\'  modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} ' + SPMv2noAnova.tiff'])
+                close
+                
                 clear isEmptydata findT capPos whichCompare
                 
             end
@@ -811,7 +843,7 @@ if nEffects>1
             close
             
             %  ES
-            plotES(ES{comp},ESsd{comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D)
+            plotES(ES{comp},ESsd{comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
             title(namesDifferences{comp})
             print('-dtiff',imageResolution,[savedir savedir2 eNames{testedEffect{comp}} '\' namesDifferences{comp} ' ES.tiff'])
             close
@@ -879,6 +911,27 @@ if nEffects>1
                 print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(1,p)} '\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} ' + SPM.tiff'])
             end
             close
+            
+            if nEffects==2
+                plotmeanSPMv2(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits,anovaEffects([whichFixed(2,p) 3]),{eNames{whichFixed(2,p)},[eNames{1} ' x ' eNames{2}]},ratioSPM)
+                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(2,p)} '\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPMv2.tiff'])
+                close
+                
+                plotmeanSPMv2(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits,[],[],ratioSPM)
+                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(2,p)} '\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPMv2noAnova.tiff'])
+                close
+            else
+                [nAnovaInt,nNames]=whichAnovaInt(whichFixed(1,p));
+                plotmeanSPMv2(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits,...
+                    anovaEffects([whichFixed(1,p) nAnovaInt 7]),{eNames{whichFixed(1,p)},[eNames{nNames(1,1)} ' x ' eNames{nNames(1,2)}], [eNames{nNames(2,1)} ' x ' eNames{nNames(2,2)}],[eNames{1} ' x ' eNames{2} ' x ' eNames{3}]},ratioSPM)
+                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(1,p)} '\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} ' + SPMv2.tiff'])
+                close
+                
+                plotmeanSPMv2(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits,[],[],ratioSPM)
+                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(1,p)} '\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} ' + SPMv2noAnova.tiff'])
+                close
+            end
+            
             clear isEmptydata findT capPos whichCompare
         end
         

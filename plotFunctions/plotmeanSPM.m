@@ -117,7 +117,7 @@ else
     colorLabel=colorSPM;
 end
 
-legend(legendPlot,'Location','eastoutside','box','off')
+legend(legendPlot,'Location','best','box','off')
 
 for c=whichSignificant
     legendDone=0;
