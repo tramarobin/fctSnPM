@@ -1,4 +1,4 @@
-% Trama Robin (LIBM) 30/07/2020 --> 1.0.4
+% Trama Robin (LIBM) 06/08/2020 --> 1.1.0
 % trama.robin@gmail.com
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -118,7 +118,7 @@ addParameter(p,'CI',[],@isnumeric); % confidence interval is used instead of sta
 addParameter(p,'colorLine',[]); % colorline for plots (default  is "lines") // rgb triplet, if in cell, apply each color to each effect (independant effect first)
 addParameter(p,'transparancy1D',0.10); % transparancy of SD for 1D plot
 addParameter(p,'colorSPM',[]); % color of significant effect on mean + SPM plot (rgb triplet)
-addParameter(p,'ratioSPM',[1 4]); % ratio of SPM subplot relative to total figure (default if 1/4 of the figure)
+addParameter(p,'ratioSPM',[1 3]); % ratio of SPM subplot relative to total figure (default if 1/3 of the figure)
 addParameter(p,'yLimitES',[]); % y-axis limits for ES representation
 
 parse(p,varargin{:});
@@ -162,6 +162,7 @@ transparancy1D=p.Results.transparancy1D;
 colorSPM=p.Results.colorSPM;
 ratioSPM=p.Results.ratioSPM;
 yLimitES=p.Results.yLimitES;
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Plot each condition (column) for each subject (row)

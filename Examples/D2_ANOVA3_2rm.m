@@ -1,4 +1,5 @@
-% This function takes ~180 seconds on i5 processor and files takes 355 Mo of space
+% This function takes ~180 seconds on i5 processor and files takes 520 Mo
+% of storage
 
 clear
 close all

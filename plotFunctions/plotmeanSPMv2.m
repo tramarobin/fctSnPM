@@ -1,4 +1,4 @@
-function []=plotmeanSPMv2(Data,tTest,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,ny,colorLine,imageFontSize,imageSize,colorSPM,transparancy1D,ylimits,anovaEffects,eNames,ratioSPM)
+function []=plotmeanSPMv2(Data,tTest,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,ny,colorLine,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects,eNames,ratioSPM)
 
 if isempty(imageSize)
     figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');

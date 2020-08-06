@@ -1,4 +1,4 @@
-% This function takes ~30 seconds on i5 processor and files takes 61 Mo of
+% This function takes ~8 seconds on i5 processor and files takes 15 Mo of
 % storage
 
 clear
@@ -10,19 +10,17 @@ addAbovePath
 
 % data
 load ExampleDatas
-DATA=ExampleDatas.BAB;
+DATA=ExampleDatas.BAB(:,1:2);
 
 % parameters
 EFFET_ind=[];
-EFFET_rm{1}={'C1','C2','C3','C4'};
+EFFET_rm{1}={'C1','C2'};
 effectNames={'Shoes'};
 % There are 9 subjects
 % Data(:,1) correspond to Shoes=C1
 % Data(:,2) correspond to Shoes=C2
-% Data(:,3) correspond to Shoes=C3
-% Data(:,4) correspond to Shoes=C4
 
-savedir='Results//2D_ANOVA1rm';
+savedir='Results//2D_pairedTtest';
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=400;

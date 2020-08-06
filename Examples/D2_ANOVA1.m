@@ -1,4 +1,5 @@
-% This function takes ~15 seconds on i5 processor and files takes 25 Mo of space
+% This function takes ~15 seconds on i5 processor and files takes 35 Mo of
+% storage
 
 clear
 close all
@@ -16,7 +17,7 @@ EFFET_ind{1}={'L','L','L','L','L','L','L','M','M','M','M','S','S','S','S'}; % sa
 EFFET_rm=[];
 effectNames={'Groupe'};
 % There is 15 subjects
-% Subjects 1 to 5 are 'L', 6 to 10 are 'M', and 11 to 15 are 'S'
+% Subjects 1 to 7 are 'L', 8 to 11 are 'M', and 12 to 15 are 'S'
 % ANOVA1 accepts unbalanced data
 
 
