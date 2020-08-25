@@ -6,7 +6,7 @@
 %% OUTPUT
 % Figure of the anova results
 
-function []=plotES(mapT,sdT,Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
+function []=plotES(mapT,sdT,mapsT,Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
 
 if isempty(imageSize)
     figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
@@ -20,13 +20,13 @@ ESup=mapT+1.96*sdT;
 ESinf=mapT-1.96*sdT;
 time=0:1/Fs:(max(size(mapT))-1)/Fs;
 noNan=~isnan(mapT);
-plot(time(noNan),mapT(noNan),'b','linewidth',1.2); hold on
+plot(time(noNan),mapT(noNan),'k','linewidth',1); hold on
 fill([time(noNan),fliplr(time(noNan))], [ESup(noNan),fliplr(ESinf(noNan))],'b','EdgeColor','none','facealpha',transparancy1D);
 plot(time(noNan),ESup(noNan),'--b')
 plot(time(noNan),ESinf(noNan),'--b')
 
-hline(0,'r')
-hline([0.2 0.5 0.8],':k')
+hline(0,'linetype','--r')
+hline([0.2 0.5 0.8],'linetype',':k')
 xlabel(xlab)
 ylabel('Effect Size \pm 95% CI')
 if ~isempty(xlimits)
@@ -59,6 +59,19 @@ if ~isempty(yLimitES)
     end
 end
 
+clusters=find(abs(diff(mapsT'))==1)';
+clusters=[0;clusters;max(size(mapT))];
+for t=1:size(clusters,1)-1
+    timeCluster=time(clusters(t)+1:clusters(t+1));
+    mapCluster=mapT(clusters(t)+1:clusters(t+1));
+    goPlot=mean(mapsT(clusters(t)+1:clusters(t+1)));
+    if goPlot==1
+        plot(timeCluster,mapCluster,'b','linewidth',2)
+        vline([timeCluster(1),timeCluster(end)],'linetype','-.k','displayLegend',0)
+    end
+end
+
+set(gca, 'YTick', unique([[0 0.2 0.5 0.8], get(gca, 'YTick')]));
 set(gca,'FontSize',imageFontSize)
 
 end

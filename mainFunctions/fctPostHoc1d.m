@@ -1,4 +1,4 @@
-function []=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,IC,ylimits,nx,ny,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,nT,colorSPM,transparancy1D,ratioSPM,yLimitES)
+function []=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,IC,ylimits,nx,ny,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,nT,transparancy1D,ratioSPM,yLimitES,spmPos)
 close all
 set(0, 'DefaultFigureVisible', 'off');
 savedir=[savedir '\Post hoc\'];
@@ -27,7 +27,7 @@ if nEffects==1
         end
         
         % full plot of means
-        [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,1);
+        colorPlot=chooseColor(colorLine,1);
         plotmean(meansData,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
         legend(legendPlot,'Location','eastoutside','box','off')
         print('-dtiff',imageResolution,[savedir eNames{1} '.tiff'])
@@ -115,7 +115,7 @@ if nEffects==1
             close
             
             %   ES
-            plotES(ES{comp},ESsd{comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
+            plotES(ES{comp},ESsd{comp},mapsT{2,comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
             title([char(namesDifferences{comp,1}) ' - ' char(namesDifferences{comp,2})])
             print('-dtiff',imageResolution,[savedir 'ES\' eNames{1} ' (' char(namesDifferences{comp,1}) ' - ' char(namesDifferences{comp,2}) ').tiff'])
             close
@@ -123,21 +123,29 @@ if nEffects==1
         end
         
         % full plot of means + SPM
-        plotmeanSPM(mapsConditions,mapsT(2,:),legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits)
-        print('-dtiff',imageResolution,[savedir eNames{1} ' + SPM.tiff'])
-        savefig([savedir '\FIG\' eNames{1} ' + SPM'])
+        if max(indicesEffects)>2 % no anova required
+            plotmeanSPM(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects,eNames,ratioSPM,spmPos)
+            print('-dtiff',imageResolution,[savedir eNames{1} ' + SPM.tiff'])
+            savefig([savedir '\FIG\' eNames{1} ' + SPM'])
+            close
+        end
+        
+        plotmeanSPM(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos)
+        print('-dtiff',imageResolution,[savedir eNames{1} ' + SPMnoAOV.tiff'])
+        savefig([savedir '\FIG\' eNames{1} ' + SPMnoAOV'])
         close
         
-        plotmeanSPMv2(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects,eNames,ratioSPM)
-        print('-dtiff',imageResolution,[savedir eNames{1} ' + SPMv2.tiff'])
-        savefig([savedir '\FIG\' eNames{1} ' + SPMv2'])
-        close
+        if max(indicesEffects)>2 % no anova required
+            plotmeanSPMsub(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects,eNames,ratioSPM,spmPos)
+            print('-dtiff',imageResolution,[savedir eNames{1} ' + SPMsub.tiff'])
+            savefig([savedir '\FIG\' eNames{1} ' + SPMsub'])
+            close
+        end
         
-        plotmeanSPMv2(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM)
-        print('-dtiff',imageResolution,[savedir eNames{1} ' + SPMv3.tiff'])
-        savefig([savedir '\FIG\' eNames{1} ' + SPMv3'])
+        plotmeanSPMsub(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos)
+        print('-dtiff',imageResolution,[savedir eNames{1} ' + SPMsubNoAOV.tiff'])
+        savefig([savedir '\FIG\' eNames{1} ' + SPMsubNoAOV'])
         close
-        
         
         save([savedir eNames{1}], 'mapsT' , 'Tthreshold', 'namesDifferences', 'mapsDifferences','mapsConditions','namesConditions','testTtests','clustersT','ES')
         clear mapsT Tthreshold namesDifferences comp combi namesConditions mapsDifferences mapsConditions testTtests clustersT ES
@@ -175,7 +183,7 @@ if nEffects==2
             end
             
             % full plot of means
-            [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,mainEffect);
+            colorPlot=chooseColor(colorLine,mainEffect(1));
             plotmean(meansData,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
             legend(legendPlot,'Location','eastoutside','box','off')
             print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\' eNames{mainEffect(1)} '.tiff'])
@@ -263,7 +271,7 @@ if nEffects==2
                 close
                 
                 %  ES
-                plotES(ES{comp},ESsd{comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
+                plotES(ES{comp},ESsd{comp},mapsT{2,comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
                 title([char(namesDifferences{comp,1}) ' - ' char(namesDifferences{comp,2})])
                 print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\ES\'  char(namesDifferences{comp,1}) ' - ' char(namesDifferences{comp,2}) '.tiff'])
                 close
@@ -271,20 +279,24 @@ if nEffects==2
             end
             
             % full plot of means + SPM
-            [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,mainEffect);
-            plotmeanSPM(mapsConditions,mapsT(2,:),legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits)
+            plotmeanSPM(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects(mainEffect),eNames(mainEffect),ratioSPM,spmPos)
             print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPM.tiff'])
             savefig([savedir eNames{mainEffect(1)} '\FIG\' eNames{mainEffect(1)} ' + SPM'])
             close
             
-            plotmeanSPMv2(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects(mainEffect),eNames(mainEffect),ratioSPM)
-            print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPMv2.tiff'])
-            savefig([savedir eNames{mainEffect(1)} '\FIG\' eNames{mainEffect(1)} ' + SPMv2'])
+            plotmeanSPM(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos)
+            print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPMnoAOV.tiff'])
+            savefig([savedir eNames{mainEffect(1)} '\FIG\' eNames{mainEffect(1)} ' + SPMnoAOV'])
             close
             
-            plotmeanSPMv2(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM)
-            print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPMv3.tiff'])
-            savefig([savedir eNames{mainEffect(1)} '\FIG\' eNames{mainEffect(1)} ' + SPMv3'])
+            plotmeanSPMsub(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects(mainEffect),eNames(mainEffect),ratioSPM,spmPos)
+            print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPMsub.tiff'])
+            savefig([savedir eNames{mainEffect(1)} '\FIG\' eNames{mainEffect(1)} ' + SPMsub'])
+            close
+            
+            plotmeanSPMsub(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos)
+            print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPMsubNoAOV.tiff'])
+            savefig([savedir eNames{mainEffect(1)} '\FIG\' eNames{mainEffect(1)} ' + SPMsubNoAOV'])
             close
             
             mainForInteraction{mainEffect}=mapsT(2,:);
@@ -292,9 +304,7 @@ if nEffects==2
             clear mapsT Tthreshold namesDifferences Comp combi namesConditions mapsDifferences mapsConditions testTtests clustersT ES legendPlot
             
         end
-        
     end
-    
 end
 
 %% T-TESTS 3 EFFECTS - 2 FIXED = MAIN EFFECTS
@@ -327,7 +337,7 @@ if nEffects==3
             end
             
             % full plot of means
-            [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,mainEffect);
+            colorPlot=chooseColor(colorLine,mainEffect(1));
             plotmean(meansData,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
             legend(legendPlot,'Location','eastoutside','box','off')
             print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\' eNames{mainEffect(1)} '.tiff'])
@@ -366,7 +376,7 @@ if nEffects==3
                 %t-test
                 if typeEffectsAll(mainEffect)==1
                     differencesData{1}=DATA{1}-DATA{2};
-                    v3{1}=100*(DATA{1}-DATA{2})./DATA{2};
+                    relativeDifferencesData{1}=100*(DATA{1}-DATA{2})./DATA{2};
                     
                     Ttest=spm1d.stats.nonparam.ttest_paired(DATA{1},DATA{2});
                     testTtests.name{comp}='paired';
@@ -376,7 +386,7 @@ if nEffects==3
                     
                     % differences
                     differencesData{1}=mean(DATA{1})-mean(DATA{2});
-                    v3{1}=100*(mean(DATA{1})-mean(DATA{2}))./mean(DATA{2});
+                    relativeDifferencesData{1}=100*(mean(DATA{1})-mean(DATA{2}))./mean(DATA{2});
                     
                     Ttest=spm1d.stats.nonparam.ttest2(DATA{1},DATA{2});
                     testTtests.name{comp}='independant';
@@ -384,14 +394,14 @@ if nEffects==3
                 end
                 
                 mapsDifferences{1,comp}=differencesData{1};
-                mapsDifferences{2,comp}=v3{1};
+                mapsDifferences{2,comp}=relativeDifferencesData{1};
                 
                 plotmean(differencesData,IC,xlab,ylab,Fs,xlimits,nx,[],[],imageFontSize,imageSize,transparancy1D,[])
                 legend([namesDifferences{comp,1} ' - ' namesDifferences{comp,2}],'Location','eastoutside','box','off')
                 print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\DIFF\'  char(namesDifferences{comp,1}) ' - ' char(namesDifferences{comp,2}) '.tiff'])
                 close
                 
-                plotmean(v3,IC,xlab,'Differences (%)',Fs,xlimits,nx,[],[],imageFontSize,imageSize,transparancy1D,[])
+                plotmean(relativeDifferencesData,IC,xlab,'Differences (%)',Fs,xlimits,nx,[],[],imageFontSize,imageSize,transparancy1D,[])
                 legend([namesDifferences{comp,1} ' - ' namesDifferences{comp,2}],'Location','eastoutside','box','off')
                 print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\DIFF\'  char(namesDifferences{comp,1}) ' - ' char(namesDifferences{comp,2}) ' %.tiff'])
                 close
@@ -417,7 +427,7 @@ if nEffects==3
                 close
                 
                 % ES
-                plotES(ES{comp},ESsd{comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
+                plotES(ES{comp},ESsd{comp},mapsT{2,comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
                 title(strrep([char(namesDifferences{comp,1}) ' - ' char(namesDifferences{comp,2})],' x ',' \cap '))
                 print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\ES\'  char(namesDifferences{comp,1}) ' - ' char(namesDifferences{comp,2}) '.tiff'])
                 close
@@ -425,19 +435,24 @@ if nEffects==3
             end
             
             % full plot of means + SPM
-            plotmeanSPM(mapsConditions,mapsT(2,:),legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits)
+            plotmeanSPM(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects(mainEffect(1)),eNames(mainEffect(1)),ratioSPM,spmPos)
             print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPM.tiff'])
             savefig([savedir eNames{mainEffect(1)} '\FIG\' eNames{mainEffect(1)} ' + SPM'])
             close
             
-            plotmeanSPMv2(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects(mainEffect(1)),eNames(mainEffect(1)),ratioSPM)
-            print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPMv2.tiff'])
-            savefig([savedir eNames{mainEffect(1)} '\FIG\' eNames{mainEffect(1)} ' + SPMv2'])
+            plotmeanSPM(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos)
+            print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPMnoAOV.tiff'])
+            savefig([savedir eNames{mainEffect(1)} '\FIG\' eNames{mainEffect(1)} ' + SPMnoAOV'])
             close
             
-            plotmeanSPMv2(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM)
-            print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPMv3.tiff'])
-            savefig([savedir eNames{mainEffect(1)} '\FIG\' eNames{mainEffect(1)} ' + SPMv3'])
+            plotmeanSPMsub(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects(mainEffect(1)),eNames(mainEffect(1)),ratioSPM,spmPos)
+            print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPMsub.tiff'])
+            savefig([savedir eNames{mainEffect(1)} '\FIG\' eNames{mainEffect(1)} ' + SPMsub'])
+            close
+            
+            plotmeanSPMsub(mapsConditions,mapsT,legendPlot,namesDifferences,IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos)
+            print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} '\' eNames{mainEffect(1)} ' + SPMsubNoAOV.tiff'])
+            savefig([savedir eNames{mainEffect(1)} '\FIG\' eNames{mainEffect(1)} ' + SPMsubNoAOV'])
             close
             
             mainForInteraction{mainEffect}=mapsT(2,:);
@@ -483,7 +498,7 @@ if nEffects==3
             % full plot of means
             [nPlot,whichPlot,whichFixed,whichModal]=findNPlot(combi);
             for p=1:nPlot
-                [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,mainEffect(whichFixed(2,p)));
+                colorPlot=chooseColor(colorLine,mainEffect(whichFixed(2,p)));
                 plotmean(meansData(whichPlot{p}),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
                 legend(legendPlot(whichPlot{p}),'Location','eastoutside','box','off')
                 print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\' modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} '.tiff'])
@@ -584,7 +599,7 @@ if nEffects==3
                 close
                 
                 %   ES
-                plotES(ES{comp},ESsd{comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
+                plotES(ES{comp},ESsd{comp},mapsT{2,comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
                 title(namesDifferences{comp})
                 print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(eTested)} '\ES\' namesDifferences{comp} '.tiff'])
                 close
@@ -616,21 +631,27 @@ if nEffects==3
                     whichCompare(nC)=strcmp(sameName,namesDifferences{nC}(1:sizeSname));
                 end
                 
-                [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,mainEffect(whichFixed(2,p)));
-                plotmeanSPM(mapsConditions(whichPlot{p}),mapsT(2,whichCompare),legendPlot(whichPlot{p}),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits)
+                colorPlot=chooseColor(colorLine,mainEffect(whichFixed(2,p)));
+                nAnova=whichAnova(mainEffect);
+                
+                plotmeanSPM(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects([mainEffect(whichFixed(2,p)), nAnova]),{eNames{mainEffect(whichFixed(2,p))},[eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]},ratioSPM,spmPos)
                 print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\' modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} ' + SPM.tiff'])
                 savefig([savedir eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\FIG\' modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} ' +SPM'])
                 close
                 
-                nAnova=whichAnova(mainEffect);
-                plotmeanSPMv2(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects([mainEffect(whichFixed(2,p)), nAnova]),{eNames{mainEffect(whichFixed(2,p))},[eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]},ratioSPM)
-                print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\' modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} ' + SPMv2.tiff'])
-                savefig([savedir eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\FIG\' modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} ' +SPMv2'])
+                plotmeanSPM(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos)
+                print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\' modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} ' + SPMnoAOV.tiff'])
+                savefig([savedir eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\FIG\' modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} ' +SPMnoAOV'])
                 close
                 
-                plotmeanSPMv2(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM)
-                print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\' modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} ' + SPMv3.tiff'])
-                savefig([savedir eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\FIG\' modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} ' +SPMv3'])
+                plotmeanSPMsub(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects([mainEffect(whichFixed(2,p)), nAnova]),{eNames{mainEffect(whichFixed(2,p))},[eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]},ratioSPM,spmPos)
+                print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\' modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} ' + SPMsub.tiff'])
+                savefig([savedir eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\FIG\' modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} ' +SPMsub'])
+                close
+                
+                plotmeanSPMsub(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos)
+                print('-dtiff',imageResolution,[savedir eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\' modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} ' + SPMsubNoAOV.tiff'])
+                savefig([savedir eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(whichFixed(2,p))} '\FIG\' modalitiesAll{mainEffect(whichFixed(1,p))}{whichModal(p)} ' +SPMsubNoAOV'])
                 close
                 
                 clear isEmptydata findT capPos whichCompare
@@ -642,9 +663,7 @@ if nEffects==3
             clear mapsT Tthreshold namesDifferences Comp combi namesConditions mapsDifferences mapsConditions testTtests clustersT ES legendPlot
             
         end
-        
     end
-    
 end
 
 %% T-TESTS ALL INTERACTIONS (ANOVA 2 and 3)
@@ -696,7 +715,7 @@ if nEffects>1
             % full plot of means
             [nPlot,whichPlot,whichFixed,whichModal]=findNPlot(combi);
             for p=1:nPlot
-                [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,whichFixed(2,p));
+                colorPlot=chooseColor(colorLine,whichFixed(2,p));
                 plotmean(meansData(whichPlot{p}),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
                 data4empty=meansData(whichPlot{p});
                 for i=1:numel(whichPlot{p})
@@ -733,7 +752,7 @@ if nEffects>1
             
             [nPlot,whichPlot,whichFixed,whichModal]=findNPlot(combi);
             for p=1:nPlot
-                [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,whichFixed(1,p));
+                colorPlot=chooseColor(colorLine,whichFixed(1,p));
                 plotmean(meansData(whichPlot{p}),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
                 legend(legendPlot(whichPlot{p}),'Location','eastoutside','box','off')
                 print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(1,p)} '\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} '.tiff'])
@@ -859,7 +878,7 @@ if nEffects>1
             close
             
             % ES
-            plotES(ES{comp},ESsd{comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
+            plotES(ES{comp},ESsd{comp},mapsT{2,comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
             title(namesDifferences{comp})
             print('-dtiff',imageResolution,[savedir savedir2 eNames{testedEffect{comp}} '\ES\' namesDifferences{comp} '.tiff'])
             close
@@ -916,41 +935,54 @@ if nEffects>1
             end
             
             if nEffects==2
-                [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,whichFixed(2,p));
+                colorPlot=chooseColor(colorLine,whichFixed(2,p));
             else
-                [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,whichFixed(1,p));
+                colorPlot=chooseColor(colorLine,whichFixed(1,p));
             end
-            plotmeanSPM(mapsConditions(whichPlot{p}),mapsT(2,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,colorShadeSPM,transparancy1D,ylimits)
-            if nEffects==2
-                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(2,p)} '\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPM.tiff'])
-                savefig([savedir savedir2 eNames{whichFixed(2,p)} '\FIG\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPM'])
-            else
-                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(1,p)} '\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} ' + SPM.tiff'])
-                savefig([savedir savedir2 eNames{whichFixed(1,p)} '\FIG\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} ' + SPM'])
-            end
-            close
             
             if nEffects==2
-                plotmeanSPMv2(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects([whichFixed(2,p) 3]),{eNames{whichFixed(2,p)},[eNames{1} ' x ' eNames{2}]},ratioSPM)
-                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(2,p)} '\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPMv2.tiff'])
-                savefig([savedir savedir2 eNames{whichFixed(2,p)} '\FIG\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPMv2'])
+                plotmeanSPM(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects([whichFixed(2,p) 3]),{eNames{whichFixed(2,p)},[eNames{1} ' x ' eNames{2}]},ratioSPM,spmPos)
+                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(2,p)} '\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPM.tiff'])
+                savefig([savedir savedir2 eNames{whichFixed(2,p)} '\FIG\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPM'])
                 close
                 
-                plotmeanSPMv2(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM)
-                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(2,p)} '\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPMv3.tiff'])
-                savefig([savedir savedir2 eNames{whichFixed(2,p)} '\FIG\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPMv3'])
+                plotmeanSPM(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos)
+                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(2,p)} '\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPMnoAOV.tiff'])
+                savefig([savedir savedir2 eNames{whichFixed(2,p)} '\FIG\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPMnoAOV'])
+                close
+                
+                plotmeanSPMsub(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects([whichFixed(2,p) 3]),{eNames{whichFixed(2,p)},[eNames{1} ' x ' eNames{2}]},ratioSPM,spmPos)
+                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(2,p)} '\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPMsub.tiff'])
+                savefig([savedir savedir2 eNames{whichFixed(2,p)} '\FIG\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPMsub'])
+                close
+                
+                plotmeanSPMsub(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos)
+                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(2,p)} '\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPMsubNoAOV.tiff'])
+                savefig([savedir savedir2 eNames{whichFixed(2,p)} '\FIG\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)} ' + SPMsubNoAOV'])
                 close
             else
                 [nAnovaInt,nNames]=whichAnovaInt(whichFixed(1,p));
-                plotmeanSPMv2(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,...
-                    anovaEffects([whichFixed(1,p) nAnovaInt 7]),{eNames{whichFixed(1,p)},[eNames{nNames(1,1)} ' x ' eNames{nNames(1,2)}], [eNames{nNames(2,1)} ' x ' eNames{nNames(2,2)}],[eNames{1} ' x ' eNames{2} ' x ' eNames{3}]},ratioSPM)
-                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(1,p)} '\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} ' + SPMv2.tiff'])
-                savefig([savedir savedir2 eNames{whichFixed(1,p)} '\FIG\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} ' + SPMv2'])
+                
+                plotmeanSPM(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,...
+                    anovaEffects([whichFixed(1,p) nAnovaInt 7]),{eNames{whichFixed(1,p)},[eNames{nNames(1,1)} ' x ' eNames{nNames(1,2)}], [eNames{nNames(2,1)} ' x ' eNames{nNames(2,2)}],[eNames{1} ' x ' eNames{2} ' x ' eNames{3}]},ratioSPM,spmPos)
+                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(1,p)} '\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} ' + SPM.tiff'])
+                savefig([savedir savedir2 eNames{whichFixed(1,p)} '\FIG\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} ' + SPM'])
                 close
                 
-                plotmeanSPMv2(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM)
-                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(1,p)} '\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} ' + SPMv3.tiff'])
-                savefig([savedir savedir2 eNames{whichFixed(1,p)} '\FIG\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} ' + SPMv3'])
+                plotmeanSPM(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos)
+                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(1,p)} '\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} ' + SPMnoAOV.tiff'])
+                savefig([savedir savedir2 eNames{whichFixed(1,p)} '\FIG\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} ' + SPMnoAOV'])
+                close
+                
+                plotmeanSPMsub(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,...
+                    anovaEffects([whichFixed(1,p) nAnovaInt 7]),{eNames{whichFixed(1,p)},[eNames{nNames(1,1)} ' x ' eNames{nNames(1,2)}], [eNames{nNames(2,1)} ' x ' eNames{nNames(2,2)}],[eNames{1} ' x ' eNames{2} ' x ' eNames{3}]},ratioSPM,spmPos)
+                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(1,p)} '\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} ' + SPMsub.tiff'])
+                savefig([savedir savedir2 eNames{whichFixed(1,p)} '\FIG\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} ' + SPMsub'])
+                close
+                
+                plotmeanSPMsub(mapsConditions(whichPlot{p}),mapsT(:,whichCompare),legendPlot(whichPlot{p}(isEmptydata)),namesDifferences(whichCompare),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos)
+                print('-dtiff',imageResolution,[savedir savedir2 eNames{whichFixed(1,p)} '\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} ' + SPMsubNoAOV.tiff'])
+                savefig([savedir savedir2 eNames{whichFixed(1,p)} '\FIG\' modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)} ' + SPMsubNoAOV'])
                 close
             end
             

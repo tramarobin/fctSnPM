@@ -1,4 +1,4 @@
-% This function takes ~275 seconds on i5 processor and files takes 80 Mo of space
+% This function takes ~275 seconds on i5 processor and files takes 150 Mo of space
 
 clear
 close all
@@ -12,10 +12,17 @@ load ExampleDatas
 DATA=ExampleDatas.Ratios;
 
 % parameters
-EFFET_ind{1}={'M','M','M','F','M','F','F','M','F','M','M','F','F','M','F','F','M','F','F','M'}; % same number than participants
-EFFET_rm{1}={'RC60','RC180','RFKF','RFKE','RC60','RC180','RFKF','RFKE'};
-EFFET_rm{2}={'D','D','D','D','G','G','G','G'};
 effectNames={'Sex','Speed','Side'};
+
+EFFET_ind{1}={'M','M','M','F','M','F','F','M','F','M','M','F','F','M','F','F','M','F','F','M'}; % same number than participants
+colorLine{1}=[rgb('cyan'); rgb('magenta')];
+
+EFFET_rm{1}={'RC60','RC180','RFKF','RFKE','RC60','RC180','RFKF','RFKE'};
+colorLine{2}=[rgb('green'); rgb('blue'); rgb('red'); rgb('black')];
+
+EFFET_rm{2}={'Right','Right','Right','Right','Left','Left','Left','Left'};
+colorLine{3}=[rgb('gray'); rgb('darkgray')];
+
 % There are 20 subjects
 % ANOVA3 does not accept unbalanced data (10 males, 10 females)
 
@@ -25,9 +32,7 @@ ylab='Ratio';
 xlimits=[30 90];
 ylimits=[0 1.6];
 nTicksY=17;
-colorLine{1}=[rgb('cyan'); rgb('magenta')];
-colorLine{2}=[rgb('green'); rgb('blue'); rgb('red'); rgb('black')];
-colorLine{3}=[rgb('gray'); rgb('darkgray')];
+
 
 % SPM
 fctSPM(DATA,EFFET_ind,EFFET_rm,'multiIteration',1,...

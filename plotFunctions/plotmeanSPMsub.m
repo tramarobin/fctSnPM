@@ -1,4 +1,4 @@
-function []=plotmeanSPMv2(Data,tTest,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,ny,colorLine,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects,eNames,ratioSPM)
+function []=plotmeanSPMsub(Data,tTest,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,ny,colorLine,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects,eNames,ratioSPM,spmPos)
 
 if isempty(imageSize)
     figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
@@ -34,7 +34,12 @@ for i=1:size(Data,2)
     SDinf{i}=MData{i}-std(Data{i});
 end
 
-subplot(ratioSPM(2),1,1:(ratioSPM(2)-ratioSPM(1)))
+if isempty(spmPos)
+    subplot(ratioSPM(2),1,1:(ratioSPM(2)-ratioSPM(1)))
+else
+    subplot(ratioSPM(2),1,ratioSPM(1)+1:ratioSPM(2))
+end
+
 for i=1:size(Data,2)
     time = 0:1/Fs:(size(Data{i},2)-1)/Fs;
     f=1:size(Data{i},2);
@@ -53,15 +58,9 @@ for i=1:size(Data,2)
         if isempty(IC)
             plot(time(noNan),SDsup{i}(noNan),'--','color',colors(i,:),'handlevisibility','off')
             plot(time(noNan),SDinf{i}(noNan),'--','color',colors(i,:),'handlevisibility','off')
-            title('Means \pm standard deviation')
         else
             plot(time(noNan),MData{i}(noNan)+std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'--','color',colors(i,:),'handlevisibility','off')
             plot(time(noNan),MData{i}(noNan)-std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'--','color',colors(i,:),'handlevisibility','off')
-            if IC==0
-                title('Means \pm SEM')
-            else
-                title(['Means \pm IC' num2str(100*IC) '%'])
-            end
         end
     elseif ~isempty(Data{i})
         noNan=~isnan(Data{i});
@@ -91,6 +90,20 @@ for i=1:nx
 end
 xticklabels(xlabs)
 xl = xlim;
+ if ~isempty(spmPos)
+        xlabel(xlab)
+    else
+        if isempty(IC)
+            title('Means \pm standard deviation')
+        else
+            if IC==0
+                title('Means \pm SEM')
+            else
+                title(['Means \pm IC' num2str(100*IC) '%'])
+            end
+        end
+ end
+    
 legend(legendPlot,'Location','best','box','off')
 
 if ~isempty(ylimits)
@@ -128,8 +141,11 @@ whichSignificant=find(isSignificant);
 allSignificant=totalSignificant+totalSignificantAnova;
 
 if allSignificant>0
-    subplot(ratioSPM(2),1,(ratioSPM(2)-ratioSPM(1)+1):ratioSPM(2))
-    
+    if isempty(spmPos)
+        subplot(ratioSPM(2),1,(ratioSPM(2)-ratioSPM(1)+1):ratioSPM(2))
+    else
+        subplot(ratioSPM(2),1,1:ratioSPM(1))
+    end
     ylimitsSPM=1:allSignificant;
     
     loop=allSignificant+1;
@@ -201,10 +217,26 @@ if allSignificant>0
     
     xlim(xl)
     box off
-    xlabel(xlab)
+    if isempty(spmPos)
+        xlabel(xlab)
+    else
+        if isempty(IC)
+            title('Means \pm standard deviation')
+        else
+            if IC==0
+                title('Means \pm SEM')
+            else
+                title(['Means \pm IC' num2str(100*IC) '%'])
+            end
+        end
+    end
     xticks(linspace(0,(size(Data{1},2)-1)/Fs,nx))
     xticklabels(xlabs)
     set(gca,'FontSize',imageFontSize)
     
+    y=get(gca,'ylim');
+    rangeFig=diff(y);
+    ylim([y(1)-0.1*rangeFig y(2)]);
+
 end
 end

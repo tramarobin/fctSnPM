@@ -1,4 +1,4 @@
-function []=plotmeanSPM(Data,tTest,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,ny,colorLine,imageFontSize,imageSize,colorSPM,transparancy1D,ylimits)
+function []=plotmeanSPM(Data,tTest,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,ny,colorLine,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects,eNames,ratioSPM,spmPos)
 
 if isempty(imageSize)
     figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
@@ -33,6 +33,7 @@ for i=1:size(Data,2)
     SDsup{i}=MData{i}+std(Data{i});
     SDinf{i}=MData{i}-std(Data{i});
 end
+
 for i=1:size(Data,2)
     time = 0:1/Fs:(size(Data{i},2)-1)/Fs;
     f=1:size(Data{i},2);
@@ -51,15 +52,9 @@ for i=1:size(Data,2)
         if isempty(IC)
             plot(time(noNan),SDsup{i}(noNan),'--','color',colors(i,:),'handlevisibility','off')
             plot(time(noNan),SDinf{i}(noNan),'--','color',colors(i,:),'handlevisibility','off')
-            title('Means \pm standard deviation')
         else
             plot(time(noNan),MData{i}(noNan)+std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'--','color',colors(i,:),'handlevisibility','off')
             plot(time(noNan),MData{i}(noNan)-std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'--','color',colors(i,:),'handlevisibility','off')
-            if IC==0
-                title('Means \pm SEM')
-            else
-                title(['Means \pm IC' num2str(100*IC) '%'])
-            end
         end
     elseif ~isempty(Data{i})
         noNan=~isnan(Data{i});
@@ -68,8 +63,7 @@ for i=1:size(Data,2)
 end
 
 box off
-xlabel(xlab)
-ylabel(ylab)
+ylabel(ylab);
 if ~isempty(xlimits)
     xlabels=linspace(xlimits(1),xlimits(end),nx);
 else
@@ -89,89 +83,156 @@ for i=1:nx
     end
 end
 xticklabels(xlabs)
+xl = xlim;
+xlabel(xlab)
+if isempty(IC)
+    title('Means \pm standard deviation')
+else
+    if IC==0
+        title('Means \pm SEM')
+    else
+        title(['Means \pm IC' num2str(100*IC) '%'])
+    end
+end
 
-set(gca,'FontSize',imageFontSize)
+legend(legendPlot,'Location','eastoutside','box','off')
 
-
-%% add SPM shaded zones
 if ~isempty(ylimits)
     ylim(ylimits)
 end
 y=get(gca,'ylim');
+if ~isempty(ny)
+    yticks(linspace(y(1),y(2),ny))
+end
 
+set(gca,'FontSize',imageFontSize)
+
+%% add SPM
+valTtest=tTest(1,:);
+tTest=tTest(2,:);
+
+% anova
+for c=1:numel(anovaEffects)
+    isSignificantAnova(c)=sum(anovaEffects{c})>=2;
+end
 for c=1:numel(tTest)
     isSignificant(c)=sum(tTest{c})>=2;
 end
+
+if ~isempty(anovaEffects)
+    totalSignificantAnova=sum(isSignificantAnova);
+    whichSignificantAnova=find(isSignificantAnova);
+else
+    totalSignificantAnova=0;
+    whichSignificantAnova=[];
+end
+
 totalSignificant=sum(isSignificant);
 whichSignificant=find(isSignificant);
+allSignificant=totalSignificant+totalSignificantAnova;
 
-loop=totalSignificant;
-for c=whichSignificant
-    ylimitsSPM(c,:)=[(1+0.05*loop)*y(2) (1+0.05*loop)*y(2)+0.04*y(2)];
+loop=allSignificant;
+rangeFig=diff(y);
+for c=1:allSignificant
+    if ~isempty(spmPos)
+        startShade=y(2)+0.95*loop*0.05*rangeFig;
+        endShade=y(2)+0.95*loop*0.05*rangeFig+0.04*rangeFig;
+    else
+        startShade=y(1)-0.95*loop*0.05*rangeFig;
+        endShade=y(1)-0.95*loop*0.05*rangeFig-0.04*rangeFig;
+    end
+    ylimitsSPM(c,:)=[startShade endShade];
     loop=loop-1;
 end
-
-if isempty(colorSPM)
-    colorLabel=jet(numel(tTest));
-else
-    colorLabel=colorSPM;
+if ~isempty(spmPos) & allSignificant>0
+    ylimitsSPM=flipud(ylimitsSPM);
+end
+if allSignificant>0
+    yMean=mean(ylimitsSPM,2);
 end
 
-legend(legendPlot,'Location','eastOutside','box','off')
-
-for c=whichSignificant
-    legendDone=0;
-    clusters=find(abs(diff(tTest{c}'))==1)';
-    clusters=[0;clusters;max(size(tTest{c}))];
-    for t=1:size(clusters,1)-1
-        timeCluster=time(clusters(t)+1:clusters(t+1));
-        mapCluster=tTest{c}(clusters(t)+1:clusters(t+1));
-        goPlot=mean(tTest{c}(clusters(t)+1:clusters(t+1)));
-        if goPlot==1
-            if legendDone==0
-                if min(size(diffNames))>1
+if allSignificant>0
+    
+    loop=allSignificant+1;
+    for c=whichSignificantAnova
+        loop=loop-1;
+        yTlab{loop}=eNames{c};
+        clusters=find(abs(diff(anovaEffects{c}))==1)';
+        clusters=[0;clusters;max(size(anovaEffects{c}))];
+        for t=1:size(clusters,1)-1
+            timeCluster=time(clusters(t)+1:clusters(t+1));
+            mapCluster=anovaEffects{c}(clusters(t)+1:clusters(t+1));
+            goPlot=mean(anovaEffects{c}(clusters(t)+1:clusters(t+1)));
+            if goPlot==1
+                vertShadeSPM([timeCluster(1),timeCluster(end)],...
+                    'color','k','vLimits',[ylimitsSPM(loop,1) ylimitsSPM(loop,2)],'transparency',1);
+            end
+        end
+    end
+    
+    indices4diff=findIndices4diff(size(Data,2));
+    for c=whichSignificant
+        loop=loop-1;
+        if min(size(diffNames))>1
+            yTlab{loop}=[diffNames{c,1} ' \neq ' diffNames{c,2}];
+        else
+            firstParPos=strfind(diffNames{c},'(');
+            if ~isempty(firstParPos)
+                minusPos=strfind(diffNames{c},'-');
+                secondParPos=strfind(diffNames{c},')');
+                firstLetters=diffNames{c}(1:firstParPos-2);
+                firstGp=diffNames{c}(firstParPos+1:minusPos-2);
+                secondGp=diffNames{c}(minusPos+2:secondParPos-1);
+                diffName=[firstGp ' \neq ' secondGp];
+            else
+                diffName=[diffNames{1} ' \neq ' diffNames{2}];
+            end
+            yTlab{loop}=diffName;
+        end
+        
+        clusters=find(abs(diff(tTest{c}'))==1)';
+        clusters=[0;clusters;max(size(tTest{c}))];
+        for t=1:size(clusters,1)-1
+            timeCluster=time(clusters(t)+1:clusters(t+1));
+            mapCluster=tTest{c}(clusters(t)+1:clusters(t+1));
+            goPlot=mean(tTest{c}(clusters(t)+1:clusters(t+1)));
+            if goPlot==1
+                if mean(valTtest{c}(clusters(t)+1:clusters(t+1)))>0
                     vertShadeSPM([timeCluster(1),timeCluster(end)],...
-                        'label',[diffNames{c,1} ' \neq ' diffNames{c,2}],...
-                        'color',colorLabel(c,:),'vLimits',ylimitsSPM(c,:),'transparency',1);
-                    
+                        'color',colors(indices4diff{c}(1),:),'vLimits',[yMean(loop) yMean(loop)+0.02*rangeFig],'transparency',1);
+                    vertShadeSPM([timeCluster(1),timeCluster(end)],...
+                        'color',colors(indices4diff{c}(2),:),'vLimits',[yMean(loop) yMean(loop)-0.02*rangeFig],'transparency',1);
                 else
-                    
-                    firstParPos=strfind(diffNames{c},'(');
-                    if ~isempty(firstParPos)
-                        minusPos=strfind(diffNames{c},'-');
-                        secondParPos=strfind(diffNames{c},')');
-                        firstLetters=diffNames{c}(1:firstParPos-2);
-                        firstGp=diffNames{c}(firstParPos+1:minusPos-2);
-                        secondGp=diffNames{c}(minusPos+2:secondParPos-1);
-                        diffName=[firstGp ' \neq ' secondGp];
-                    else
-                        diffName=[diffNames{1} ' \neq ' diffNames{2}];
-                    end
                     vertShadeSPM([timeCluster(1),timeCluster(end)],...
-                        'label',diffName,...
-                        'color',colorLabel(c,:),'vLimits',ylimitsSPM(c,:),'transparency',1);
+                        'color',colors(indices4diff{c}(2),:),'vLimits',[yMean(loop) yMean(loop)+0.02*rangeFig],'transparency',1);
+                    vertShadeSPM([timeCluster(1),timeCluster(end)],...
+                        'color',colors(indices4diff{c}(1),:),'vLimits',[yMean(loop) yMean(loop)-0.02*rangeFig],'transparency',1);
                     
                 end
-                legendDone=legendDone+1;
-            else
-                
-                vertShadeSPM([timeCluster(1),timeCluster(end)],...
-                    'color',colorLabel(c,:),'vLimits',ylimitsSPM(c,:),'transparency',1);
             end
         end
     end
     
     
+    xticks(linspace(0,(size(Data{1},2)-1)/Fs,nx))
+    xticklabels(xlabs)
+    set(gca,'FontSize',imageFontSize)
+    
+    if isSignificant>0
+        yText=sort(mean(ylimitsSPM,2));
+        for i=1:numel(yTlab)
+            text(time(end),yText(i),[' ' yTlab{i}]);
+        end
+    end
+    
+    y=get(gca,'ylim');
+    if ~isempty(whichSignificant)
+        if ~isempty(spmPos)
+            ylim([y(1) max(max(ylimitsSPM))+0.05*rangeFig]);
+        else
+            ylim([min(min(ylimitsSPM))-0.05*rangeFig y(2)]);
+        end
+    end
+    
 end
-
-
-if ~isempty(ny)
-    yticks(linspace(y(1),y(2),ny))
-end
-
-y=get(gca,'ylim');
-if ~isempty(whichSignificant)
-    ylim([y(1) 1.05*max(max(ylimitsSPM))]);
-end
-
 end

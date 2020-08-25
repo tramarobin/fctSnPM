@@ -1,5 +1,5 @@
-function hhh=vline(x,varargin)
-% function h=vline(x, options)
+function vline(x,varargin)
+
 p = inputParser;
 addParameter(p,'displayLegend',1,@isnumeric); % if 0, not displayed in legend
 addParameter(p,'linetype','--k',@ischar);

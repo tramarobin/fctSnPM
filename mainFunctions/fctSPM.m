@@ -117,9 +117,9 @@ addParameter(p,'nameSub',[],@iscell) % names of the different subjects
 addParameter(p,'CI',[],@isnumeric); % confidence interval is used instead of standard deviation (0.7-->0.999), 0 to display SEM
 addParameter(p,'colorLine',[]); % colorline for plots (default  is "lines") // rgb triplet, if in cell, apply each color to each effect (independant effect first)
 addParameter(p,'transparancy1D',0.10); % transparancy of SD for 1D plot
-addParameter(p,'colorSPM',[]); % color of significant effect on mean + SPM plot (rgb triplet)
 addParameter(p,'ratioSPM',[1 3]); % ratio of SPM subplot relative to total figure (default if 1/3 of the figure)
 addParameter(p,'yLimitES',[]); % y-axis limits for ES representation
+addParameter(p,'spmPos',[]); % postion of spm plot, default is bottom, any value will set the position to up
 
 parse(p,varargin{:});
 
@@ -159,10 +159,9 @@ linestyle=p.Results.linestyle;
 plotSub=p.Results.plotSub;
 nameSub=p.Results.nameSub;
 transparancy1D=p.Results.transparancy1D;
-colorSPM=p.Results.colorSPM;
 ratioSPM=p.Results.ratioSPM;
 yLimitES=p.Results.yLimitES;
-
+spmPos=p.Results.spmPos;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Plot each condition (column) for each subject (row)
@@ -178,7 +177,7 @@ end
 
 %% Choose and perform post-hocs
 if min(dimensions)==1 %1D
-    fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,nT,colorSPM,transparancy1D,ratioSPM,yLimitES);
+    fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,nT,transparancy1D,ratioSPM,yLimitES,spmPos);
 else %2D
     fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,contourColor,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalIT,doAllInteractions,dashedColor,transparancy,lineWidth,imageFontSize,imageSize,colorMap,diffRatio,relativeRatio,alphaT,nT,linestyle);
 end

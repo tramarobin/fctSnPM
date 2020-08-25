@@ -16,12 +16,14 @@ elseif max(size(imageSize))==1
 else
     figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize(1), imageSize(2)],'visible','off');
 end
+
 if dimensions(1)==1 | dimensions(2)==1 %1D
     
     time=0:1/Fs:(max(size(mapF))-1)/Fs;
-    plot(time,mapF,'--k','linewidth',1); hold on
-    hline(Fthreshold,':k')
+    plot(time,mapF,'k','linewidth',1); hold on
+    ylim([0 1.05*max([max(mapF) Fthreshold])])
     
+    legendDone=0;
     clusters=find(abs(diff(anovaEffects))==1);
     clusters=[0,clusters,max(size(mapF))];
     for t=1:size(clusters,2)-1
@@ -29,8 +31,13 @@ if dimensions(1)==1 | dimensions(2)==1 %1D
         mapCluster=mapF(clusters(t)+1:clusters(t+1));
         goPlot=mean(anovaEffects(clusters(t)+1:clusters(t+1)));
         if goPlot==1
-            plot(timeCluster, mapCluster,'k','linewidth',2)
-            vline([timeCluster(1),timeCluster(end)],'linetype',':k')
+            if legendDone==0;
+                plot(timeCluster, mapCluster,'b','linewidth',2)
+                legendDone=1;
+            else
+                plot(timeCluster, mapCluster,'b','linewidth',2,'handlevisibility','off')
+            end
+            vline([timeCluster(1),timeCluster(end)],'linetype','-.k','displayLegend',0)
         end
     end
     
@@ -55,6 +62,14 @@ if dimensions(1)==1 | dimensions(2)==1 %1D
     end
     xticklabels(xlabs)
     box off
+    
+    hline(Fthreshold,'displayLegend',1)
+    if max(anovaEffects)==0
+        legend({'F-value',['Threshold = ' sprintf('%0.3g',Fthreshold)]},'Location','eastoutside','Box','off');
+    else
+        legend({'F-value','Significant cluster',['Threshold = ' sprintf('%0.3g',Fthreshold)]},'Location','eastoutside','Box','off');
+    end
+    
     
 else %2D
     

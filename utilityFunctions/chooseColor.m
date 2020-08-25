@@ -1,4 +1,4 @@
-function [colorPlot,colorShadeSPM]=chooseColor(colorLine,colorSPM,effectN)
+function [colorPlot]=chooseColor(colorLine,effectN)
 
 
 if isempty(colorLine)
@@ -13,17 +13,5 @@ else
     colorPlot=colorLine;
 end
 
-
-if isempty(colorSPM)
-    colorShadeSPM=[];
-elseif iscell(colorSPM)
-    if numel(colorSPM)>=effectN
-        colorShadeSPM=colorSPM{effectN};
-    else
-        colorShadeSPM=[];
-    end
-else
-    colorShadeSPM=colorSPM;
-end
 
 end

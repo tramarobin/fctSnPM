@@ -18,10 +18,10 @@ end
 
 if dimensions(1)==1 | dimensions(2)==1 %1D
     time=0:1/Fs:(max(size(mapT))-1)/Fs;
-    plot(time,mapT,':k','linewidth',1); hold on
+    plot(time,mapT,'k','linewidth',1); hold on
     
-    hline([-Tthreshold Tthreshold],':k')
-    hline(0,':k')
+    hline([-Tthreshold Tthreshold],'displayLegend',0,'linetype',':w')
+    hline(0,'linetype','--r')
     
     clusters=find(abs(diff(anovaEffects'))==1)';
     clusters=[0;clusters;max(size(mapT))];
@@ -31,7 +31,7 @@ if dimensions(1)==1 | dimensions(2)==1 %1D
         goPlot=mean(anovaEffects(clusters(t)+1:clusters(t+1)));
         if goPlot==1
             plot(timeCluster,mapCluster,'b','linewidth',2)
-            vline([timeCluster(1),timeCluster(end)],'linetype',':k')
+            vline([timeCluster(1),timeCluster(end)],'linetype','-.k','displayLegend',0)
         end
     end
     
@@ -57,10 +57,11 @@ if dimensions(1)==1 | dimensions(2)==1 %1D
     xticklabels(xlabs)
     box off
     
+    hline([-Tthreshold Tthreshold],'displayLegend',1)
     if max(anovaEffects)==0
-        legend('t-value','Location','eastoutside','Box','off');
+        legend({'t-value',['Threshold = \pm' sprintf('%0.3g',Tthreshold)]},'Location','eastoutside','Box','off');
     else
-        legend({'t-value','Significant cluster'},'Location','eastoutside','Box','off');
+        legend({'t-value','Significant cluster',['Threshold = \pm' sprintf('%0.3g',Tthreshold)]},'Location','eastoutside','Box','off');
     end
     
     
