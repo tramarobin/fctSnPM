@@ -218,7 +218,7 @@ if allSignificant>0
     xticklabels(xlabs)
     set(gca,'FontSize',imageFontSize)
     
-    if isSignificant>0
+    if allSignificant>0
         yText=sort(mean(ylimitsSPM,2));
         for i=1:numel(yTlab)
             text(time(end),yText(i),[' ' yTlab{i}]);
@@ -226,7 +226,7 @@ if allSignificant>0
     end
     
     y=get(gca,'ylim');
-    if ~isempty(whichSignificant)
+    if ~isempty(allSignificant)
         if ~isempty(spmPos)
             ylim([y(1) max(max(ylimitsSPM))+0.05*rangeFig]);
         else
