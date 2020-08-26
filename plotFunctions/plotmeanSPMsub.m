@@ -1,4 +1,4 @@
-function []=plotmeanSPMsub(Data,tTest,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,ny,colorLine,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects,eNames,ratioSPM,spmPos)
+function []=plotmeanSPMsub(Data,tTest,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,ny,colorLine,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects,eNames,ratioSPM,spmPos,aovColor)
 
 if isempty(imageSize)
     figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
@@ -160,7 +160,7 @@ if allSignificant>0
             goPlot=mean(anovaEffects{c}(clusters(t)+1:clusters(t+1)));
             if goPlot==1
                 vertShadeSPM([timeCluster(1),timeCluster(end)],...
-                    'color','k','vLimits',[ylimitsSPM(loop)-0.33 ylimitsSPM(loop)+0.33],'transparency',1);
+                    'color',aovColor,'vLimits',[ylimitsSPM(loop)-0.33 ylimitsSPM(loop)+0.33],'transparency',1);
             end
         end
     end

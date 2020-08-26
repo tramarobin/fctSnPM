@@ -1,4 +1,4 @@
-% Trama Robin (LIBM) 06/08/2020 --> 1.1.0
+% Trama Robin (LIBM) 26/08/2020 --> 1.2.2
 % trama.robin@gmail.com
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -120,6 +120,7 @@ addParameter(p,'transparancy1D',0.10); % transparancy of SD for 1D plot
 addParameter(p,'ratioSPM',[1 3]); % ratio of SPM subplot relative to total figure (default if 1/3 of the figure)
 addParameter(p,'yLimitES',[]); % y-axis limits for ES representation
 addParameter(p,'spmPos',[]); % postion of spm plot, default is bottom, any value will set the position to up
+addParameter(p,'aovColor','k'); % color of anova on SPM plot (color or rgb)
 
 parse(p,varargin{:});
 
@@ -162,6 +163,7 @@ transparancy1D=p.Results.transparancy1D;
 ratioSPM=p.Results.ratioSPM;
 yLimitES=p.Results.yLimitES;
 spmPos=p.Results.spmPos;
+aovColor=p.Results.aovColor;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Plot each condition (column) for each subject (row)
@@ -177,7 +179,7 @@ end
 
 %% Choose and perform post-hocs
 if min(dimensions)==1 %1D
-    fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,nT,transparancy1D,ratioSPM,yLimitES,spmPos);
+    fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,nT,transparancy1D,ratioSPM,yLimitES,spmPos,aovColor);
 else %2D
     fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,contourColor,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalIT,doAllInteractions,dashedColor,transparancy,lineWidth,imageFontSize,imageSize,colorMap,diffRatio,relativeRatio,alphaT,nT,linestyle);
 end
