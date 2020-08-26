@@ -221,7 +221,7 @@ if allSignificant>0
     if allSignificant>0
         yText=sort(mean(ylimitsSPM,2));
         for i=1:numel(yTlab)
-            text(time(end),yText(i),[' ' yTlab{i}]);
+            text(time(end),yText(i),[' ' yTlab{i}],'FontSize',imageFontSize);
         end
     end
     
@@ -234,5 +234,6 @@ if allSignificant>0
         end
     end
     
+    set(gca,'FontSize',imageFontSize)
 end
 end
