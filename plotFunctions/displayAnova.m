@@ -23,15 +23,15 @@ if dimensions(1)==1 | dimensions(2)==1 %1D
     plot(time,mapF,'k','linewidth',1); hold on
     ylim([0 1.05*max([max(mapF) Fthreshold])])
     
-    legendDone=0;
     clusters=find(abs(diff(anovaEffects))==1);
     clusters=[0,clusters,max(size(mapF))];
+    legendDone=0;
     for t=1:size(clusters,2)-1
         timeCluster=time(clusters(t)+1:clusters(t+1));
         mapCluster=mapF(clusters(t)+1:clusters(t+1));
         goPlot=mean(anovaEffects(clusters(t)+1:clusters(t+1)));
         if goPlot==1
-            if legendDone==0;
+            if legendDone==0
                 plot(timeCluster, mapCluster,'b','linewidth',2)
                 legendDone=1;
             else

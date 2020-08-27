@@ -25,12 +25,18 @@ if dimensions(1)==1 | dimensions(2)==1 %1D
     
     clusters=find(abs(diff(anovaEffects'))==1)';
     clusters=[0;clusters;max(size(mapT))];
+    legendDone=0;
     for t=1:size(clusters,1)-1
         timeCluster=time(clusters(t)+1:clusters(t+1));
         mapCluster=mapT(clusters(t)+1:clusters(t+1));
         goPlot=mean(anovaEffects(clusters(t)+1:clusters(t+1)));
         if goPlot==1
-            plot(timeCluster,mapCluster,'b','linewidth',2)
+            if legendDone==0
+                plot(timeCluster,mapCluster,'b','linewidth',2)
+                legendDone=1;
+            else
+                plot(timeCluster,mapCluster,'b','linewidth',2,'handlevisibility','off')
+            end
             vline([timeCluster(1),timeCluster(end)],'linetype','-.k','displayLegend',0)
         end
     end
