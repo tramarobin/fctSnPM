@@ -11,7 +11,8 @@ if ~ignoreAnova
         anovaEffects{1}=logical(ones(dimensions(1),dimensions(2)));
     else
         
-        mkdir([savedir '\' testANOVA.name] )
+        mkdir([savedir '\' testANOVA.name '\FIG\'])
+        
         % Verify the number of iterations
         [nWarning,iterations,alpha]=fctWarningIterations(ANOVA,alphaOriginal,multiIterations,maximalIT,IT);
         testANOVA.alpha=alpha;
