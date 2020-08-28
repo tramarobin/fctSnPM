@@ -841,13 +841,11 @@ if nEffects>1
             
             plotmean(differencesData,IC,xlab,ylab,Fs,xlimits,nx,[],[],imageFontSize,imageSize,transparancy1D,[])
             legend([namesDifferences{comp}],'Location','eastoutside','box','off')
-            savefig([savedir savedir2 eNames{testedEffect{comp}} '\FIG\DIFF\' namesDifferences{comp}])
             print('-dtiff',imageResolution,[savedir savedir2 eNames{testedEffect{comp}} '\DIFF\' namesDifferences{comp} '.tiff'])
             close
             
             plotmean(relativeDifferencesData,IC,xlab,'Differences (%)',Fs,xlimits,nx,[],[],imageFontSize,imageSize,transparancy1D,[])
             legend([namesDifferences{comp}],'Location','eastoutside','box','off')
-            savefig([savedir savedir2 eNames{testedEffect{comp}} '\FIG\DIFF\' namesDifferences{comp} '%'])
             print('-dtiff',imageResolution,[savedir savedir2 eNames{testedEffect{comp}} '\DIFF\' namesDifferences{comp} ' %.tiff'])
             close
             
@@ -892,14 +890,12 @@ if nEffects>1
             % full plot of spm analysis
             displayTtest(mapsT{1,comp},Tthreshold{comp},mapsT{2,comp},Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,transparancy1D)
             title(namesDifferences{comp})
-            savefig([savedir savedir2 eNames{testedEffect{comp}} '\FIG\SPM\' namesDifferences{comp}])
             print('-dtiff',imageResolution,[savedir savedir2 eNames{testedEffect{comp}} '\SPM\' namesDifferences{comp} '.tiff'])
             close
             
             % ES
             plotES(ES{comp},ESsd{comp},mapsT{2,comp},Fs,xlab,nx,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
             title(namesDifferences{comp})
-            savefig([savedir savedir2 eNames{testedEffect{comp}} '\FIG\ES\' namesDifferences{comp}])
             print('-dtiff',imageResolution,[savedir savedir2 eNames{testedEffect{comp}} '\ES\' namesDifferences{comp} '.tiff'])
             close
             

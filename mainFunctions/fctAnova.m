@@ -39,6 +39,7 @@ if ~ignoreAnova
             end
             title(namesEffect)
             print('-dtiff',imageResolution,[savedir '\' testANOVA.name '\' namesEffect '.tiff'])
+            savefig([savedir '\' testANOVA.name '\FIG\' namesEffect])
             close
             save([savedir '\' testANOVA.name '\ANOVA'], 'mapsF' , 'Fthreshold', 'namesEffect','testANOVA','pAnova','clustersAnova','anovaEffects')
             
@@ -62,6 +63,7 @@ if ~ignoreAnova
                 end
                 title(namesEffect{k})
                 print('-dtiff',imageResolution,[savedir '\' testANOVA.name '\' namesEffect{k} '.tiff'])
+                savefig([savedir '\' testANOVA.name '\FIG\' namesEffect{k}])
                 close
                 
             end
