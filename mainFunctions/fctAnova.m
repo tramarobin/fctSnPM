@@ -14,7 +14,7 @@ if ~ignoreAnova
         mkdir([savedir '\' testANOVA.name '\FIG\'])
         
         % Verify the number of iterations
-        [nWarning,iterations,alpha]=fctWarningIterations(ANOVA,alphaOriginal,multiIterations,maximalIT,IT);
+        [nWarning,iterations,alpha]=fctWarningIterationsAOV(ANOVA,alphaOriginal,multiIterations,maximalIT,IT);
         testANOVA.alpha=alpha;
         testANOVA.alphaOriginal=alphaOriginal;
         testANOVA.nIterations=iterations;
