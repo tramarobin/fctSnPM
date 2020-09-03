@@ -11,6 +11,7 @@ if ~ignoreAnova
         anovaEffects{1}=logical(ones(dimensions(1),dimensions(2)));
     else
         
+        warning('off', 'MATLAB:MKDIR:DirectoryExists');
         mkdir([savedir '\' testANOVA.name '\FIG\'])
         
         % Verify the number of iterations
