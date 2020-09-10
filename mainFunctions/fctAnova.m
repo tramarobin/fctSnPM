@@ -31,7 +31,7 @@ if ~ignoreAnova
             Fthreshold=ANOVA_inf.zstar;
             mapsF=reshape(ANOVA_inf.z,dimensions(1),dimensions(2));
             pAnova=ANOVA_inf.p;
-            clustersAnova=ANOVA_inf.clusters;
+            clustersAnova=extractClusterData(ANOVA_inf.clusters);
             anovaEffects{1}=ANOVA_inf.z>=Fthreshold; %values save for the interpretation of post-hoc tests
             
             % Plot of Anova Results
@@ -40,8 +40,8 @@ if ~ignoreAnova
                 dispContour(mapsF,Fthreshold,contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             title(namesEffect)
-            print('-dtiff',imageResolution,[savedir '\' testANOVA.name '\' namesEffect '.tiff'])
-            savefig([savedir '\' testANOVA.name '\FIG\' namesEffect])
+            print('-dtiff',imageResolution,verifSaveName([savedir '\' testANOVA.name '\' namesEffect]))
+            savefig(verifSaveName([savedir '\' testANOVA.name '\FIG\' namesEffect]))
             close
             save([savedir '\' testANOVA.name '\ANOVA'], 'mapsF' , 'Fthreshold', 'namesEffect','testANOVA','pAnova','clustersAnova','anovaEffects')
             
@@ -56,7 +56,7 @@ if ~ignoreAnova
                 mapsF{k}=reshape(ANOVA_inf.SPMs{k}.z,dimensions(1),dimensions(2));
                 anovaEffects{k}=ANOVA_inf.SPMs{k}.z>=Fthreshold{k};
                 pAnova{k}=ANOVA_inf.SPMs{k}.p;
-                clustersAnova{k}=ANOVA_inf.SPMs{k}.clusters;
+                clustersAnova{k}=extractClusterData(ANOVA_inf.SPMs{k}.clusters);
                 
                 % Plot of the full anova results
                 displayAnova(mapsF{k},Fthreshold{k},anovaEffects{k},Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,colorMap,imageSize,imageFontSize)
@@ -64,8 +64,8 @@ if ~ignoreAnova
                     dispContour(mapsF{k},Fthreshold{k},contourColor,dashedColor,transparency,lineWidth,linestyle)
                 end
                 title(namesEffect{k})
-                print('-dtiff',imageResolution,[savedir '\' testANOVA.name '\' namesEffect{k} '.tiff'])
-                savefig([savedir '\' testANOVA.name '\FIG\' namesEffect{k}])
+                print('-dtiff',imageResolution,verifSaveName([savedir '\' testANOVA.name '\' namesEffect{k}]))
+                savefig(verifSaveName([savedir '\' testANOVA.name '\FIG\' namesEffect{k}]))
                 close
                 
             end

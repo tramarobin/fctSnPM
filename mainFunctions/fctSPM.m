@@ -1,4 +1,4 @@
-% Trama Robin (LIBM) 28/08/2020 --> 1.2.4
+% Trama Robin (LIBM) 10/09/2020 --> 1.3.0
 % trama.robin@gmail.com
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -72,10 +72,12 @@ p = inputParser;
 addParameter(p,'savedir','RESULTS',@ischar); % save directory
 addParameter(p,'effectsNames',{'A','B','C'},@iscell); % name of the different effect tested (changes the name of folder and files)
 % the independant effects must be names first
+addParameter(p,'plotSub',0,@isnumeric) % 1 to plot the mean of each subject
+addParameter(p,'nameSub',[],@iscell) % names of the different subjects
 
 % statistical parameters
 addParameter(p,'alpha',0.05,@isnumeric); % alpha used for the ANOVA
-addParameter(p,'multiIterations',10,@isnumeric); % the number of permutations is multiIterations/alpha. Must be increased for better reproductibility
+addParameter(p,'multiIT',10,@isnumeric); % the number of permutations is multiIT/alpha. Must be increased for better reproductibility
 addParameter(p,'IT',[],@isnumeric); % fixed number of iterations (override the multiIterations - not recommanded)
 % specified either multiIterations or IT, but not both
 addParameter(p,'maximalIT',10000,@isnumeric); % limits the number of maximal permutations in case of too many multiple comparisons.
@@ -110,8 +112,6 @@ addParameter(p,'transparancy',50,@isnumeric) % transparancy of the dashed zone (
 addParameter(p,'lineWidth',2.5,@isnumeric) % linewidth of the contour plot
 addParameter(p,'diffRatio',0.33,@isnumeric) % the differences map will be scale at limitMeanMaps*diffRatio.
 addParameter(p,'relativeRatio',[],@isnumeric) % the relative differences maps will be scale at +-relativeRatio
-addParameter(p,'plotSub',0,@isnumeric) % 1 to plot the mean of each subject
-addParameter(p,'nameSub',[],@iscell) % names of the different subjects
 
 % 1d plot parameters
 addParameter(p,'CI',[],@isnumeric); % confidence interval is used instead of standard deviation (0.7-->0.999), 0 to display SEM
@@ -133,7 +133,7 @@ xlab=p.Results.xlabel;
 Fs=p.Results.samplefrequency;
 savedir=p.Results.savedir;
 effectNames=p.Results.effectsNames;
-multiIterations=p.Results.multiIterations;
+multiIterations=p.Results.multiIT;
 IT=p.Results.IT;
 ylimits=p.Results.ylimits;
 xlimits=p.Results.xlimits;

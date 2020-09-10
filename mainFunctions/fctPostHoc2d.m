@@ -39,13 +39,13 @@ if nEffects==1
         % full plot mean
         displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
         title([char(modalitiesAll{1}(combi{i}(1)))])
-        print('-dtiff',imageResolution,[savedir eNames{1} '\' char(modalitiesAll{1}(combi{i}(1))) '.tiff'])
+        print('-dtiff',imageResolution,verifSaveName([savedir eNames{1} '\' char(modalitiesAll{1}(combi{i}(1)))]))
         close
         
         % full plot sd
         displayMeanMaps(stdData,Fs,xlab,ylab,ylimits,nx,ny,[],xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
         title([char(modalitiesAll{1}(combi{i}(1)))])
-        print('-dtiff',imageResolution,[savedir  eNames{1} '\SD\' char(modalitiesAll{1}(combi{i}(1))) '.tiff'])
+        print('-dtiff',imageResolution,verifSaveName([savedir  eNames{1} '\SD\' char(modalitiesAll{1}(combi{i}(1)))]))
         close
         
         % subplot
@@ -112,7 +112,7 @@ if nEffects==1
         testTtests.alphaOriginal{comp}=alphaOriginal;
         testTtests.alpha{comp}=alpha;
         testTtests.nIterations{comp}=iterations;
-        Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1));
+        Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
         Tthreshold{comp}=Ttest_inf.zstar;
         mapsT{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
         mapLogical=abs(mapsT{1,comp})>=Tthreshold{comp};
@@ -132,7 +132,7 @@ if nEffects==1
             dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
         end
         title(namesDifferences{comp})
-        print('-dtiff',imageResolution,[savedir  eNames{1} '\DIFF\' namesDifferences{comp} '.tiff'])
+        print('-dtiff',imageResolution,verifSaveName([savedir  eNames{1} '\DIFF\' namesDifferences{comp}]))
         close
         
         displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap,relativeRatio)
@@ -140,7 +140,7 @@ if nEffects==1
             dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
         end
         title(namesDifferences{comp})
-        print('-dtiff',imageResolution,[savedir  eNames{1} '\DIFF\' namesDifferences{comp} ' %.tiff'])
+        print('-dtiff',imageResolution,verifSaveName([savedir  eNames{1} '\DIFF\' namesDifferences{comp} ' %']))
         close
         
         % subplot of differences
@@ -157,7 +157,7 @@ if nEffects==1
             dispContour(abs(mapsT{1,comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
         end
         title(namesDifferences{comp})
-        print('-dtiff',imageResolution,[savedir  eNames{1} '\SPM\' namesDifferences{comp} '.tiff'])
+        print('-dtiff',imageResolution,verifSaveName([savedir  eNames{1} '\SPM\' namesDifferences{comp}]))
         close
         
         % subplot of spm analysis
@@ -171,17 +171,17 @@ if nEffects==1
         if displayContour
             dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
         end
-        print('-dtiff',imageResolution,[savedir  eNames{1} '\ES\' namesDifferences{comp} '.tiff'])
+        print('-dtiff',imageResolution,verifSaveName([savedir  eNames{1} '\ES\' namesDifferences{comp}]))
         close
         
     end
     
     % save
     set(0, 'currentfigure', f1);
-    print('-dtiff',imageResolution,[savedir  eNames{1} '\GROUPED\' eNames{1} '.tiff'])
+    print('-dtiff',imageResolution,verifSaveName([savedir  eNames{1} '\GROUPED\' eNames{1}]))
     close
     set(0, 'currentfigure', f2);
-    print('-dtiff',imageResolution,[savedir  eNames{1} '\GROUPED\' eNames{1} ' SPM.tiff'])
+    print('-dtiff',imageResolution,verifSaveName([savedir  eNames{1} '\GROUPED\' eNames{1} ' SPM']))
     close
     
     save([savedir  eNames{1}], 'mapsT', 'mapsContour' , 'Tthreshold', 'namesDifferences', 'mapsDifferences','mapsConditions','namesConditions','testTtests','ES')
@@ -224,13 +224,13 @@ if nEffects==2
             % full plot of mean
             displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
             title([char(modalitiesAll{mainEffect(1)}(combi{i}(1)))])
-            print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} '\' char(modalitiesAll{mainEffect(1)}(combi{i}(1))) '.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\' char(modalitiesAll{mainEffect(1)}(combi{i}(1)))]))
             close
             
             % full plot of sd
             displayMeanMaps(stdData,Fs,xlab,ylab,ylimits,nx,ny,[],xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
             title([char(modalitiesAll{mainEffect(1)}(combi{i}(1)))])
-            print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} '\SD\' char(modalitiesAll{mainEffect(1)}(combi{i}(1))) '.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\SD\' char(modalitiesAll{mainEffect(1)}(combi{i}(1)))]))
             close
             
             % subplot
@@ -297,7 +297,7 @@ if nEffects==2
             testTtests.alphaOriginal{comp}=alphaOriginal;
             testTtests.alpha{comp}=alpha;
             testTtests.nIterations{comp}=iterations;
-            Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1));
+            Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
             Tthreshold{comp}=Ttest_inf.zstar;
             mapsT{2,comp}=zeros(dimensions(1),dimensions(2));
             mapsT{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
@@ -317,7 +317,7 @@ if nEffects==2
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             title(namesDifferences{comp})
-            print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} '\DIFF\' namesDifferences{comp} '.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\DIFF\' namesDifferences{comp}]))
             close
             
             displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap,relativeRatio)
@@ -325,7 +325,7 @@ if nEffects==2
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             title(namesDifferences{comp})
-            print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} '\DIFF\' namesDifferences{comp} ' %.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\DIFF\' namesDifferences{comp} ' %']))
             close
             
             % subplot of differences
@@ -342,7 +342,7 @@ if nEffects==2
                 dispContour(abs(mapsT{1,comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             title(namesDifferences{comp})
-            print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} '\SPM\' namesDifferences{comp} '.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\SPM\' namesDifferences{comp}]))
             close
             
             %     cohen's
@@ -351,7 +351,7 @@ if nEffects==2
             if displayContour
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
-            print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} '\ES\' namesDifferences{comp} '.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\ES\' namesDifferences{comp}]))
             close
             
             % subplot of spm analysis
@@ -363,10 +363,10 @@ if nEffects==2
         
         % save
         set(0, 'currentfigure', f1);
-        print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} '\GROUPED\' eNames{mainEffect(1)} '.tiff'])
+        print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\GROUPED\' eNames{mainEffect(1)}]))
         close
         set(0, 'currentfigure', f2);
-        print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} '\GROUPED\' eNames{mainEffect(1)} ' SPM.tiff'])
+        print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\GROUPED\' eNames{mainEffect(1)} ' SPM']))
         close
         
         mainForInteraction{mainEffect}=mapsT(2,:);
@@ -413,13 +413,13 @@ if nEffects==3
             % full plot of means
             displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
             title([char(modalitiesAll{mainEffect(1)}(combi{i}(1)))])
-            print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} '\' char(modalitiesAll{mainEffect(1)}(combi{i}(1))) '.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\' char(modalitiesAll{mainEffect(1)}(combi{i}(1)))]))
             close
             
             % full plot of sd
             displayMeanMaps(stdData,Fs,xlab,ylab,ylimits,nx,ny,[],xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
             title([char(modalitiesAll{mainEffect(1)}(combi{i}(1)))])
-            print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} '\SD\' char(modalitiesAll{mainEffect(1)}(combi{i}(1))) '.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\SD\' char(modalitiesAll{mainEffect(1)}(combi{i}(1)))]))
             close
             
             
@@ -484,7 +484,7 @@ if nEffects==3
             testTtests.alphaOriginal{comp}=alphaOriginal;
             testTtests.alpha{comp}=alpha;
             testTtests.nIterations{comp}=iterations;
-            Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1));
+            Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
             Tthreshold{comp}=Ttest_inf.zstar;
             mapsT{2,comp}=zeros(dimensions(1),dimensions(2));
             mapsT{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
@@ -504,7 +504,7 @@ if nEffects==3
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             title(namesDifferences{comp})
-            print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} '\DIFF\' namesDifferences{comp} '.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\DIFF\' namesDifferences{comp}]))
             close
             
             displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap,relativeRatio)
@@ -512,7 +512,7 @@ if nEffects==3
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             title(namesDifferences{comp})
-            print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} '\DIFF\' namesDifferences{comp} ' %.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\DIFF\' namesDifferences{comp} ' %']))
             close
             
             % subplot of differences
@@ -529,7 +529,7 @@ if nEffects==3
                 dispContour(abs(mapsT{1,comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             title(namesDifferences{comp})
-            print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} '\SPM\' namesDifferences{comp} '.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\SPM\' namesDifferences{comp}]))
             close
             
             %     cohen's d
@@ -538,7 +538,7 @@ if nEffects==3
             if displayContour
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
-            print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} '\ES\' namesDifferences{comp} '.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\ES\' namesDifferences{comp}]))
             close
             
             % subplot of spm analysis
@@ -550,10 +550,10 @@ if nEffects==3
         
         % save
         set(0, 'currentfigure', f1);
-        print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} '\GROUPED\' eNames{mainEffect(1)} '.tiff'])
+        print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\GROUPED\' eNames{mainEffect(1)}]))
         close
         set(0, 'currentfigure', f2);
-        print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} '\GROUPED\' eNames{mainEffect(1)} ' SPM.tiff'])
+        print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\GROUPED\' eNames{mainEffect(1)} ' SPM']))
         close
         
         mainForInteraction{mainEffect}=mapsT(2,:);
@@ -606,13 +606,13 @@ if nEffects==3
                 % full plot of means
                 displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
                 title([char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' \cap ' char(modalitiesAll{mainEffect(2)}(combi{i}(2)))])
-                print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' x ' char(modalitiesAll{mainEffect(2)}(combi{i}(2))) '.tiff'])
+                print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' x ' char(modalitiesAll{mainEffect(2)}(combi{i}(2)))]))
                 close
                 
                 % full plot of std
                 displayMeanMaps(stdData,Fs,xlab,ylab,ylimits,nx,ny,[],xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
                 title([char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' \cap ' char(modalitiesAll{mainEffect(2)}(combi{i}(2)))])
-                print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\SD\' char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' x ' char(modalitiesAll{mainEffect(2)}(combi{i}(2))) '.tiff'])
+                print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\SD\' char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' x ' char(modalitiesAll{mainEffect(2)}(combi{i}(2)))]))
                 close
                 
                 % subplot of means
@@ -687,7 +687,7 @@ if nEffects==3
                 testTtests.alphaOriginal{comp}=alphaOriginal;
                 testTtests.alpha{comp}=alpha;
                 testTtests.nIterations{comp}=iterations;
-                Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1));
+                Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
                 Tthreshold{comp}=Ttest_inf.zstar;
                 mapsT{2,comp}=zeros(dimensions(1),dimensions(2));
                 mapsT{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
@@ -713,7 +713,7 @@ if nEffects==3
                     dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
                 end
                 title(namesDifferences{comp})
-                print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(eTested)} '\DIFF\' namesDifferences{comp} '.tiff'])
+                print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(eTested)} '\DIFF\' namesDifferences{comp}]))
                 close
                 
                 displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap,relativeRatio)
@@ -721,7 +721,7 @@ if nEffects==3
                     dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
                 end
                 title(namesDifferences{comp})
-                print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(eTested)} '\DIFF\' namesDifferences{comp} ' %.tiff'])
+                print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(eTested)} '\DIFF\' namesDifferences{comp} ' %']))
                 close
                 
                 
@@ -739,7 +739,7 @@ if nEffects==3
                     dispContour(abs(mapsT{1,comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
                 end
                 title(namesDifferences{comp})
-                print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(eTested)} '\SPM\' namesDifferences{comp} '.tiff'])
+                print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(eTested)} '\SPM\' namesDifferences{comp}]))
                 close
                 
                 %     cohen's d
@@ -748,7 +748,7 @@ if nEffects==3
                 if displayContour
                     dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
                 end
-                print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(eTested)} '\ES\' namesDifferences{comp} '.tiff'])
+                print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(eTested)} '\ES\' namesDifferences{comp}]))
                 close
                 
                 % subplot of spm analysis
@@ -764,10 +764,10 @@ if nEffects==3
             
             % save
             set(0, 'currentfigure', f1);
-            print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}   '\GROUPED\' eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}   '\GROUPED\' eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]))
             close
             set(0, 'currentfigure', f2);
-            print('-dtiff',imageResolution,[savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}   '\GROUPED\' eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} ' SPM.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}   '\GROUPED\' eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} ' SPM']))
             close
             
             intForInteractions{anovaFixedCorr(eff_fixed)}.t=realEffect;
@@ -829,7 +829,7 @@ if nEffects>1
                     % full plot of sd
                     displayMeanMaps(stdData,Fs,xlab,ylab,ylimits,nx,ny,[],xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
                     title([char(modalitiesAll{1}(combi{i}(1))) ' \cap ' char(modalitiesAll{2}(combi{i}(2)))])
-                    print('-dtiff',imageResolution,[savedir savedir2 '\SD\' char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2))) '.tiff'])
+                    print('-dtiff',imageResolution,verifSaveName([savedir savedir2 '\SD\' char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2)))]))
                     close
                 else
                     meansData=reshape(maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2),:),dimensions(1),dimensions(2));
@@ -842,7 +842,7 @@ if nEffects>1
                 % full plot of means
                 displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
                 title([char(modalitiesAll{1}(combi{i}(1))) ' \cap ' char(modalitiesAll{2}(combi{i}(2)))])
-                print('-dtiff',imageResolution,[savedir savedir2 '\' char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2))) '.tiff'])
+                print('-dtiff',imageResolution,verifSaveName([savedir savedir2 '\' char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2)))]))
                 close
                 
                 % subplot of means
@@ -873,7 +873,7 @@ if nEffects>1
                     % full plot std
                     displayMeanMaps(stdData,Fs,xlab,ylab,ylimits,nx,ny,[],xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
                     title([char(modalitiesAll{1}(combi{i}(1))) ' \cap ' char(modalitiesAll{2}(combi{i}(2))) ' \cap '  char(modalitiesAll{3}(combi{i}(3)))])
-                    print('-dtiff',imageResolution,[savedir savedir2 '\SD\' char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2))) ' x '  char(modalitiesAll{3}(combi{i}(3))) '.tiff'])
+                    print('-dtiff',imageResolution,verifSaveName([savedir savedir2 '\SD\' char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2))) ' x '  char(modalitiesAll{3}(combi{i}(3)))]))
                     close
                 else
                     meansData=reshape(maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2) & indicesEffects(:,3)==combi{i}(3),:),dimensions(1),dimensions(2));
@@ -886,7 +886,7 @@ if nEffects>1
                 % full plot of means
                 displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
                 title([char(modalitiesAll{1}(combi{i}(1))) ' \cap ' char(modalitiesAll{2}(combi{i}(2))) ' \cap '  char(modalitiesAll{3}(combi{i}(3)))])
-                print('-dtiff',imageResolution,[savedir savedir2 '\' char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2))) ' x '  char(modalitiesAll{3}(combi{i}(3))) '.tiff'])
+                print('-dtiff',imageResolution,verifSaveName([savedir savedir2 '\' char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2))) ' x '  char(modalitiesAll{3}(combi{i}(3)))]))
                 close
                 
                 % subplot of means
@@ -968,7 +968,7 @@ if nEffects>1
             testTtests.alphaOriginal{comp}=alphaOriginal;
             testTtests.alpha{comp}=alpha;
             testTtests.nIterations{comp}=iterations;
-            Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1));
+            Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
             Tthreshold{comp}=Ttest_inf.zstar;
             mapsT{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
             mapsT{2,comp}=zeros(dimensions(1),dimensions(2));
@@ -1013,7 +1013,7 @@ if nEffects>1
                 dispContour(abs(mapsT{1,comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             title(namesDifferences{comp})
-            print('-dtiff',imageResolution,[savedir savedir2 '\' eNames{testedEffect{comp}}  '\SPM\' namesDifferences{comp} '.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir savedir2 '\' eNames{testedEffect{comp}}  '\SPM\' namesDifferences{comp}]))
             close
             
             % full plot of differences
@@ -1022,7 +1022,7 @@ if nEffects>1
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             title(namesDifferences{comp})
-            print('-dtiff',imageResolution,[savedir savedir2 '\' eNames{testedEffect{comp}} '\DIFF\' namesDifferences{comp} '.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir savedir2 '\' eNames{testedEffect{comp}} '\DIFF\' namesDifferences{comp}]))
             close
             
             displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap,relativeRatio)
@@ -1030,7 +1030,7 @@ if nEffects>1
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             title(namesDifferences{comp})
-            print('-dtiff',imageResolution,[savedir savedir2 '\' eNames{testedEffect{comp}} '\DIFF\' namesDifferences{comp} ' %.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir savedir2 '\' eNames{testedEffect{comp}} '\DIFF\' namesDifferences{comp} ' %']))
             close
             
             %     cohen's d
@@ -1039,7 +1039,7 @@ if nEffects>1
             if displayContour
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
-            print('-dtiff',imageResolution,[savedir savedir2 '\' eNames{testedEffect{comp}}  '\ES\' namesDifferences{comp} '.tiff'])
+            print('-dtiff',imageResolution,verifSaveName([savedir savedir2 '\' eNames{testedEffect{comp}}  '\ES\' namesDifferences{comp}]))
             close
             
             % subplot of spm analysis
@@ -1059,10 +1059,10 @@ if nEffects>1
         
         % save
         set(0, 'currentfigure', f1);
-        print('-dtiff',imageResolution,[savedir savedir2 '\GROUPED\' figname '.tiff'])
+        print('-dtiff',imageResolution,verifSaveName([savedir savedir2 '\GROUPED\' figname]))
         close
         set(0, 'currentfigure', f2);
-        print('-dtiff',imageResolution,[savedir savedir2 '\GROUPED\' figname ' SPM.tiff'])
+        print('-dtiff',imageResolution,verifSaveName([savedir savedir2 '\GROUPED\' figname ' SPM']))
         close
         
         save([savedir figname], 'mapsT', 'mapsContour' , 'Tthreshold', 'namesDifferences', 'mapsDifferences','mapsConditions','namesConditions','testTtests','ES')
