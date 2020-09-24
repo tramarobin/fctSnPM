@@ -644,7 +644,8 @@ if nEffects==3
                 end
                 sizeSname=numel(sameName);
                 for nC=1:numel(namesDifferences)
-                    whichCompare(nC)=strcmp(sameName,namesDifferences{nC}(1:sizeSname));
+                    nameCompare=[namesDifferences{nC} '___________________________'];
+                    whichCompare(nC)=strcmp(sameName,nameCompare(1:sizeSname));
                 end
                 
                 colorPlot=chooseColor(colorLine,mainEffect(whichFixed(2,p)));
@@ -741,7 +742,7 @@ if nEffects>1
                 print('-dtiff',imageResolution,verifSaveName([savedir savedir2 eNames{whichFixed(2,p)} '\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)}]))
                 savefig(verifSaveName([savedir savedir2 eNames{whichFixed(2,p)} '\FIG\' modalitiesAll{whichFixed(1,p)}{whichModal(1,p)}]))
                 close
-                clear isEmptydata
+                clear isEmptydata whichCompare
             end
             
             mapsConditions=meansData;
@@ -951,8 +952,8 @@ if nEffects>1
             
             sizeSname=numel(sameName);
             for nC=1:numel(namesDifferences)
-                whichCompare(nC)=strcmp(sameName,namesDifferences{nC}(1:sizeSname));
-            end
+                nameCompare=[namesDifferences{nC} '___________________________'];
+                whichCompare(nC)=strcmp(sameName,nameCompare(1:sizeSname));            end
             
             if nEffects==2
                 colorPlot=chooseColor(colorLine,whichFixed(2,p));
