@@ -37,7 +37,7 @@
 % Independant effects : 1 cell by effect. Must correspond to the number of subjects
 % Repeated measures effects : 1 cell by effect. Must correspond to the number of columns in the dataset.
 % avoid the same typo (e.g., POST, POST2) for the effect names, it affects
-% the recognition for the fi with SPM implemented
+% the recognition for the multiples comparisons
 % also avoid underscore (_) or minus (-) sign. Spaces are OK
 
 % OPTIONAL
