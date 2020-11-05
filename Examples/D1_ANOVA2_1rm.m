@@ -23,7 +23,7 @@ colorLine{1}=[rgb('cyan'); rgb('magenta')];
 EFFET_rm{1}={'Right','Left'};
 colorLine{2}=[rgb('blue'); rgb('red')];
 
-savedir='Results//1D_ANOVA2_1rm';
+savedir='Results\\1D_ANOVA2_1rm';
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];
@@ -37,6 +37,6 @@ fctSPM(DATA,EFFET_ind,EFFET_rm,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...
     'xlimits',xlimits,'ylimits',ylimits,'nTicksY',nTicksY,...
-    'transparancy1D',0.05,'colorline',colorLine);
+    'transparancy1D',0.05,'colorline',colorLine,'imageSize',[15 10]);
 
 

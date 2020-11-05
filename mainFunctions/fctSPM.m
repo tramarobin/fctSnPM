@@ -95,7 +95,7 @@ addParameter(p,'xlimits',[],@isnumeric); % change xticks to correspond to the sp
 % specified either samplefrequency or xlimits, but not both
 addParameter(p,'nTicksX',5,@isnumeric); % number of xticks displayed
 addParameter(p,'nTicksY',[],@isnumeric); % number of yticks displayed
-addParameter(p,'imageresolution',100,@isnumeric); % resolution in ppp of the tiff images
+addParameter(p,'imageresolution',300,@isnumeric); % resolution in ppp of the tiff images
 addParameter(p,'imageSize',[],@isnumeric) % size of the image in cm. X --> X*X images, [X Y] X*Y imgages. By default the unit is normalized [0 0 1 1].
 addParameter(p,'imageFontSize',12,@isnumeric) % font size of images
 addParameter(p,'ylimits',[],@isnumeric); % change yticks to correspond to the specified range
