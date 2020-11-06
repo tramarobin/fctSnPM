@@ -63,7 +63,7 @@ Post-hoc results: The curves represent the means and the standard deviations.
 Right > Left between 30 and 85°.
 The significant differences are displayed below the curves using the curves to display the pairewise comparisons.
 The ANOVA results are also displayed if wanted.
-![alt text](https://github.com/tramarobin/fctSPM/blob/main/Figures/1D_Post-hoc.png)
+![alt text](https://github.com/tramarobin/fctSPM/tree/master/Figures/1D_Post-hoc.png)
 
 
 ### In two dimensions ###
@@ -72,17 +72,17 @@ Here are the outcomes for a 2way ANOVA with 2 repeated measures in 2 dimensions
 The maps represent the time-frequency analysis of vibratory signal quantified with two devices (ACC and US), and for two muscle activations (Relaxed and Contracted).
 
 ANOVA results : Red clusters circled in white are the zone of significant effects. There are mains and interaction effects.
-![alt text](https://github.com/tramarobin/fctSPM/blob/main/Figures/2D_ANOVA2_2RM.png)
+![alt text](https://github.com/tramarobin/fctSPM/tree/master/Figures/2D_ANOVA2_2RM.png)
 
 Post-hoc results for main effects: Mean maps for each condition are displayed. 
 Statistical results are shown within each map of differences on the top (Device effect) and at the bottom (Activation effect).
 The significant cluster are circled in white.
-![alt text](https://github.com/tramarobin/fctSPM/blob/main/Figures/2D_Post-hoc_MAIN.png)
+![alt text](https://github.com/tramarobin/fctSPM/tree/master/Figures/2D_Post-hoc_MAIN.png)
 
 Post-hoc results for interaction effects: Mean maps for each condition are displayed. 
 Statistical results are shown within each map of differences on the right (Activation effect) and at the bottom (Device effect).
 The significant cluster are circled in white. Note that the main effects are also displayed.
-![alt text](https://github.com/tramarobin/test/blob/main/Figures/2D_Post-hoc_INT.png)
+![alt text](https://github.com/tramarobin/fctSPM/tree/master/Figures/2D_Post-hoc_INT.png)
 
 ## Using fctSPM ##
 
