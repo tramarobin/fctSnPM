@@ -174,7 +174,7 @@ A value of X will make the colorbar going from 0 to X for all plots (easier to c
 #### 1D plot parameters ####
 These option are specific to 2D plots.
 
-* `CI` is the confidence interval used instead of standard deviation. By default, standard deviations are displayed. @isnumeric (0.7-->0.999) or 0 to display SEM.
+* `CI` is the confidence interval used instead of standard deviation. By default, standard deviations are displayed. @isnumeric (0.7 to 0.999 to display 70% to 99.9% condidence interval, or 0 to display SEM).
 * `colorLine` is the colorline for plots (default  is "lines"). Use rgb triplet. If in cell, apply each color to each effect (independant effect first).
 * `transparancy1D` is the transparency for the SD, CI or SEM. Default is 0.1. @isnumeric.
 * `ratioSPM` is the ratio of SPM subplot relative to total figure (default if 1/3 of the figure). @isnumeric (e.g., [1 3]).
