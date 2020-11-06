@@ -43,7 +43,7 @@ For post-hoc for interaction effects, the main effect is also displayed if locat
 - This function : in progress   
 - for spm1d : Pataky TC (2010). Generalized n-dimensional biomechanical field analysis using statistical parametric mapping. Journal of Biomechanics 43, 1976-1982.   
 - for permutation tests : Nichols TE, Holmes AP (2002). Nonparametric permutation tests for functional neuroimaging: a primer with examples. Human Brain Mapping 15(1), 1–25.   
-- spm1d package for matlab can be download at : https://github.com/0todd0000/spm1dmatlab   
+- spm1d package for matlab can be downloaded at : https://github.com/0todd0000/spm1dmatlab   
 
 
 ## MATLAB Release Compatibility ##
