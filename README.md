@@ -152,7 +152,7 @@ Specified either samplefrequency or xlimits, but not both.
 * `nTicksX` is the number of xticks displayed. @isnumeric.
 * `nTicksY` is the number of yticks displayed. @isnumeric.
 * `imageresolution` is the resolution in ppp of the tiff images. Default is 300ppp. @isnumeric.
-* `imageSize` is the size of the image in cm. y default the unit is normalized [0 0 1 1]. @isnumeric (e.g., X is a X by X cm images, [X Y] is a X by Y cm images.
+* `imageSize` is the size of the image in cm. y default the unit is normalized [0 0 1 1]. @isnumeric (e.g., X creates X by X cm images, [X Y] creates X by Y cm images.
 * `imageFontSize` is the font size of images. @isnumeric.
 
 #### 2D plot parameters ####
