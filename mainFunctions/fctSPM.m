@@ -1,8 +1,13 @@
-% Trama Robin (LIBM) 10/09/2020 --> 1.3.0
+% Trama Robin (LIBM) 06/11/2020 --> release 1.4.0
 % trama.robin@gmail.com
+ 
+% available at : 
+% - https://github.com/tramarobin/fctSPM
+% - https://www.mathworks.com/matlabcentral/fileexchange/77945-fctspm
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% ¨Please read README.md on https://github.com/tramarobin/fctSPM for all informations
 
 % Using spm1d package (v.0.4.3), compute anova and post-hoc tests from anova1 to anova3rm, with a non-parametric approach (permutation tests)
 % The type of anova (if required) and post-hoc are choosen regarding the independant or repeated measure effect given in parameters.
@@ -71,7 +76,7 @@ p = inputParser;
 % utilities
 addParameter(p,'savedir','RESULTS',@ischar); % save directory
 addParameter(p,'effectsNames',{'A','B','C'},@iscell); % name of the different effect tested (changes the name of folder and files)
-% the independant effects must be names first
+% the independant effects must be named first
 addParameter(p,'plotSub',0,@isnumeric) % 1 to plot the mean of each subject
 addParameter(p,'nameSub',[],@iscell) % names of the different subjects
 

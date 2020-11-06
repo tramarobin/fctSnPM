@@ -699,13 +699,8 @@ if nEffects==3
                 tMainEffect(effectCorr==1)=0;
                 realEffect{comp}=reshape(max([tMainEffect(:)';mapsT{2,comp}(:)']),dimensions(1),dimensions(2));
                 mapsT{2,comp}=realEffect{comp};
-                
                 mapsContour{comp}=zeros(dimensions(1),dimensions(2));
-                mapsContour{comp}(find(mapsT{2,comp}==1))=abs(mapsT{1,comp}(find(mapsT{2,comp}==1)));
-                datanoAnova=abs(mapsT{1,comp}(find(mapsT{2,comp}==0)));
-                datanoAnova(find(datanoAnova>=Tthreshold{comp}))=Tthreshold{comp}-0.01*Tthreshold{comp};
-                mapsContour{comp}(find(mapsT{2,comp}==0))=datanoAnova;
-                mapsContour{comp}=reshape(mapsContour{comp},dimensions(1),dimensions(2));
+                mapsContour{comp}(find(mapsT{2,comp}==1))=1.1*Tthreshold{comp};
                 
                 % full plot of differences
                 displayDiffMaps(differencesData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap,diffRatio)
@@ -972,11 +967,12 @@ if nEffects>1
             Tthreshold{comp}=Ttest_inf.zstar;
             mapsT{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
             mapsT{2,comp}=zeros(dimensions(1),dimensions(2));
-            mapsT{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
-            mapLogical=abs(mapsT{1,comp})>=Tthreshold{comp};
+            mapLogical=abs(mapsT{1,comp})>=Tthreshold{comp}; % significant clusters
             if nEffects==2
+                % main effect
                 indiceMain=findWhichMain(modalitiesAll{testedEffect{comp}},combi{Comp{comp}(1)}(testedEffect{comp}),combi{Comp{comp}(2)}(testedEffect{comp}));
                 tMainEffect=abs(mainForInteraction{testedEffect{comp}}{indiceMain})>0;
+                % interaction effect
                 effectCorr=anovaEffects{3}(:);
             else
                 intLocations=[4 5;4 6;5 6]-3;
@@ -999,13 +995,8 @@ if nEffects>1
                 realEffect{comp}=reshape(max([tInteractionEffect{1}';tInteractionEffect{2}';mapsT{2,comp}(:)']),dimensions(1),dimensions(2));
             end
             mapsT{2,comp}=realEffect{comp};
-            
             mapsContour{comp}=zeros(dimensions(1),dimensions(2));
-            mapsContour{comp}(find(mapsT{2,comp}==1))=abs(mapsT{1,comp}(find(mapsT{2,comp}==1)));
-            datanoAnova=abs(mapsT{1,comp}(find(mapsT{2,comp}==0)));
-            datanoAnova(find(datanoAnova>=Tthreshold{comp}))=Tthreshold{comp}-0.01*Tthreshold{comp};
-            mapsContour{comp}(find(mapsT{2,comp}==0))=datanoAnova;
-            mapsContour{comp}=reshape(mapsContour{comp},dimensions(1),dimensions(2));
+            mapsContour{comp}(find(mapsT{2,comp}==1))=1.1*Tthreshold{comp};
             
             %  full plot of spm analysis
             displayTtest(mapsT{1,comp},Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
