@@ -20,7 +20,7 @@ effectNames={'Shoes'};
 % Data(:,1) correspond to Shoes=C1
 % Data(:,2) correspond to Shoes=C2
 
-savedir='Results//2D_pairedTtest';
+savedir='Results\2D_pairedTtest';
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=400;

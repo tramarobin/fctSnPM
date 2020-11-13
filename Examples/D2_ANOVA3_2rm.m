@@ -25,7 +25,7 @@ effectNames={'Group','Device','Activation'};
 % Data(:,3) correspond to Device=US and Activation=Contracted
 % Data(:,4) correspond to Device=US and Activation=Relaxed
 
-savedir='Results//2D_ANOVA3_2rm';
+savedir='Results\2D_ANOVA3_2rm';
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=500;

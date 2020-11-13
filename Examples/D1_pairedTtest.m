@@ -18,7 +18,7 @@ EFFET_ind=[]; % empty
 EFFET_rm{1}={'Right','Left'}; % Side
 
 
-savedir='Results//1D_pairedTtest';
+savedir='Results\1D_pairedTtest';
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];

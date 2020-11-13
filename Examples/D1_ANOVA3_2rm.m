@@ -26,7 +26,7 @@ colorLine{3}=[rgb('gray'); rgb('darkgray')];
 % There are 20 subjects
 % ANOVA3 does not accept unbalanced data (10 males, 10 females)
 
-savedir='Results//1D_ANOVA3_2rm';
+savedir='Results\1D_ANOVA3_2rm';
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];

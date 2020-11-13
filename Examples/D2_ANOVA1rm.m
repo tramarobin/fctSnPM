@@ -22,7 +22,7 @@ effectNames={'Shoes'};
 % Data(:,3) correspond to Shoes=C3
 % Data(:,4) correspond to Shoes=C4
 
-savedir='Results//2D_ANOVA1rm';
+savedir='Results\2D_ANOVA1rm';
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=400;

@@ -17,7 +17,7 @@ effectNames={'Sex'};
 EFFET_ind{1}={'M','M','M','F','M','F','F','M','F','M','M','F','F','M','F','F','M','F','F','M'}; % same number than participants
 EFFET_rm=[]; % empty
 
-savedir='Results//1D_independantTtest';
+savedir='Results\1D_independantTtest';
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];

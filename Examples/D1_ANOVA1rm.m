@@ -19,7 +19,7 @@ EFFET_rm{1}={'RC60','RC180','RFKF','RFKE'};
 colorLine{1}=[rgb('green'); rgb('blue'); rgb('red'); rgb('black')];
 % There are 20 subjects
 
-savedir='Results//1D_ANOVA1rm';
+savedir='Results\1D_ANOVA1rm';
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];
