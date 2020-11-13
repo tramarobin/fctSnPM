@@ -24,7 +24,8 @@ fctSPM(data, independantEffects, repeatedMeasuresEffects, varargin)
 Example: more subjects in Group 1 than in Group 2.
 Please interpret results for these designs with caution, and recognize that they might not be valid.
 - Post-hoc tests with Bonferonni correction are only approximate.
-- Effect sizes and confidence intervals are not validated and are just given as supplementary information
+- Somes warnings are displayed is the number of iterations is automatically modified or not sufficiant to perform the analysis with the defined alpha risk.
+- Effect sizes and confidence intervals are not validated and are just given as supplementary information.
 - For more information, please visit : https://spm1d.org/Documentation.html
 
 ### Caution ###
