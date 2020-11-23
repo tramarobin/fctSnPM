@@ -1,7 +1,7 @@
 # fctSPM [![View fctSPM on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/77945-fctspm)
-Using spm1d package (v.0.4.3), compute ANOVA and post-hoc tests from anova1 to anova3rm, with a non-parametric approach (permutation tests)
+Using spm1d package (v.0.4.3), computes ANOVA and post-hoc tests from anova1 to anova3rm, with a non-parametric approach (permutation tests).
 The type of anova (if required) and post-hoc are choosen regarding the independant or repeated measure effects given in parameters.
-The function automatically adapts to 1D and 2D data
+The function automatically adapts to 1D and 2D data.
 
 The general usage is:
 ```matlab
@@ -137,7 +137,7 @@ Specified either multiIterations or IT, but not both.
 * `alphaT` is the original alpha used for post hoc tests (Bonferonni correction is applied after as alphaT/number of comparisons. Default is 0.05. @isnumeric. (changes are not recommended)
 * `nT` is the number of post hoc tests performed (override the alphaT - not recommended). @isnumeric.    
 Specified either alphaT or nT, but not both.
-* `doAllInteractions` By default, all post hoc tested are made even if ANOVA did not revealed interaction. Use 0 to performed only post-hoc were interaction was found. @isnumeric.
+* `doAllInteractions` By default, all post hoc tested are made even if ANOVA did not revealed interaction. Use 0 to performed only post-hoc when interaction was found. @isnumeric.
 * `ignoreAnova` By default, consider the ANOVA significant location to interpret post-hoc. Use 1 to interpret only post-hoc tests (not recommended). @isnumeric.
 
 
@@ -154,7 +154,7 @@ Specified either samplefrequency or xlimits, but not both.
 * `nTicksY` is the number of yticks displayed. @isnumeric.
 * `imageresolution` is the resolution in ppp of the tiff images. Default is 300ppp. @isnumeric.
 * `imageSize` is the size of the image in cm. y default the unit is normalized [0 0 1 1]. @isnumeric (e.g., X creates X by X cm images, [X Y] creates X by Y cm images.
-* `imageFontSize` is the font size of images. @isnumeric.
+* `imageFontSize` is the font size of images. Default is 12. @isnumeric.
 
 #### 2D plot parameters ####
 These option are specific to 2D plots.
