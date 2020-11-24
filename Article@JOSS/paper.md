@@ -33,6 +33,6 @@ The function we propose meets two objectives. 1) to allow statistical inferences
 To interpret the results, figures directly usable for presentations and/or articles are created and highly customizable according to the input parameters. Numerous figures are also created in addition, including absolute and relative differences, effect sizes with confidence intervals, and the raw value of the statistical test and its threshold.
 A Matlab (.mat) file is also generated for each test family to find the number of permutations, the significant areas, the statistical thresholds, and the data used to recreate the figures. Many parameters also exist in the function to customize the figures.
 
-This function was already used in '@Trama:2020' to compare soft-tissue and muscle vibrations of the *vastus lateralis*. It is currently used to assess alterations of soft-tissue vibrations caused by mountain ultra-marathons, the effect of the pedalling phase on *quadriceps* soft-tissue vibrations, and alterations of isokinetic torque after ACL operation and rehabilitation.
+This function was already used in @Trama:2020 to compare soft-tissue and muscle vibrations of the *vastus lateralis*. It is currently used to assess alterations of soft-tissue vibrations caused by mountain ultra-marathons, the effect of the pedalling phase on *quadriceps* soft-tissue vibrations, and alterations of isokinetic torque after ACL operation and rehabilitation.
 
 # References
