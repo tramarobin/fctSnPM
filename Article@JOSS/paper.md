@@ -21,12 +21,12 @@ date: 06 November 2020
 bibliography: paper.bib
 ---
 # Summary
-Statistical Parametric Mapping (SPM) is a statistical method originally used in neuroimaging developed in the early 90's in biomedical imaging, allowing to determine which brain zones were solicited during a functional MRI [@Friston:1995]. Originally developed for a three dimensional analysis, the portability of this method to the analysis of vectors or matrices was made possible thanks to TC. Pataky whom allows to perform statistical inference on curves (vectors - 1D) or maps (matrices - 2D) [@Pataky:2010].
+Statistical Parametric Mapping (SPM) is a statistical method originally used in neuroimaging developed in the early 90's in biomedical imaging, allowing to determine which brain zones were solicited during a functional MRI [@Friston:1995]. Originally developed for a three dimensional analysis, the portability of this method to the analysis of vectors or matrices was made possible thanks to @Pataky:2010 whom allows to perform statistical inference on curves (vectors - 1D) or maps (matrices - 2D).
 
 As in "classical" statistics on scalar values (0D), there is a parametric and a non-parametric approach to the SPM method. While the parametric method is based on random gaussian fields, the non-parametric method is based on label permutation tests [@Nichols:2002], and thus, on re-sampling and randomness to make statistical inference. The main advantage of the non-parametric approach is that a gaussian distribution of the data is not required, making possible it to work with both curves and maps.
 
 # Statement of need
-This approach was proposed, coded, and put online by Todd Pataky (https://github.com/0todd0000/spm1dmatlab). However, the use of the proposed functions does not allow the analysis of 2D data automatically. Moreover, a rather frequent error is to consider only the significance of the last statistical test performed, and not the intersection between the post-hoc tests and the ANOVA. Indeed, a difference between two samples can be significant if, and only if the ANOVA is significant in the same areas.
+This approach was proposed, coded, and put online by TC. Pataky (https://github.com/0todd0000/spm1dmatlab). However, the use of the proposed functions does not allow the analysis of 2D data automatically. Moreover, a rather frequent error is to consider only the significance of the last statistical test performed, and not the intersection between the post-hoc tests and the ANOVA. Indeed, a difference between two samples can be significant if, and only if the ANOVA is significant in the same areas.
 
 # fctSPM
 The function we propose meets two objectives. 1) to allow statistical inferences on curves and maps with a standardized format and 2) to simplify analyses by comparing means while considering intersections with tests performed upstream (ANOVA and post-hoc of main effects).
