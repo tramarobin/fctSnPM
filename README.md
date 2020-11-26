@@ -31,8 +31,8 @@ Please interpret results for these designs with caution, and recognize that they
 ### Caution ###
 - Avoid the same typo (e.g., POST, POST2) for the effect names, it affects the recognition for the multiples comparisons 
 - Avoid underscore (_) or minus (-) sign. Spaces are OK
-- Avoid '/' and use '\\' when defining a saving directory ('savedir' option)
-- Once you are ok with the created figure, increase the number of iterations ('multiIT' or 'IT' options) to achieve numerical stability. 1000 iterations are a good start but if your hardware allows it, the more is the better
+- Avoid '/' and use '\\' when defining a saving directory (`savedir` option)
+- Once you are ok with the created figure, increase the number of iterations (`multiIT` or `IT` options) to achieve numerical stability. 1000 iterations are a good start but if your hardware allows it, the more is the better
 
 ## Why fctSPM ##
 fctSPM allows MATLAB users to create figures of 1D and 2D SPM analysis for ANOVA and post-hoc designs.    
