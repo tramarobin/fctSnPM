@@ -6,7 +6,6 @@ mkdir([savedir '\DIFF'])
 mkdir([savedir '\ES'])
 mkdir([savedir '\SPM'])
 mkdir([savedir '\SD'])
-mkdir([savedir '\GROUPED'])
 
 
 end

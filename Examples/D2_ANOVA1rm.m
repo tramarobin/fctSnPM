@@ -1,4 +1,4 @@
-% This function takes ~30 seconds on i5 processor and files takes 61 Mo of
+% This function takes ~50 seconds on i5 processor and files takes 434 Mo of
 % storage
 
 clear
@@ -31,6 +31,8 @@ limitMeanMaps=12;
 ylimits=[15 200];
 
 % SPM
+cbrewer('sequential','Reds', 8)
+tic
 fctSPM(DATA,EFFET_ind,EFFET_rm,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
@@ -38,5 +40,5 @@ fctSPM(DATA,EFFET_ind,EFFET_rm,...
     'sampleFrequency',Fs,'colorbarLabel',colorbarLabel,...
     'limitMeanMaps',limitMeanMaps,...
     'ylimits',ylimits);
-
+toc
 

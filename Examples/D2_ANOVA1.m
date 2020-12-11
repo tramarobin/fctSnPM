@@ -1,4 +1,4 @@
-% This function takes ~15 seconds on i5 processor and files takes 35 Mo of
+% This function takes ~32 seconds on i5 processor and files takes 220 Mo of
 % storage
 
 clear
@@ -15,7 +15,7 @@ DATA=ExampleDatas.ACCELECHO;
 % parameters
 EFFET_ind{1}={'L','L','L','L','L','L','L','M','M','M','M','S','S','S','S'}; % same number than participants
 EFFET_rm=[];
-effectNames={'Groupe'};
+effectNames={'Group'};
 % There is 15 subjects
 % Subjects 1 to 7 are 'L', 8 to 11 are 'M', and 12 to 15 are 'S'
 % ANOVA1 accepts unbalanced data
@@ -30,6 +30,7 @@ limitMeanMaps=10;
 ylimits=[10 130];
 
 % SPM
+tic
 fctSPM(DATA,EFFET_ind,EFFET_rm,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
@@ -37,5 +38,5 @@ fctSPM(DATA,EFFET_ind,EFFET_rm,...
     'sampleFrequency',Fs,'colorbarLabel',colorbarLabel,...
     'limitMeanMaps',limitMeanMaps,...
     'ylimits',ylimits);
-
+toc
 

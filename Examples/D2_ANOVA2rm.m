@@ -1,4 +1,4 @@
-% This function takes ~30 seconds on i5 processor and files takes 81 Mo of
+% This function takes ~60 seconds on i5 processor and files takes 130 Mo of
 % storage
 
 clear
@@ -30,9 +30,10 @@ Fs=500;
 colorbarLabel='Amplitude (m\cdots^-^2)';
 limitMeanMaps=12;
 ylimits=[10 130];
-mIT=1000;
+mIT=20;
 
 % SPM
+tic
 fctSPM(DATA,EFFET_ind,EFFET_rm,...
     'savedir',savedir,'multiIT',mIT,...
     'effectsNames',effectNames,...
@@ -41,4 +42,4 @@ fctSPM(DATA,EFFET_ind,EFFET_rm,...
     'limitMeanMaps',limitMeanMaps,...
     'ylimits',ylimits,'imagesize',[15 10]);
 
-
+toc

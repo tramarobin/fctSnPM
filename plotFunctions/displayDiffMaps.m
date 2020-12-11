@@ -30,6 +30,9 @@ if ~isempty(limitMeanMaps)
     else
         caxis([-diffRatio*limitMeanMaps(2) diffRatio*limitMeanMaps(2)]);
     end
+    
+else 
+    caxis([-max(max(abs(map))) max(max(abs(map)))]);
 end
 
 if ~isempty(ylimits)

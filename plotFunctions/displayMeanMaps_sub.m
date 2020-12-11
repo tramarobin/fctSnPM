@@ -6,10 +6,10 @@
 %% OUTPUT
 % Figure of the anova results
 
-function []=displayMeanMaps_sub(map,Fs,limitMeanMaps)
+function []=displayMeanMaps_sub(map,Fs,limitMeanMaps,colorMap)
 
 imagesc(flipud(map))
-colormap(jet)
+colormap(colorMap)
 if ~isempty(limitMeanMaps)
     if numel(limitMeanMaps)==1
         caxis([0 limitMeanMaps]);

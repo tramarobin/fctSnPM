@@ -1,4 +1,4 @@
-function []=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,contourColor,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nx,ny,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalIT,doAllInteractions,dashedColor,transparency,lineWidth,imageFontSize,imageSize,colorMap,diffRatio,relativeRatio,alphaT,nT,linestyle)
+function []=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,contourColor,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nx,ny,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalIT,doAllInteractions,dashedColor,transparency,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,nT,linestyle)
 close all
 if isempty(nx)
     nx=5;
@@ -24,7 +24,6 @@ if nEffects==1
     positionDiffPlot=[];
     positionSPMPlot=[];
     f1=figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
-    f2=figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
     
     for i=1:nCombi
         
@@ -50,8 +49,8 @@ if nEffects==1
         
         % subplot
         set(0, 'currentfigure', f1);
-        subplot(nCombi,nCombi,nCombi*(i-1)+i)
-        displayMeanMaps_sub(meansData,Fs,limitMeanMaps)
+        subplot(nCombi,nCombi,nCombi*(i-1)+i);
+        displayMeanMaps_sub(meansData,Fs,limitMeanMaps,colorMap)
         title([char(modalitiesAll{1}(combi{i}(1)))])
         
     end
@@ -127,7 +126,7 @@ if nEffects==1
         mapsContour{comp}=reshape(mapsContour{comp},dimensions(1),dimensions(2));
         
         % full plot of difference
-        displayDiffMaps(differencesData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap,diffRatio)
+        displayDiffMaps(differencesData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMapDiff,diffRatio)
         if displayContour
             dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
         end
@@ -135,7 +134,7 @@ if nEffects==1
         print('-dtiff',imageResolution,verifSaveName([savedir  eNames{1} '\DIFF\' namesDifferences{comp}]))
         close
         
-        displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap,relativeRatio)
+        displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff,relativeRatio)
         if displayContour
             dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
         end
@@ -145,14 +144,14 @@ if nEffects==1
         
         % subplot of differences
         set(0, 'currentfigure', f1);
-        subplot(nCombi,nCombi,positionDiffPlot(comp))
-        displayDiffMaps_sub(differencesData,Fs,limitMeanMaps,diffRatio)
+        ax=subplot(nCombi,nCombi,positionDiffPlot(comp));
+        displayDiffMaps_sub(differencesData,Fs,limitMeanMaps,diffRatio,colorMapDiff,ax)
         if displayContour
             dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
         end
         
         % full plot of spm analysis
-        displayTtest(mapsT{1,comp},Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
+        displayTtest(mapsT{1,comp},Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
         if displayContour
             dispContour(abs(mapsT{1,comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
         end
@@ -161,9 +160,9 @@ if nEffects==1
         close
         
         % subplot of spm analysis
-        set(0, 'currentfigure', f2);
-        subplot(nCombi,nCombi,positionSPMPlot(comp))
-        displayTtest_sub(mapsT{1,comp},Tthreshold{comp},Fs)
+        set(0, 'currentfigure', f1);
+        ax=subplot(nCombi,nCombi,positionSPMPlot(comp));
+        displayTtest_sub(mapsT{1,comp},Tthreshold{comp},Fs,colorMapDiff,ax)
         
         %     cohen's d
         displayMapsES(ES{comp},Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
@@ -178,11 +177,9 @@ if nEffects==1
     
     % save
     set(0, 'currentfigure', f1);
-    print('-dtiff',imageResolution,verifSaveName([savedir  eNames{1} '\GROUPED\' eNames{1}]))
+    print('-dtiff',imageResolution,verifSaveName([savedir  eNames{1} '\\' eNames{1}]))
     close
-    set(0, 'currentfigure', f2);
-    print('-dtiff',imageResolution,verifSaveName([savedir  eNames{1} '\GROUPED\' eNames{1} ' SPM']))
-    close
+    
     
     save([savedir  eNames{1}], 'mapsT', 'mapsContour' , 'Tthreshold', 'namesDifferences', 'mapsDifferences','mapsConditions','namesConditions','testTtests','ES')
     clear mapsContour ES mapsT Tthreshold namesDifferences Comp combi namesConditions mapsDifferences mapsConditions testTtests isPlot
@@ -210,7 +207,6 @@ if nEffects==2
         positionDiffPlot=[];
         positionSPMPlot=[];
         f1=figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
-        f2=figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
         
         for i=1:nCombi
             % means
@@ -236,7 +232,7 @@ if nEffects==2
             % subplot
             set(0, 'currentfigure', f1);
             subplot(nCombi,nCombi,nCombi*(i-1)+i)
-            displayMeanMaps_sub(meansData,Fs,limitMeanMaps)
+            displayMeanMaps_sub(meansData,Fs,limitMeanMaps,colorMap)
             title([char(modalitiesAll{mainEffect(1)}(combi{i}(1)))])
             
         end
@@ -312,7 +308,7 @@ if nEffects==2
             mapsContour{comp}=reshape(mapsContour{comp},dimensions(1),dimensions(2));
             
             % full plot of differences
-            displayDiffMaps(differencesData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap,diffRatio)
+            displayDiffMaps(differencesData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMapDiff,diffRatio)
             if displayContour
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
@@ -320,7 +316,7 @@ if nEffects==2
             print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\DIFF\' namesDifferences{comp}]))
             close
             
-            displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap,relativeRatio)
+            displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff,relativeRatio)
             if displayContour
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
@@ -330,14 +326,14 @@ if nEffects==2
             
             % subplot of differences
             set(0, 'currentfigure', f1);
-            subplot(nCombi,nCombi,positionDiffPlot(comp))
-            displayDiffMaps_sub(differencesData,Fs,limitMeanMaps,diffRatio)
+            ax=subplot(nCombi,nCombi,positionDiffPlot(comp));
+            displayDiffMaps_sub(differencesData,Fs,limitMeanMaps,diffRatio,colorMapDiff,ax)
             if displayContour
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
             end
             
             %  full plot of spm analysis
-            displayTtest(mapsT{1,comp},Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
+            displayTtest(mapsT{1,comp},Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
             if displayContour
                 dispContour(abs(mapsT{1,comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
@@ -355,18 +351,15 @@ if nEffects==2
             close
             
             % subplot of spm analysis
-            set(0, 'currentfigure', f2);
-            subplot(nCombi,nCombi,positionSPMPlot(comp))
-            displayTtest_sub(mapsT{1,comp},Tthreshold{comp},Fs)
+            set(0, 'currentfigure', f1);
+            ax=subplot(nCombi,nCombi,positionSPMPlot(comp));
+            displayTtest_sub(mapsT{1,comp},Tthreshold{comp},Fs,colorMapDiff,ax)
             
         end
         
         % save
         set(0, 'currentfigure', f1);
-        print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\GROUPED\' eNames{mainEffect(1)}]))
-        close
-        set(0, 'currentfigure', f2);
-        print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\GROUPED\' eNames{mainEffect(1)} ' SPM']))
+        print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\\' eNames{mainEffect(1)}]))
         close
         
         mainForInteraction{mainEffect}=mapsT(2,:);
@@ -398,7 +391,6 @@ if nEffects==3
         positionDiffPlot=[];
         positionSPMPlot=[];
         f1=figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
-        f2=figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
         for i=1:nCombi
             
             % means
@@ -426,7 +418,7 @@ if nEffects==3
             % subplot of means
             set(0, 'currentfigure', f1);
             subplot(nCombi,nCombi,nCombi*(i-1)+i)
-            displayMeanMaps_sub(meansData,Fs,limitMeanMaps)
+            displayMeanMaps_sub(meansData,Fs,limitMeanMaps,colorMap)
             title([char(modalitiesAll{mainEffect(1)}(combi{i}(1)))])
             
         end
@@ -499,7 +491,7 @@ if nEffects==3
             mapsContour{comp}=reshape(mapsContour{comp},dimensions(1),dimensions(2));
             
             % full plot of differences
-            displayDiffMaps(differencesData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap,diffRatio)
+            displayDiffMaps(differencesData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMapDiff,diffRatio)
             if displayContour
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
@@ -507,7 +499,7 @@ if nEffects==3
             print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\DIFF\' namesDifferences{comp}]))
             close
             
-            displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap,relativeRatio)
+            displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff,relativeRatio)
             if displayContour
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
@@ -517,14 +509,14 @@ if nEffects==3
             
             % subplot of differences
             set(0, 'currentfigure', f1);
-            subplot(nCombi,nCombi,positionDiffPlot(comp))
-            displayDiffMaps_sub(differencesData,Fs,limitMeanMaps,diffRatio)
+            ax=subplot(nCombi,nCombi,positionDiffPlot(comp));
+            displayDiffMaps_sub(differencesData,Fs,limitMeanMaps,diffRatio,colorMapDiff,ax)
             if displayContour
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
             end
             
             %  full plot of spm analysis
-            displayTtest(mapsT{1,comp},Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
+            displayTtest(mapsT{1,comp},Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
             if displayContour
                 dispContour(abs(mapsT{1,comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
@@ -542,18 +534,15 @@ if nEffects==3
             close
             
             % subplot of spm analysis
-            set(0, 'currentfigure', f2);
-            subplot(nCombi,nCombi,positionSPMPlot(comp))
-            displayTtest_sub(mapsT{1,comp},Tthreshold{comp},Fs)
+            set(0, 'currentfigure', f1);
+            ax=subplot(nCombi,nCombi,positionSPMPlot(comp));
+            displayTtest_sub(mapsT{1,comp},Tthreshold{comp},Fs,colorMapDiff,ax)
             
         end
         
         % save
         set(0, 'currentfigure', f1);
-        print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\GROUPED\' eNames{mainEffect(1)}]))
-        close
-        set(0, 'currentfigure', f2);
-        print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\GROUPED\' eNames{mainEffect(1)} ' SPM']))
+        print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} '\\' eNames{mainEffect(1)}]))
         close
         
         mainForInteraction{mainEffect}=mapsT(2,:);
@@ -578,7 +567,6 @@ if nEffects==3
                 createSavedir2dInt([savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(e)}])
             end
             mkdir([savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\SD']);
-            mkdir([savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\GROUPED']);
             
             loop=0;
             for i=1:max(indicesEffects(:,mainEffect(1)))
@@ -592,7 +580,6 @@ if nEffects==3
             positionDiffPlot=[];
             positionSPMPlot=[];
             f1=figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
-            f2=figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
             for i=1:nCombi
                 
                 % means
@@ -618,7 +605,7 @@ if nEffects==3
                 % subplot of means
                 set(0, 'currentfigure', f1);
                 subplot(nCombi,nCombi,nCombi*(i-1)+i)
-                displayMeanMaps_sub(meansData,Fs,limitMeanMaps)
+                displayMeanMaps_sub(meansData,Fs,limitMeanMaps,colorMap)
                 title([char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' \cap ' char(modalitiesAll{mainEffect(2)}(combi{i}(2)))])
                 
             end
@@ -703,7 +690,7 @@ if nEffects==3
                 mapsContour{comp}(find(mapsT{2,comp}==1))=1.1*Tthreshold{comp};
                 
                 % full plot of differences
-                displayDiffMaps(differencesData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap,diffRatio)
+                displayDiffMaps(differencesData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMapDiff,diffRatio)
                 if displayContour
                     dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
                 end
@@ -711,7 +698,7 @@ if nEffects==3
                 print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} '\' eNames{mainEffect(eTested)} '\DIFF\' namesDifferences{comp}]))
                 close
                 
-                displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap,relativeRatio)
+                displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff,relativeRatio)
                 if displayContour
                     dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
                 end
@@ -722,14 +709,14 @@ if nEffects==3
                 
                 % subplot of differences
                 set(0, 'currentfigure', f1);
-                subplot(nCombi,nCombi,positionDiffPlot(isPlot(comp)))
-                displayDiffMaps_sub(differencesData,Fs,limitMeanMaps,diffRatio)
+                ax=subplot(nCombi,nCombi,positionDiffPlot(isPlot(comp)));
+                displayDiffMaps_sub(differencesData,Fs,limitMeanMaps,diffRatio,colorMapDiff,ax)
                 if displayContour
                     dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
                 end
                 
                 %  full plot of spm analysis
-                displayTtest(mapsT{1,comp},Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
+                displayTtest(mapsT{1,comp},Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
                 if displayContour
                     dispContour(abs(mapsT{1,comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
                 end
@@ -747,22 +734,15 @@ if nEffects==3
                 close
                 
                 % subplot of spm analysis
-                set(0, 'currentfigure', f2);
-                subplot(nCombi,nCombi,positionSPMPlot(isPlot(comp)))
-                displayTtest_sub(mapsT{1,comp},Tthreshold{comp},Fs)
-                if displayContour
-                    set(0, 'currentfigure', f1);
-                    dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
-                end
+                set(0, 'currentfigure', f1);
+                ax=subplot(nCombi,nCombi,positionSPMPlot(isPlot(comp)));
+                displayTtest_sub(mapsT{1,comp},Tthreshold{comp},Fs,colorMapDiff,ax)
                 
             end
             
             % save
             set(0, 'currentfigure', f1);
-            print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}   '\GROUPED\' eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]))
-            close
-            set(0, 'currentfigure', f2);
-            print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}   '\GROUPED\' eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)} ' SPM']))
+            print('-dtiff',imageResolution,verifSaveName([savedir  eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}   '\\' eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]))
             close
             
             intForInteractions{anovaFixedCorr(eff_fixed)}.t=realEffect;
@@ -794,7 +774,7 @@ if nEffects>1
         end
         figname=[eNames{1} ' x ' eNames{2} ' x ' eNames{3}];
     end
-    mkdir([savedir savedir2 '\SD']);mkdir([savedir savedir2 '\GROUPED'])
+    mkdir([savedir savedir2 '\SD']);
     
     if isInteraction==1 | doAllInteractions==1
         
@@ -802,7 +782,6 @@ if nEffects>1
         positionDiffPlot=[];
         positionSPMPlot=[];
         f1=figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
-        f2=figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
         
         % number of combinations + plot of each
         if nEffects==2
@@ -843,7 +822,7 @@ if nEffects>1
                 % subplot of means
                 set(0, 'currentfigure', f1);
                 subplot(nCombi,nCombi,nCombi*(i-1)+i)
-                displayMeanMaps_sub(meansData,Fs,limitMeanMaps)
+                displayMeanMaps_sub(meansData,Fs,limitMeanMaps,colorMap)
                 title([char(modalitiesAll{1}(combi{i}(1))) ' \cap ' char(modalitiesAll{2}(combi{i}(2)))])
                 
             end
@@ -887,7 +866,7 @@ if nEffects>1
                 % subplot of means
                 set(0, 'currentfigure', f1);
                 subplot(nCombi,nCombi,nCombi*(i-1)+i)
-                displayMeanMaps_sub(meansData,Fs,limitMeanMaps)
+                displayMeanMaps_sub(meansData,Fs,limitMeanMaps,colorMap)
                 title([char(modalitiesAll{1}(combi{i}(1))) ' \cap ' char(modalitiesAll{2}(combi{i}(2))) ' \cap '  char(modalitiesAll{3}(combi{i}(3)))])
                 
             end
@@ -999,7 +978,7 @@ if nEffects>1
             mapsContour{comp}(find(mapsT{2,comp}==1))=1.1*Tthreshold{comp};
             
             %  full plot of spm analysis
-            displayTtest(mapsT{1,comp},Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
+            displayTtest(mapsT{1,comp},Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
             if displayContour
                 dispContour(abs(mapsT{1,comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
@@ -1008,7 +987,7 @@ if nEffects>1
             close
             
             % full plot of differences
-            displayDiffMaps(differencesData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap,diffRatio)
+            displayDiffMaps(differencesData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMapDiff,diffRatio)
             if displayContour
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
@@ -1016,7 +995,7 @@ if nEffects>1
             print('-dtiff',imageResolution,verifSaveName([savedir savedir2 '\' eNames{testedEffect{comp}} '\DIFF\' namesDifferences{comp}]))
             close
             
-            displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap,relativeRatio)
+            displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff,relativeRatio)
             if displayContour
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
@@ -1034,14 +1013,14 @@ if nEffects>1
             close
             
             % subplot of spm analysis
-            set(0, 'currentfigure', f2);
-            subplot(nCombi,nCombi,positionSPMPlot(isPlot(comp)))
-            displayTtest_sub(mapsT{1,comp},Tthreshold{comp},Fs)
+            set(0, 'currentfigure', f1);
+            ax=subplot(nCombi,nCombi,positionSPMPlot(isPlot(comp)));
+            displayTtest_sub(mapsT{1,comp},Tthreshold{comp},Fs,colorMapDiff,ax)
             
             % subplot of differences
             set(0, 'currentfigure', f1);
-            subplot(nCombi,nCombi,positionDiffPlot(isPlot(comp)))
-            displayDiffMaps_sub(differencesData,Fs,limitMeanMaps,diffRatio)
+            ax=subplot(nCombi,nCombi,positionDiffPlot(isPlot(comp)));
+            displayDiffMaps_sub(differencesData,Fs,limitMeanMaps,diffRatio,colorMapDiff,ax)
             if displayContour
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
             end
@@ -1050,10 +1029,7 @@ if nEffects>1
         
         % save
         set(0, 'currentfigure', f1);
-        print('-dtiff',imageResolution,verifSaveName([savedir savedir2 '\GROUPED\' figname]))
-        close
-        set(0, 'currentfigure', f2);
-        print('-dtiff',imageResolution,verifSaveName([savedir savedir2 '\GROUPED\' figname ' SPM']))
+        print('-dtiff',imageResolution,verifSaveName([savedir savedir2 '\\' figname]))
         close
         
         save([savedir figname], 'mapsT', 'mapsContour' , 'Tthreshold', 'namesDifferences', 'mapsDifferences','mapsConditions','namesConditions','testTtests','ES')

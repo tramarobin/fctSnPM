@@ -1,4 +1,4 @@
-% This function takes ~180 seconds on i5 processor and files takes 520 Mo
+% This function takes ~305 seconds on i5 processor and files takes 4Go
 % of storage
 
 clear
@@ -34,6 +34,7 @@ limitMeanMaps=12;
 ylimits=[10 130];
 
 % SPM
+tic
 fctSPM(DATA,EFFET_ind,EFFET_rm,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
@@ -41,5 +42,5 @@ fctSPM(DATA,EFFET_ind,EFFET_rm,...
     'sampleFrequency',Fs,'colorbarLabel',colorbarLabel,...
     'limitMeanMaps',limitMeanMaps,...
     'ylimits',ylimits);
-
+toc
 

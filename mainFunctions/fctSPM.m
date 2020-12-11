@@ -106,7 +106,8 @@ addParameter(p,'imageFontSize',12,@isnumeric) % font size of images
 addParameter(p,'ylimits',[],@isnumeric); % change yticks to correspond to the specified range
 
 % 2d plot parameters
-addParameter(p,'colorMap',jet) % colormap used for means and differences plot
+addParameter(p,'colorMap',cbrewer('seq','Reds', 64)) % colormap used for means and ANOVA and ES plots (0 to positive)
+addParameter(p,'colorMapDiff',cbrewer('div','RdBu', 64)) % colormap used for differences and SPM plot (0 centered)
 addParameter(p,'colorbarLabel','',@ischar); % name of the colorbar label
 addParameter(p,'limitMeanMaps',[],@isnumeric); % limit of the colorbar. the value of X will make the colorbar going from 0 to X for all plots (easier to compare). If not specified, the maps wont necessery be with the same range but will be automatically scaled
 addParameter(p,'displaycontour',1,@isnumeric); % display contour map on differences and size effect maps (0 to not display)
@@ -158,6 +159,7 @@ lineWidth=p.Results.lineWidth;
 imageSize=p.Results.imageSize;
 imageFontSize=p.Results.imageFontSize;
 colorMap=p.Results.colorMap;
+colorMapDiff=p.Results.colorMapDiff;
 diffRatio=p.Results.diffRatio;
 relativeRatio=p.Results.relativeRatio;
 ignoreAnova=p.Results.ignoreAnova;
@@ -186,7 +188,7 @@ end
 if min(dimensions)==1 %1D
     fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,nT,transparancy1D,ratioSPM,yLimitES,spmPos,aovColor);
 else %2D
-    fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,contourColor,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalIT,doAllInteractions,dashedColor,transparancy,lineWidth,imageFontSize,imageSize,colorMap,diffRatio,relativeRatio,alphaT,nT,linestyle);
+    fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,contourColor,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalIT,doAllInteractions,dashedColor,transparancy,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,nT,linestyle);
 end
 
 
