@@ -159,7 +159,7 @@ Specified either samplefrequency or xlimits, but not both.
 #### 2D plot parameters ####
 These option are specific to 2D plots.
   
-* `colorMap` is the colormap used for means, stadard deviations, ANOVA and effect sizes plots. Default is cbrewer('Reds').
+* `colorMap` is the colormap used for means, standard deviations, ANOVA and effect sizes plots. Default is cbrewer('Reds').
 * `colorMapDiff` is the colormap used for differences, relative differences and post-hoc spm plots. Default is cbrewer('RdBu').
   
 Colormaps can be defined with cbrewer (included in this funtion): Charles (2020). cbrewer : colorbrewer schemes for Matlab (https://www.mathworks.com/matlabcentral/fileexchange/34087-cbrewer-colorbrewer-schemes-for-matlab), MATLAB Central File Exchange. Retrieved December 11, 2020.
