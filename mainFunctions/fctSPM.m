@@ -107,7 +107,7 @@ addParameter(p,'ylimits',[],@isnumeric); % change yticks to correspond to the sp
 
 % 2d plot parameters
 addParameter(p,'colorMap',cbrewer('seq','Reds', 64)) % colormap used for means and ANOVA and ES plots (0 to positive)
-addParameter(p,'colorMapDiff',cbrewer('div','RdBu', 64)) % colormap used for differences and SPM plot (0 centered)
+addParameter(p,'colorMapDiff',flipud(cbrewer('div','RdBu', 64))) % colormap used for differences and SPM plot (0 centered)
 addParameter(p,'colorbarLabel','',@ischar); % name of the colorbar label
 addParameter(p,'limitMeanMaps',[],@isnumeric); % limit of the colorbar. the value of X will make the colorbar going from 0 to X for all plots (easier to compare). If not specified, the maps wont necessery be with the same range but will be automatically scaled
 addParameter(p,'displaycontour',1,@isnumeric); % display contour map on differences and size effect maps (0 to not display)
