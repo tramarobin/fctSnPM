@@ -158,6 +158,7 @@ if allSignificant>0
         loop=loop-1;
         yTlab{loop}=eNames{c};
         clusters=find(abs(diff(anovaEffects{c}))==1)';
+        clusters=transposeColmunIfNot(clusters);
         clusters=[0;clusters;max(size(anovaEffects{c}))];
         for t=1:size(clusters,1)-1
             timeCluster=time(clusters(t)+1:clusters(t+1));
@@ -191,6 +192,7 @@ if allSignificant>0
         end
         
         clusters=find(abs(diff(tTest{c}'))==1)';
+        clusters=transposeColmunIfNot(clusters);
         clusters=[0;clusters;max(size(tTest{c}))];
         for t=1:size(clusters,1)-1
             timeCluster=time(clusters(t)+1:clusters(t+1));

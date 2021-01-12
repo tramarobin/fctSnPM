@@ -24,6 +24,7 @@ if dimensions(1)==1 | dimensions(2)==1 %1D
     hline(0,'linetype','--r')
     
     clusters=find(abs(diff(anovaEffects'))==1)';
+    clusters=transposeColmunIfNot(clusters);
     clusters=[0;clusters;max(size(mapT))];
     legendDone=0;
     for t=1:size(clusters,1)-1

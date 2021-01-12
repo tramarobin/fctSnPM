@@ -1,4 +1,4 @@
-% This function takes ~305 seconds on i5 processor and files takes 4Go
+% This function takes ~300 seconds on i5 processor and files takes 475Mo
 % of storage
 
 clear
@@ -25,7 +25,7 @@ effectNames={'Group','Device','Activation'};
 % Data(:,3) correspond to Device=US and Activation=Contracted
 % Data(:,4) correspond to Device=US and Activation=Relaxed
 
-savedir='Results\2D_ANOVA3_2rm';
+savedir='Results/2D_ANOVA3_2rm';
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=500;
@@ -36,7 +36,7 @@ ylimits=[10 130];
 % SPM
 tic
 fctSPM(DATA,EFFET_ind,EFFET_rm,...
-    'savedir',savedir,...
+    'savedir',savedir,'imageResolution',100,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...
     'sampleFrequency',Fs,'colorbarLabel',colorbarLabel,...

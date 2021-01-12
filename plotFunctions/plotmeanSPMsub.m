@@ -90,20 +90,20 @@ for i=1:nx
 end
 xticklabels(xlabs)
 xl = xlim;
- if ~isempty(spmPos)
-        xlabel(xlab)
+if ~isempty(spmPos)
+    xlabel(xlab)
+else
+    if isempty(IC)
+        title('Means \pm standard deviation')
     else
-        if isempty(IC)
-            title('Means \pm standard deviation')
+        if IC==0
+            title('Means \pm SEM')
         else
-            if IC==0
-                title('Means \pm SEM')
-            else
-                title(['Means \pm IC' num2str(100*IC) '%'])
-            end
+            title(['Means \pm IC' num2str(100*IC) '%'])
         end
- end
-    
+    end
+end
+
 legend(legendPlot,'Location','best','box','off')
 
 if ~isempty(ylimits)
@@ -153,6 +153,7 @@ if allSignificant>0
         loop=loop-1;
         yTlab{loop}=eNames{c};
         clusters=find(abs(diff(anovaEffects{c}))==1)';
+        clusters=transposeColmunIfNot(clusters);
         clusters=[0;clusters;max(size(anovaEffects{c}))];
         for t=1:size(clusters,1)-1
             timeCluster=time(clusters(t)+1:clusters(t+1));
@@ -187,6 +188,7 @@ if allSignificant>0
         end
         
         clusters=find(abs(diff(tTest{c}'))==1)';
+        clusters=transposeColmunIfNot(clusters);
         clusters=[0;clusters;max(size(tTest{c}))];
         for t=1:size(clusters,1)-1
             timeCluster=time(clusters(t)+1:clusters(t+1));
@@ -237,6 +239,6 @@ if allSignificant>0
     y=get(gca,'ylim');
     rangeFig=diff(y);
     ylim([y(1)-0.1*rangeFig y(2)]);
-
+    
 end
 end

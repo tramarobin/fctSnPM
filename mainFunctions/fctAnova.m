@@ -12,7 +12,7 @@ if ~ignoreAnova
     else
         
         warning('off', 'MATLAB:MKDIR:DirectoryExists');
-        mkdir([savedir '\' testANOVA.name '\FIG\'])
+        mkdir([savedir '/' testANOVA.name '/FIG/'])
         
         % Verify the number of iterations
         [nWarning,iterations,alpha]=fctWarningIterationsAOV(ANOVA,alphaOriginal,multiIterations,maximalIT,IT);
@@ -40,10 +40,10 @@ if ~ignoreAnova
                 dispContour(mapsF,Fthreshold,contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             title(namesEffect)
-            print('-dtiff',imageResolution,verifSaveName([savedir '\' testANOVA.name '\' namesEffect]))
-            savefig(verifSaveName([savedir '\' testANOVA.name '\FIG\' namesEffect]))
+            print('-dtiff',imageResolution,[savedir '/' testANOVA.name '/' verifSaveName(namesEffect)])
+            savefig([savedir '/' testANOVA.name '/FIG/' verifSaveName(namesEffect)])
             close
-            save([savedir '\' testANOVA.name '\ANOVA'], 'mapsF' , 'Fthreshold', 'namesEffect','testANOVA','pAnova','clustersAnova','anovaEffects')
+            save([savedir '/' testANOVA.name '/ANOVA'], 'mapsF' , 'Fthreshold', 'namesEffect','testANOVA','pAnova','clustersAnova','anovaEffects')
             
             
             
@@ -64,13 +64,13 @@ if ~ignoreAnova
                     dispContour(mapsF{k},Fthreshold{k},contourColor,dashedColor,transparency,lineWidth,linestyle)
                 end
                 title(namesEffect{k})
-                print('-dtiff',imageResolution,verifSaveName([savedir '\' testANOVA.name '\' namesEffect{k}]))
-                savefig(verifSaveName([savedir '\' testANOVA.name '\FIG\' namesEffect{k}]))
+                print('-dtiff',imageResolution,[savedir '/' testANOVA.name '/' verifSaveName(namesEffect{k})])
+                savefig([savedir '/' testANOVA.name '/FIG/' verifSaveName(namesEffect{k})])
                 close
                 
             end
             
-            save([savedir '\' testANOVA.name '\ANOVA'], 'mapsF' , 'Fthreshold', 'namesEffect','testANOVA','pAnova','clustersAnova','anovaEffects')
+            save([savedir '/' testANOVA.name '/ANOVA'], 'mapsF' , 'Fthreshold', 'namesEffect','testANOVA','pAnova','clustersAnova','anovaEffects')
             
         end
     end

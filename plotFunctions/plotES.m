@@ -60,6 +60,7 @@ if ~isempty(yLimitES)
 end
 
 clusters=find(abs(diff(mapsT'))==1)';
+clusters=transposeColmunIfNot(clusters);
 clusters=[0;clusters;max(size(mapT))];
 for t=1:size(clusters,1)-1
     timeCluster=time(clusters(t)+1:clusters(t+1));

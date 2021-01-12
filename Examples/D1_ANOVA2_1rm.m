@@ -23,7 +23,7 @@ colorLine{1}=[rgb('blue'); rgb('magenta')];
 EFFET_rm{1}={'Right','Left'};
 colorLine{2}=[rgb('green'); rgb('red')];
 
-savedir='Results\1D_ANOVA2_1rm';
+savedir='Results/1D_ANOVA2_1rm';
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];

@@ -19,7 +19,7 @@ effectNames={'Group'};
 % There is 15 subjects
 % Subjects 1 to 8 are 'L', and 9 to 15 are 'S'
 
-savedir='Results\2D_independantTtest';
+savedir='Results/2D_independantTtest';
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=500;

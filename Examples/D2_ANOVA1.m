@@ -21,7 +21,7 @@ effectNames={'Group'};
 % ANOVA1 accepts unbalanced data
 
 
-savedir='Results\2D_ANOVA1';
+savedir='Results/2D_ANOVA1';
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=500;
