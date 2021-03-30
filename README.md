@@ -177,7 +177,7 @@ A value of X will make the colorbar going from 0 to X for all plots (easier to c
 * `relativeRatio` scales the relative differences maps at +-relativeRatio. By default, the maps wont necessary be with the same range but will be automatically scaled at their maximum.
 
 #### 1D plot parameters ####
-These option are specific to 2D plots.
+These option are specific to 1D plots.
 
 * `CI` is the confidence interval used instead of standard deviation. By default, standard deviations are displayed. @isnumeric (0.7 to 0.999 to display 70% to 99.9% condidence interval, or 0 to display SEM).
 * `colorLine` is the colorline for plots (default  is "lines"). Use rgb triplet. If in cell, apply each color to each effect (independant effect first).

@@ -39,12 +39,14 @@ if nEffects==1
         displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
         title(char(modalitiesAll{1}(combi{i}(1))))
         print('-dtiff',imageResolution,[savedir verifSaveName(eNames{1}) '/' verifSaveName(char(modalitiesAll{1}(combi{i}(1))))])
+        savefig([savedir verifSaveName(eNames{1}) '/FIG/' verifSaveName(char(modalitiesAll{1}(combi{i}(1))))])
         close
         
         % full plot sd
         displayMeanMaps(stdData,Fs,xlab,ylab,ylimits,nx,ny,[],xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
         title(char(modalitiesAll{1}(combi{i}(1))))
         print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{1}) '/SD/' verifSaveName(char(modalitiesAll{1}(combi{i}(1))))])
+        savefig([savedir verifSaveName(eNames{1}) '/FIG/SD/' verifSaveName(char(modalitiesAll{1}(combi{i}(1))))])
         close
         
         % subplot
@@ -132,6 +134,7 @@ if nEffects==1
         end
         title(namesDifferences{comp})
         print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{1}) '/DIFF/' verifSaveName(namesDifferences{comp})])
+        savefig([savedir  verifSaveName(eNames{1}) '/FIG/DIFF/' verifSaveName(namesDifferences{comp})])
         close
         
         displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff,relativeRatio)
@@ -140,6 +143,7 @@ if nEffects==1
         end
         title(namesDifferences{comp})
         print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{1}) '/DIFF/' verifSaveName(namesDifferences{comp}) ' %'])
+        savefig([savedir  verifSaveName(eNames{1}) '/FIG/DIFF/' verifSaveName(namesDifferences{comp}) ' %'])
         close
         
         % subplot of differences
@@ -157,6 +161,7 @@ if nEffects==1
         end
         title(namesDifferences{comp})
         print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{1}) '/SPM/' verifSaveName(namesDifferences{comp})])
+        savefig([savedir  verifSaveName(eNames{1}) '/FIG/SPM/' verifSaveName(namesDifferences{comp})])
         close
         
         % subplot of spm analysis
@@ -171,6 +176,7 @@ if nEffects==1
             dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
         end
         print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{1}) '/ES/' verifSaveName(namesDifferences{comp})])
+        savefig([savedir  verifSaveName(eNames{1}) '/FIG/ES/' verifSaveName(namesDifferences{comp})])
         close
         
     end
@@ -178,8 +184,8 @@ if nEffects==1
     % save
     set(0, 'currentfigure', f1);
     print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{1}) '/' verifSaveName(eNames{1})])
+    savefig([savedir  verifSaveName(eNames{1}) '/FIG/' verifSaveName(eNames{1})])
     close
-    
     
     save([savedir  verifSaveName(eNames{1})], 'mapsT', 'mapsContour' , 'Tthreshold', 'namesDifferences', 'mapsDifferences','mapsConditions','namesConditions','testTtests','ES')
     clear mapsContour ES mapsT Tthreshold namesDifferences Comp combi namesConditions mapsDifferences mapsConditions testTtests isPlot
@@ -221,12 +227,14 @@ if nEffects==2
             displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
             title(char(modalitiesAll{mainEffect(1)}(combi{i}(1))))
             print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{mainEffect(1)}) '/' verifSaveName(char(modalitiesAll{mainEffect(1)}(combi{i}(1))))])
+            savefig([savedir  verifSaveName(eNames{mainEffect(1)}) '/FIG/' verifSaveName(char(modalitiesAll{mainEffect(1)}(combi{i}(1))))])
             close
             
             % full plot of sd
             displayMeanMaps(stdData,Fs,xlab,ylab,ylimits,nx,ny,[],xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
             title(char(modalitiesAll{mainEffect(1)}(combi{i}(1))))
             print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{mainEffect(1)}) '/SD/' verifSaveName(char(modalitiesAll{mainEffect(1)}(combi{i}(1))))])
+            savefig([savedir  verifSaveName(eNames{mainEffect(1)}) '/FIG/SD/' verifSaveName(char(modalitiesAll{mainEffect(1)}(combi{i}(1))))])
             close
             
             % subplot
@@ -314,6 +322,7 @@ if nEffects==2
             end
             title(namesDifferences{comp})
             print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{mainEffect(1)}) '/DIFF/' verifSaveName(namesDifferences{comp})])
+            savefig([savedir  verifSaveName(eNames{mainEffect(1)}) '/FIG/DIFF/' verifSaveName(namesDifferences{comp})])
             close
             
             displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff,relativeRatio)
@@ -322,6 +331,7 @@ if nEffects==2
             end
             title(namesDifferences{comp})
             print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{mainEffect(1)}) '/DIFF/' verifSaveName(namesDifferences{comp}) ' %'])
+            savefig([savedir  verifSaveName(eNames{mainEffect(1)}) '/FIG/DIFF/' verifSaveName(namesDifferences{comp}) ' %'])
             close
             
             % subplot of differences
@@ -339,6 +349,7 @@ if nEffects==2
             end
             title(namesDifferences{comp})
             print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{mainEffect(1)}) '/SPM/' verifSaveName(namesDifferences{comp})])
+            savefig([savedir  verifSaveName(eNames{mainEffect(1)}) '/FIG/SPM/' verifSaveName(namesDifferences{comp})])
             close
             
             %     cohen's
@@ -348,6 +359,7 @@ if nEffects==2
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{mainEffect(1)}) '/ES/' verifSaveName(namesDifferences{comp})])
+            savefig([savedir  verifSaveName(eNames{mainEffect(1)}) '/FIG/ES/' verifSaveName(namesDifferences{comp})])
             close
             
             % subplot of spm analysis
@@ -360,6 +372,7 @@ if nEffects==2
         % save
         set(0, 'currentfigure', f1);
         print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{mainEffect(1)}) '/' verifSaveName(eNames{mainEffect(1)})])
+        savefig([savedir  verifSaveName(eNames{mainEffect(1)}) '/FIG/' verifSaveName(eNames{mainEffect(1)})])
         close
         
         mainForInteraction{mainEffect}=mapsT(2,:);
@@ -406,12 +419,14 @@ if nEffects==3
             displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
             title(char(modalitiesAll{mainEffect(1)}(combi{i}(1))))
             print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{mainEffect(1)}) '/' verifSaveName(char(modalitiesAll{mainEffect(1)}(combi{i}(1))))])
+            savefig([savedir  verifSaveName(eNames{mainEffect(1)}) '/FIG/' verifSaveName(char(modalitiesAll{mainEffect(1)}(combi{i}(1))))])
             close
             
             % full plot of sd
             displayMeanMaps(stdData,Fs,xlab,ylab,ylimits,nx,ny,[],xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
             title([char(modalitiesAll{mainEffect(1)}(combi{i}(1)))])
             print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{mainEffect(1)}) '/SD/' verifSaveName(char(modalitiesAll{mainEffect(1)}(combi{i}(1))))])
+            savefig([savedir  verifSaveName(eNames{mainEffect(1)}) '/FIG/SD/' verifSaveName(char(modalitiesAll{mainEffect(1)}(combi{i}(1))))])
             close
             
             
@@ -497,6 +512,7 @@ if nEffects==3
             end
             title(namesDifferences{comp})
             print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{mainEffect(1)}) '/DIFF/' verifSaveName(namesDifferences{comp})])
+            savefig([savedir  verifSaveName(eNames{mainEffect(1)}) '/FIG/DIFF/' verifSaveName(namesDifferences{comp})])
             close
             
             displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff,relativeRatio)
@@ -505,6 +521,7 @@ if nEffects==3
             end
             title(namesDifferences{comp})
             print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{mainEffect(1)}) '/DIFF/' verifSaveName(namesDifferences{comp}) ' %'])
+            savefig([savedir  verifSaveName(eNames{mainEffect(1)}) '/FIG/DIFF/' verifSaveName(namesDifferences{comp}) ' %'])
             close
             
             % subplot of differences
@@ -522,6 +539,7 @@ if nEffects==3
             end
             title(namesDifferences{comp})
             print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{mainEffect(1)}) '/SPM/' verifSaveName(namesDifferences{comp})])
+            savefig([savedir  verifSaveName(eNames{mainEffect(1)}) '/FIG/SPM/' verifSaveName(namesDifferences{comp})])
             close
             
             %     cohen's d
@@ -531,6 +549,7 @@ if nEffects==3
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{mainEffect(1)}) '/ES/' verifSaveName(namesDifferences{comp})])
+            savefig([savedir  verifSaveName(eNames{mainEffect(1)}) '/FIG/ES/' verifSaveName(namesDifferences{comp})])
             close
             
             % subplot of spm analysis
@@ -543,6 +562,7 @@ if nEffects==3
         % save
         set(0, 'currentfigure', f1);
         print('-dtiff',imageResolution,[savedir  verifSaveName(eNames{mainEffect(1)}) '/' verifSaveName(eNames{mainEffect(1)})])
+        savefig([savedir  verifSaveName(eNames{mainEffect(1)}) '/FIG/' verifSaveName(eNames{mainEffect(1)})])
         close
         
         mainForInteraction{mainEffect}=mapsT(2,:);
@@ -567,6 +587,7 @@ if nEffects==3
                 createSavedir2dInt([savedir  verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(e)})])
             end
             mkdir([savedir  verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/SD']);
+            mkdir([savedir  verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/FIG/SD']);
             
             loop=0;
             for i=1:max(indicesEffects(:,mainEffect(1)))
@@ -594,12 +615,14 @@ if nEffects==3
                 displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
                 title([char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' \cap ' char(modalitiesAll{mainEffect(2)}(combi{i}(2)))])
                 print('-dtiff',imageResolution,[savedir  verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName([char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' x ' char(modalitiesAll{mainEffect(2)}(combi{i}(2)))])])
+                savefig([savedir  verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/FIG/' verifSaveName([char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' x ' char(modalitiesAll{mainEffect(2)}(combi{i}(2)))])])
                 close
                 
                 % full plot of std
                 displayMeanMaps(stdData,Fs,xlab,ylab,ylimits,nx,ny,[],xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
                 title([char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' \cap ' char(modalitiesAll{mainEffect(2)}(combi{i}(2)))])
                 print('-dtiff',imageResolution,[savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/SD/' verifSaveName([char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' x ' char(modalitiesAll{mainEffect(2)}(combi{i}(2)))])])
+                savefig([savedir  verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/FIG/SD/' verifSaveName([char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' x ' char(modalitiesAll{mainEffect(2)}(combi{i}(2)))])])
                 close
                 
                 % subplot of means
@@ -696,6 +719,7 @@ if nEffects==3
                 end
                 title(namesDifferences{comp})
                 print('-dtiff',imageResolution,[savedir  verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/DIFF/' verifSaveName(namesDifferences{comp})])
+                savefig([savedir  verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/FIG/DIFF/' verifSaveName(namesDifferences{comp})])
                 close
                 
                 displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff,relativeRatio)
@@ -704,6 +728,7 @@ if nEffects==3
                 end
                 title(namesDifferences{comp})
                 print('-dtiff',imageResolution,[savedir  verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/DIFF/' verifSaveName(namesDifferences{comp}) ' %'])
+                savefig([savedir  verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/FIG/DIFF/' verifSaveName(namesDifferences{comp}) ' %'])
                 close
                 
                 
@@ -722,6 +747,7 @@ if nEffects==3
                 end
                 title(namesDifferences{comp})
                 print('-dtiff',imageResolution,[savedir  verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/SPM/' verifSaveName(namesDifferences{comp})])
+                savefig([savedir  verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/FIG/SPM/' verifSaveName(namesDifferences{comp})])
                 close
                 
                 %     cohen's d
@@ -731,6 +757,7 @@ if nEffects==3
                     dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
                 end
                 print('-dtiff',imageResolution,[savedir  verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/ES/' verifSaveName(namesDifferences{comp})])
+                savefig([savedir  verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/FIG/ES/' verifSaveName(namesDifferences{comp})])
                 close
                 
                 % subplot of spm analysis
@@ -743,6 +770,7 @@ if nEffects==3
             % save
             set(0, 'currentfigure', f1);
             print('-dtiff',imageResolution,[savedir  verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}])   '/' verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}])])
+            savefig([savedir  verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}])   '/FIG/' verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}])])
             close
             
             intForInteractions{anovaFixedCorr(eff_fixed)}.t=realEffect;
@@ -775,6 +803,7 @@ if nEffects>1
         figname=[verifSaveName([eNames{1} ' x ' eNames{2} ' x ' eNames{3}])];
     end
     mkdir([savedir savedir2 '/SD']);
+    mkdir([savedir savedir2 '/FIG/SD']);
     
     if isInteraction==1 | doAllInteractions==1
         
@@ -804,6 +833,7 @@ if nEffects>1
                     displayMeanMaps(stdData,Fs,xlab,ylab,ylimits,nx,ny,[],xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
                     title([char(modalitiesAll{1}(combi{i}(1))) ' \cap ' char(modalitiesAll{2}(combi{i}(2)))])
                     print('-dtiff',imageResolution,[savedir savedir2 '/SD/' verifSaveName([char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2)))])])
+                    savefig([savedir savedir2 '/FIG/SD/' verifSaveName([char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2)))])])
                     close
                 else
                     meansData=reshape(maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2),:),dimensions(1),dimensions(2));
@@ -817,6 +847,7 @@ if nEffects>1
                 displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
                 title([char(modalitiesAll{1}(combi{i}(1))) ' \cap ' char(modalitiesAll{2}(combi{i}(2)))])
                 print('-dtiff',imageResolution,[savedir savedir2 '/' verifSaveName([char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2)))])])
+                savefig([savedir savedir2 '/FIG/' verifSaveName([char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2)))])])
                 close
                 
                 % subplot of means
@@ -848,6 +879,7 @@ if nEffects>1
                     displayMeanMaps(stdData,Fs,xlab,ylab,ylimits,nx,ny,[],xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
                     title([char(modalitiesAll{1}(combi{i}(1))) ' \cap ' char(modalitiesAll{2}(combi{i}(2))) ' \cap '  char(modalitiesAll{3}(combi{i}(3)))])
                     print('-dtiff',imageResolution,[savedir savedir2 '/SD/' verifSaveName([char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2))) ' x '  char(modalitiesAll{3}(combi{i}(3)))])])
+                    savefig([savedir savedir2 '/FIG/SD/' verifSaveName([char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2))) ' x '  char(modalitiesAll{3}(combi{i}(3)))])])
                     close
                 else
                     meansData=reshape(maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2) & indicesEffects(:,3)==combi{i}(3),:),dimensions(1),dimensions(2));
@@ -861,6 +893,7 @@ if nEffects>1
                 displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
                 title([char(modalitiesAll{1}(combi{i}(1))) ' \cap ' char(modalitiesAll{2}(combi{i}(2))) ' \cap '  char(modalitiesAll{3}(combi{i}(3)))])
                 print('-dtiff',imageResolution,[savedir savedir2 '/' verifSaveName([char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2))) ' x '  char(modalitiesAll{3}(combi{i}(3)))])])
+                savefig([savedir savedir2 '/FIG/' verifSaveName([char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2))) ' x '  char(modalitiesAll{3}(combi{i}(3)))])])
                 close
                 
                 % subplot of means
@@ -984,6 +1017,7 @@ if nEffects>1
             end
             title(namesDifferences{comp})
             print('-dtiff',imageResolution,[savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/SPM/' verifSaveName(namesDifferences{comp})])
+            savefig([savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/FIG/SPM/' verifSaveName(namesDifferences{comp})])
             close
             
             % full plot of differences
@@ -993,6 +1027,7 @@ if nEffects>1
             end
             title(namesDifferences{comp})
             print('-dtiff',imageResolution,[savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}}) '/DIFF/' verifSaveName(namesDifferences{comp})])
+            savefig([savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/FIG/DIFF/' verifSaveName(namesDifferences{comp})])
             close
             
             displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff,relativeRatio)
@@ -1001,6 +1036,7 @@ if nEffects>1
             end
             title(namesDifferences{comp})
             print('-dtiff',imageResolution,[savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}}) '/DIFF/' verifSaveName(namesDifferences{comp}) ' %'])
+            savefig([savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/FIG/DIFF/' verifSaveName(namesDifferences{comp}) ' %'])
             close
             
             %     cohen's d
@@ -1010,6 +1046,7 @@ if nEffects>1
                 dispContour(abs(mapsContour{comp}),Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             print('-dtiff',imageResolution,[savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/ES/' verifSaveName(namesDifferences{comp})])
+            savefig([savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/FIG/ES/' verifSaveName(namesDifferences{comp})])
             close
             
             % subplot of spm analysis
@@ -1030,6 +1067,7 @@ if nEffects>1
         % save
         set(0, 'currentfigure', f1);
         print('-dtiff',imageResolution,[savedir savedir2 '/' figname])
+        savefig([savedir savedir2 '/FIG/' figname])
         close
         
         save([savedir figname], 'mapsT', 'mapsContour' , 'Tthreshold', 'namesDifferences', 'mapsDifferences','mapsConditions','namesConditions','testTtests','ES')
