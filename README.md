@@ -1,4 +1,4 @@
-# fctSPM [![View fctSPM on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/77945-fctspm)[![status](https://joss.theoj.org/papers/ea923a728497b806dbb59a0c4c0b76cc/status.svg)](https://joss.theoj.org/papers/ea923a728497b806dbb59a0c4c0b76cc)
+# fctSPM [![status](https://joss.theoj.org/papers/ea923a728497b806dbb59a0c4c0b76cc/status.svg)](https://joss.theoj.org/papers/ea923a728497b806dbb59a0c4c0b76cc) [![View fctSPM on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/77945-fctspm)
 Using spm1d package (v.0.4.3), computes ANOVA and post-hoc tests from anova1 to anova3rm, with a non-parametric approach (permutation tests).
 The type of anova (if required) and post-hoc are choosen regarding the independant or repeated measure effects given in parameters.
 The function automatically adapts to 1D and 2D data.
