@@ -88,8 +88,8 @@ The significant cluster are circled in white. Note that the main effects are als
 ## Using fctSPM ##
 
 ### Installation ###
-Put the folder fctSPM in any directory of your choice and make sure it is added to your path.
-To add source code directory to your path use `addpath(genpath("./fctSPM/src"))`
+Put the folder fctSPM in any directory of your choice and make sure it is added to your path.  
+To add source code directory to your path use `addpath(genpath("./fctSPM/src"))`  
 If your are running examples from ./fctSPM/Examples, you can use `addpath(genpath("../src"))` to add the source code directory to your path
 
 
