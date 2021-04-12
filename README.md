@@ -54,7 +54,7 @@ Compatible from Matlab R2017b
 ## Examples ##
 ### In one dimension ### 
 Here are the outcomes for a 2way ANOVA with 1 repeated measure in 1 dimension  
-...\fctSPM\Examples\D1_ANOVA2_1rm.m  
+.\fctSPM\Examples\D1_ANOVA2_1rm.m  
 The curves represent the ratio between Quadriceps and Hamstrings during isokinetic tests for two sides (Left and Right) and for two sexes (M and F).  
 
 ANOVA results : There is a "Side" effect, with a F-value above the significant threshold of 7.14 between 30 and 85°.
@@ -69,7 +69,7 @@ The ANOVA results are also displayed if wanted.
 
 ### In two dimensions ###
 Here are the outcomes for a 2way ANOVA with 2 repeated measures in 2 dimensions  
-...\fctSPM\Examples\D2_ANOVA2_2rm.m   
+.\fctSPM\Examples\D2_ANOVA2_2rm.m   
 The maps represent the time-frequency analysis of vibratory signal quantified with two devices (ACC and US), and for two muscle activations (Relaxed and Contracted).
 
 ANOVA results : Red clusters circled in white are the zone of significant effects. There are mains and interaction effects.
@@ -89,6 +89,8 @@ The significant cluster are circled in white. Note that the main effects are als
 
 ### Installation ###
 Put the folder fctSPM in any directory of your choice and make sure it is added to your path.
+To add source code directory to your path use `addpath(genpath("./fctSPM/src"))`
+If your are running examples from ./fctSPM/Examples, you can use `addpath(genpath("../src"))` to add the source code directory to your path
 
 
 ### Usage ###
