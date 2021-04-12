@@ -5,8 +5,8 @@ clear
 close all
 clc
 
-% path
-addAbovePath
+% add source code path
+addpath(genpath("../src"))
 
 % data
 load ExampleDatas

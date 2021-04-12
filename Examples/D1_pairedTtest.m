@@ -1,12 +1,12 @@
-% This function takes ~5 seconds on i5 processor and files takes 6 Mo of
+% This function takes ~8 seconds on i5 processor and files takes 30 Mo of
 % storage
 
 clear
 close all
 clc
 
-% path
-addAbovePath
+% add source code path
+addpath(genpath("../src"))
 
 % data
 load ExampleDatas
@@ -24,9 +24,12 @@ ylab='Ratio';
 xlimits=[30 90];
 ylimits=[0.3 1];
 nTicksY=8;
+
+tic
 % SPM
 fctSPM(DATA,EFFET_ind,EFFET_rm,...
     'savedir',savedir,'CI',0,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...
     'xlimits',xlimits,'ylimits',ylimits,'nTicksY',nTicksY);
+toc
