@@ -1,4 +1,4 @@
-% This function takes ~275 seconds on i5 processor and files takes 150 Mo of space
+% This function takes ~700 seconds on i5 processor and files takes 1.4 Go of space
 
 clear
 close all
@@ -26,7 +26,7 @@ colorLine{3}=[rgb('gray'); rgb('darkgray')];
 % There are 20 subjects
 % ANOVA3 does not accept unbalanced data (10 males, 10 females)
 
-savedir='Results/1D_ANOVA3_2rm';
+savedir=[];
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];
@@ -35,10 +35,11 @@ nTicksY=17;
 
 
 % SPM
+tic
 fctSPM(DATA,EFFET_ind,EFFET_rm,...
     'savedir',savedir,'imageSize',25,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...
     'xlimits',xlimits,'ylimits',ylimits,'nTicksY',nTicksY,'colorline',colorLine);
-
+toc
 

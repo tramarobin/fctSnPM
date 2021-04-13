@@ -1,4 +1,4 @@
-% This function takes ~40 seconds on i5 processor and files takes 105 Mo of
+% This function takes ~30 seconds on i5 processor and files takes 105 Mo of
 % storage
 
 clear
@@ -19,7 +19,7 @@ EFFET_rm{1}={'RC60','RC180','RFKF','RFKE'};
 colorLine{1}=[rgb('green'); rgb('blue'); rgb('red'); rgb('black')];
 % There are 20 subjects
 
-savedir='Results/1D_ANOVA1rm';
+savedir=[];
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];
@@ -35,4 +35,3 @@ fctSPM(DATA,[],EFFET_rm,...
     'xlimits',xlimits,'ylimits',ylimits,'nTicksY',nTicksY,...
     'transparancy1D',0.05,'colorline',colorLine);
 toc
-

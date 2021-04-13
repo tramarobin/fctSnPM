@@ -1,4 +1,4 @@
-% This function takes ~8 seconds on i5 processor and files takes 89 Mo of
+% This function takes ~8 seconds on i5 processor and files takes 130 Mo of
 % storage
 
 clear
@@ -20,7 +20,7 @@ effectNames={'Group'};
 % There is 15 subjects
 % Subjects 1 to 8 are 'L', and 9 to 15 are 'S'
 
-savedir='Results/2D_independantTtest';
+savedir=[];
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=500;

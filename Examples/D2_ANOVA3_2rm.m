@@ -1,4 +1,4 @@
-% This function takes ~300 seconds on i5 processor and files takes 475Mo
+% This function takes ~300 seconds on i5 processor and files takes 510 Mo
 % of storage
 
 clear
@@ -26,7 +26,7 @@ effectNames={'Group','Device','Activation'};
 % Data(:,3) correspond to Device=US and Activation=Contracted
 % Data(:,4) correspond to Device=US and Activation=Relaxed
 
-savedir='Results/2D_ANOVA3_2rm';
+savedir=[];
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=500;

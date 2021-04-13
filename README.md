@@ -32,7 +32,7 @@ Please interpret results for these designs with caution, and recognize that they
 ### Caution ###
 - Avoid the same typo (e.g., POST, POST2) for the effect names, it affects the recognition for the multiples comparisons 
 - Avoid underscore (_) or minus (-) sign. Spaces are OK
-- Avoid '/' and use '\\' when defining a saving directory (`savedir` option)
+- Use '/' when selecting a saving directory (`savedir` option)
 - Once you are ok with the created figure, increase the number of iterations (`multiIT` or `IT` options) to achieve numerical stability. 1000 iterations are a good start but if your hardware allows it, the more is the better
 
 ## Why fctSPM ##
@@ -54,7 +54,7 @@ Compatible from Matlab R2017b
 
 ## Outputs ##
 This fonction creates two folders:
-* `ANOVA` named after the type of ANOVA performed on the data (ANOVA1rm if the analysis was a one-way ANOVA with repeated measures, no ANOVA folder is created if the analysis is a t-test).  
+* `ANOVA` (no ANOVA folder is created if the analysis is a t-test).  
 * `Post hoc` for the post-hoc analysis.  
 
 Each folder is composed of two different types of files : 
@@ -75,7 +75,7 @@ Each folder is composed of two different types of files :
 * `clusterLocation` is a structure (one for each significant cluster) that contains the location (start and end as indexes) of each significant cluster.
 * `clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster.  
 
-`clusterLocation` and `clusterP` are interpretable only for 1D data. Use figures to interpret 2D data significance.
+`clusterLocation` and `clusterP` are created only in one dimension
 
 Each effect is also display on a specific figure in `.TIF` format named after `effectNames`, a floder named FIG is also created and contains the figures in `.fig` format.   
 For 1D:  The curve represents the `Fcontinuum`, the horizontal line is the `Fthreshold`, the highlighted parts of the curve in blue represents the significant cluster(s), and the vertical lines are the start and end indexes.
@@ -104,10 +104,13 @@ For the following outputs, the number of cells of the structure correspond to th
 * `tTests.Tcontinuum` represents the T-value for each node
 * `tTests.Tthreshold` represents the statistical threshold for the T-values (statistical inference)
 * `tTests.Tsignificant` contains the logical for the significance (Tcontinuum > Tthreshold) (1 if significant, 0 if not). This value is corrected with the result of the corresponding ANOVA and previous t-tests.
+
 * `tTests.clusterLocation` is a structure (one for each significant cluster) that contains the location (start and end as indexes) of each significant cluster.
 * `tTests.clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster.  
+`clusterLocation` and `clusterP` are created only in one dimension and are not corrected with the result of the ANOVA.
 
-`clusterLocation` and `clusterP` are interpretable only for 1D data. Use figures to interpret 2D data significance.
+* `tTests.contourSignificant` represents a modified T-value continuum to display smoother contour plots.
+`tTests.contourSignificant is created only in two dimensions.  
 
 
 #### Figures ####
@@ -208,7 +211,7 @@ fctSPM(data, independantEffects, repeatedMeasuresEffects, 'Optional Input Name',
 #### Utilities ####
 These options act on the name of the created folders.
 
-* `savedir` is the path to the save directory. Default create a 'RESULTS' folder in the current path. @ischar.
+* `savedir` is the path to the save directory. Default is empty and ask you to choose or create a folder. If filled, the existing data might be overwritten @ischar.
 * `effectsNames` are the names of the effects (the independent effects must be named first). Default names the effect {'A','B','C'}. @iscell.
 * `plotSub` is an option (1 to activate) to plot the individual mean for each subject. Default = 0 and don't plot the mean. @isnumeric.
 * `nameSub` is an option to name the different subjects. Default names the subject '1', '2',... @iscell.

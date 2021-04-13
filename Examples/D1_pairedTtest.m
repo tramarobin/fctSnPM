@@ -1,4 +1,4 @@
-% This function takes ~8 seconds on i5 processor and files takes 30 Mo of
+% This function takes ~10 seconds on i5 processor and files takes 30 Mo of
 % storage
 
 clear
@@ -18,15 +18,15 @@ EFFET_ind=[]; % empty
 EFFET_rm{1}={'Right','Left'}; % Side
 
 
-savedir='Results/1D_pairedTtest';
+savedir=[];
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];
 ylimits=[0.3 1];
 nTicksY=8;
 
-tic
 % SPM
+tic
 fctSPM(DATA,EFFET_ind,EFFET_rm,...
     'savedir',savedir,'CI',0,...
     'effectsNames',effectNames,...

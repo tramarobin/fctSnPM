@@ -1,4 +1,4 @@
-% This function takes ~9 seconds on i5 processor and files takes 115 Mo of
+% This function takes ~10 seconds on i5 processor and files takes 140 Mo of
 % storage
 
 clear
@@ -20,7 +20,7 @@ effectNames={'Shoes'};
 % Data(:,1) correspond to Shoes=C1
 % Data(:,2) correspond to Shoes=C2
 
-savedir='Results/2D_pairedTtest';
+savedir=[];
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=400;

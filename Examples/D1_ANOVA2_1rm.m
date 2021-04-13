@@ -1,4 +1,4 @@
-% This function takes ~30 seconds on i5 processor and files takes 37 Mo of
+% This function takes ~50 seconds on i5 processor and files takes 55 Mo of
 % storage
 
 clear
@@ -23,7 +23,7 @@ colorLine{1}=[rgb('blue'); rgb('magenta')];
 EFFET_rm{1}={'Right','Left'};
 colorLine{2}=[rgb('green'); rgb('red')];
 
-savedir='Results/1D_ANOVA2_1rm';
+savedir=[];
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];
@@ -32,11 +32,12 @@ nTicksY=9;
 nTicksX=7;
 
 % SPM
+tic
 fctSPM(DATA,EFFET_ind,EFFET_rm,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...
     'xlimits',xlimits,'ylimits',ylimits,'nTicksY',nTicksY,'nTicksX',nTicksX,...
     'transparancy1D',0.05,'colorline',colorLine,'imageSize',15);
-
+toc
 

@@ -1,4 +1,4 @@
-function []=plotmeanSPMsub(Data,tTest,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,ny,colorLine,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects,eNames,ratioSPM,spmPos,aovColor)
+function []=plotmeanSPMsub(Data,tTest1,tTest2,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,ny,colorLine,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects,eNames,ratioSPM,spmPos,aovColor)
 
 if isempty(imageSize)
     figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
@@ -117,8 +117,8 @@ end
 set(gca,'FontSize',imageFontSize)
 
 %% add SPM subplot
-valTtest=tTest(1,:);
-tTest=tTest(2,:);
+valTtest=tTest1;
+tTest=tTest2;
 
 % anova
 for c=1:numel(anovaEffects)
@@ -171,7 +171,7 @@ if allSignificant>0
     for c=whichSignificant
         loop=loop-1;
         if min(size(diffNames))>1
-            yTlab{loop}=[diffNames{c,1} ' \neq ' diffNames{c,2}];
+            yTlab{loop}=[diffNames{1,c} ' \neq ' diffNames{2,c}];
         else
             firstParPos=strfind(diffNames{c},'(');
             if ~isempty(firstParPos)

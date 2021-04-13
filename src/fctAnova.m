@@ -3,22 +3,22 @@ function [anovaEffects]=fctAnova(maps1d,dimensions,indicesEffects,sujets,nEffect
 close all
 
 if ~ignoreAnova
-       
+    
     % Choose the type of ANOVA and name the different effects
-    [ANOVA,namesEffect,testANOVA]=chooseAnova(maps1d,sujets,nEffects,nRm,indicesEffects,eNames);
+    [ANOVA,anova]=chooseAnova(maps1d,sujets,nEffects,nRm,indicesEffects,eNames);
     
     if isempty(ANOVA) % no ANOVA
         anovaEffects{1}=logical(ones(dimensions(1),dimensions(2)));
     else
         
         warning('off', 'MATLAB:MKDIR:DirectoryExists');
-        mkdir([savedir '/' testANOVA.name '/FIG/'])
+        mkdir([savedir '/ANOVA/FIG/'])
         
         % Verify the number of iterations
         [nWarning,iterations,alpha]=fctWarningIterationsAOV(ANOVA,alphaOriginal,multiIterations,maximalIT,IT);
-        testANOVA.alpha=alpha;
-        testANOVA.alphaOriginal=alphaOriginal;
-        testANOVA.nIterations=iterations;
+        anova.alpha=alpha;
+        anova.alphaOriginal=alphaOriginal;
+        anova.nIterations=iterations;
         
         % Statistical Inference
         ANOVA_inf=ANOVA.inference(alpha,'iterations',iterations,'force_iterations',logical(1));
@@ -28,49 +28,63 @@ if ~ignoreAnova
         if nEffects==1 % ANOVA1
             
             % Values given by the inference
-            Fthreshold=ANOVA_inf.zstar;
-            mapsF=reshape(ANOVA_inf.z,dimensions(1),dimensions(2));
-            pAnova=ANOVA_inf.p;
+            anova.maxIterations=ANOVA_inf.nPermUnique;
+            anova.Fcontinuum=reshape(ANOVA_inf.z,dimensions(1),dimensions(2));
+            anova.Fthreshold=ANOVA_inf.zstar;
+            anova.Fsignificant=reshape(ANOVA_inf.z>=anova.Fthreshold,dimensions(1),dimensions(2));
             clustersAnova=extractClusterData(ANOVA_inf.clusters);
-            anovaEffects{1}=ANOVA_inf.z>=Fthreshold; %values save for the interpretation of post-hoc tests
+            if min(dimensions)==1
+                for c=1:numel(clustersAnova)
+                    anova.clusterLocation{c}=clustersAnova{c}.endpoints;
+                    anova.clusterP(c)=clustersAnova{c}.P;
+                end
+            end
             
             % Plot of Anova Results
-            displayAnova(mapsF,Fthreshold,anovaEffects{1},Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,colorMap,imageSize,imageFontSize)
-            if displayContour & size(mapsF,2)>1
-                dispContour(mapsF,Fthreshold,contourColor,dashedColor,transparency,lineWidth,linestyle)
+            displayAnova(anova.Fcontinuum,anova.Fthreshold,anova.Fsignificant,Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,colorMap,imageSize,imageFontSize)
+            if displayContour & size(anova.Fcontinuum,2)>1
+                dispContour(anova.Fcontinuum,anova.Fthreshold,contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
-            title(namesEffect)
-            print('-dtiff',imageResolution,[savedir '/' testANOVA.name '/' verifSaveName(namesEffect)])
-            savefig([savedir '/' testANOVA.name '/FIG/' verifSaveName(namesEffect)])
+            title(anova.effectNames)
+            print('-dtiff',imageResolution,[savedir '/ANOVA/' verifSaveName(anova.effectNames)])
+            savefig([savedir '/ANOVA/FIG/' verifSaveName(anova.effectNames)])
             close
-            save([savedir '/' testANOVA.name '/ANOVA'], 'mapsF' , 'Fthreshold', 'namesEffect','testANOVA','pAnova','clustersAnova','anovaEffects')
+            save([savedir '/ANOVA/anova'], 'anova')
             
-            
+            anovaEffects{1}(1,:)=anova.Fsignificant(:); % values saved for the interpretation of post-hoc tests
             
         else % ANOVA2 & % ANOVA3
             
+            anova.maxIterations=ANOVA_inf.nPermUnique;
             for k=1:size(ANOVA_inf.SPMs,2) % for each effect or interactions
                 
                 % Values given by the inference
-                Fthreshold{k}=ANOVA_inf.SPMs{k}.zstar;
-                mapsF{k}=reshape(ANOVA_inf.SPMs{k}.z,dimensions(1),dimensions(2));
-                anovaEffects{k}=ANOVA_inf.SPMs{k}.z>=Fthreshold{k};
-                pAnova{k}=ANOVA_inf.SPMs{k}.p;
-                clustersAnova{k}=extractClusterData(ANOVA_inf.SPMs{k}.clusters);
+                anova.Fcontinuum{k}=reshape(ANOVA_inf.SPMs{k}.z,dimensions(1),dimensions(2));
+                anova.Fthreshold{k}=ANOVA_inf.SPMs{k}.zstar;
+                anova.Fsignificant{k}=reshape(ANOVA_inf.SPMs{k}.z>=anova.Fthreshold{k},dimensions(1),dimensions(2));
+                clustersAnova=extractClusterData(ANOVA_inf.SPMs{k}.clusters);
+                if min(dimensions)==1
+                    for c=1:numel(clustersAnova)
+                        anova.clusterLocation{k}{c}=clustersAnova{c}.endpoints;
+                        anova.clusterP{k}(c)=clustersAnova{c}.P;
+                    end
+                end
                 
                 % Plot of the full anova results
-                displayAnova(mapsF{k},Fthreshold{k},anovaEffects{k},Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,colorMap,imageSize,imageFontSize)
-                if displayContour & size(mapsF{k},2)>1
-                    dispContour(mapsF{k},Fthreshold{k},contourColor,dashedColor,transparency,lineWidth,linestyle)
+                displayAnova(anova.Fcontinuum{k},anova.Fthreshold{k},anova.Fsignificant{k},Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,colorMap,imageSize,imageFontSize)
+                if displayContour & size(anova.Fcontinuum{k},2)>1
+                    dispContour(anova.Fcontinuum{k},anova.Fthreshold{k},contourColor,dashedColor,transparency,lineWidth,linestyle)
                 end
-                title(namesEffect{k})
-                print('-dtiff',imageResolution,[savedir '/' testANOVA.name '/' verifSaveName(namesEffect{k})])
-                savefig([savedir '/' testANOVA.name '/FIG/' verifSaveName(namesEffect{k})])
+                title(anova.effectNames{k})
+                print('-dtiff',imageResolution,[savedir '/ANOVA/' verifSaveName(anova.effectNames{k})])
+                savefig([savedir '/ANOVA/FIG/' verifSaveName(anova.effectNames{k})])
                 close
+                
+                anovaEffects{k}(1,:)=anova.Fsignificant{k}(:); % values saved for the interpretation of post-hoc tests
                 
             end
             
-            save([savedir '/' testANOVA.name '/ANOVA'], 'mapsF' , 'Fthreshold', 'namesEffect','testANOVA','pAnova','clustersAnova','anovaEffects')
+            save([savedir '/ANOVA/anova'], 'anova')
             
         end
     end

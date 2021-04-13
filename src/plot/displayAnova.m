@@ -8,6 +8,7 @@
 
 function []=displayAnova(mapF,Fthreshold,anovaEffects,Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,colorMap,imageSize,imageFontSize)
 
+anovaEffects=anovaEffects(:)';
 
 if isempty(imageSize)
     figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
