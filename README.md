@@ -14,6 +14,7 @@ fctSPM(data, independantEffects, repeatedMeasuresEffects, varargin)
 - [Why fctSPM](#Why-fctSPM)
 - [Citing fctSPM](#Citing-fctSPM)
 - [MATLAB Release Compatibility](#MATLAB-Release-Compatibility)
+- [Outputs](#Outputs)
 - [Examples](#Examples)
 - [Using fctSPM](#Using-fctSPM)
 - [Obligatory INPUTS](#Obligatory-INPUTS)
@@ -49,6 +50,89 @@ For post-hoc for interaction effects, the main effect is also displayed if locat
 
 ## MATLAB Release Compatibility ##
 Compatible from Matlab R2017b
+
+
+## Outputs ##
+This fonction creates two folders:
+* `ANOVA` named after the type of ANOVA performed on the data (ANOVA1rm if the analysis was a one-way ANOVA with repeated measures, no ANOVA folder is created if the analysis is a t-test).  
+* `Post hoc` for the post-hoc analysis.  
+
+Each folder is composed of two different types of files : 
+* `.m` files in which all data and statistical analysis can be found
+* `.TIF` and `.fig` files representing the statistical analysis on different graphics.  
+
+### ANOVA folder ###
+`anova.m` file is composed of different fields (same for 1D and 2D) :  
+* `type is the type of ANOVA performed
+* `effectNames` is a structure (one cell for each effect) that represent the names of the effects tested (mains and interactions) 
+* `alpha` is the alpha risk used for the anova
+* `alphaOriginal` is the alpha risk choosen for the anova (default is 0.05 (5%)). Warning message is displayed if this value is modified.
+* `nIterations` is the number of iterations performed for the anova.
+* `maxIterations` is the number of maximal iterations possible for the anova.
+* `Fcontinuum` is a structure that represent the F-value for each node
+* `Fthreshold` is a structure that represent the statistical threshold for the F-values (statistical inference)
+* `Fsignificant` is a structure that contains the logical for the significance (Fcontinuum > Fthreshold) of each effect of the ANOVA (1 if significant, 0 if not).  
+* `clusterLocation` is a structure (one for each significant cluster) that contains the location (start and end as indexes) of each significant cluster.
+* `clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster.
+`clusterLocation` and `clusterP` are interpretable only for 1D data. Use figures to interpret 2D data significance.
+
+Each effect is also display on a specific figure in `.TIF` format named after `effectNames`, a floder named FIG is also created and contains the figures in `.fig` format.   
+For 1D:  The curve represents the `Fcontinuum`, the horizontal line is the `Fthreshold`, the highlighted curve(s) in blue represent(s) the significant cluster(s), and the vertical lines are the start and end indexes.
+For 2D: The map represents the `Fcontinuum`, with a colorbar thresholded at `Fthreshold`, the white clusters represent the significant clusters.
+
+
+### Post hoc folder ###
+This folder contains additional folders (0 (for anova1), 3 (for anova2) or 7 (for anova3)) that contain figures and metrics representing the different post-hoc tests.
+`posthoc.m` file is composed of different fields :
+* `data.names` is a structure that contains the name of the conditions used in the analysis (\cap is the union of different conditions for interactions).
+* `data.continuum` is a structure that contains the data used in the analysis.
+
+For the following outputs, the number of cells of the structure correspond to the number of t-tests performed, one t-test corresponds to one cell.
+* `differences.names` is the name of the conditions (the first minus the second) used in the differences and t-tests.
+* `differences.continuum` is the data used to plot differences.
+* `differences.continuumRelative` is the data used to plot relative differences
+* `differences.ES` is the effect size that correspond to the differences (Hedge's g)
+* `differences.ESsd` is the standard deviation of the effect size.
+* `tTests.type` is the type of t-test performed (independant or paired)
+* `tTests.names` is the name of the conditions (the first minus the second) used in the differences and t-tests.
+* `tTests.nWarning` represents the number of warnings displyed during the analysis : 0 is OK, 1 means the number of iterations was reduced but the original alpha risk was conserved, 2 means that the number of iterations was reduced and the original alpha was reduced. In this case, more subjects are required to performed the analysis. 
+* `tTests.alphaOriginal` is the alpha risk choosen for the post hoc tests (default is 0.05 (5%)/ number of comparisons). Warning message is displayed if this value is modified.
+* `tTests.alpha` is the alpha risk used for the post hoc tests
+* `tTests.alphaOriginal` is the alpha risk choosen for the anova (default is 0.05 (5%)). Warning message is displayed if this value is modified.
+* `tTests.nIterations` is the number of iterations performed for the t-test.
+* `tTests.maxIterations` is the number of maximal iterations possible for the t-test.
+* `tTests.Tcontinuum` is a structure that represent the T-value for each node
+* `tTests.Tthreshold` is a structure that represent the statistical threshold for the T-values (statistical inference)
+* `tTests.Tsignificant` is a structure that contains the logical for the significance (Tcontinuum > Tthreshold) (1 if significant, 0 if not). This value is corrected with the result of the corresponding ANOVA and previous t-tests.
+* `tTests.clusterLocation` is a structure (one for each significant cluster) that contains the location (start and end as indexes) of each significant cluster.
+* `tTests.clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster.
+`clusterLocation` and `clusterP` are interpretable only for 1D data. Use figures to interpret 2D data significance.
+
+Interaction folders (AxB or AxBxC) contain 2 or 3 folders in which one effect is investigated.
+
+#### Figures ####
+For 1D :
+A total of 5 figures with the name of the effect represent the means and standard deviations between subject for each condition (grouped in fuction of the effect investigated).  
+Under this plot, a second graph display the result of the ANOVA (or ANOVAs for interaction) and the significant post-hoc tests for pairewise comparisons.  
+The differences between the 5 figures are the representation of the ANOVA and the disposition of the statistical analysis (subplot or same plot, see optional inputs)
+
+Subfolders : Contains the pairewise comparison results 
+* DIFF: Differences plots. Filenames with '%' at the end are the relative differences
+* ES: Effect size plots. Bold blue lines are located at the significant differences (corrected with the ANOVA).
+* SPM: Tcontinuum and statistical inferences plots. Bold blue lines are located at the significant differences (corrected with the ANOVA).
+* FIG folder contains the above mentionned folder with the figures in `.fig` format.
+
+
+For 2D :
+Means maps for each condition are represented in one figure each. 
+The global effect of the post hoc precedure is display on a figure with the name of the effect. Mean maps are represented on the diagonal, pairewise differences on the top-right panel, and pairewise spm inferences on the bottom-left panel. 
+
+Subfolders : Contains the pairewise comparison results (In one folder for ANOVA1, in 2 or 3 folders for ANOVA2 and ANOVA3)
+* SD : standard deviation of the maps for each condition.
+* DIFF: Differences plots. Filenames with '%' at the end are the relative differences. White clusters represent the significant effect (corrected with ANOVA)
+* ES: Effect size plots. Whites clusters represent the significant effect (corrected with ANOVA)
+* SPM: Tcontinuum and statistical inferences plots. Whites clusters represent the significant effect (no correction with the ANOVA)
+* FIG folder contains the above mentionned folder with the figures in `.fig` format.
 
 
 ## Examples ##
