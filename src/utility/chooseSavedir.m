@@ -13,7 +13,7 @@ if isempty(savedir)
             a=questdlg('Choosen directory is not empty, do you want to overwrite existing files ?','erase files?','Yes','No','No');
             
             if a=="No"
-                savedir=uigetdir('','Choosen directory is not empty, please erase files or choose/create an empty directory');
+                savedir=uigetdir(savedir,'Choosen directory is not empty, please erase files or choose/create an empty directory');
             end
             
             files=dir(savedir);
