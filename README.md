@@ -242,7 +242,7 @@ Specified either samplefrequency or xlimits, but not both.
 * `ylimits` changes the yticks to correspond to the specified range (can be negative). @isnumeric (e.g., [0 100]). 
 * `nTicksX` is the number of xticks displayed. @isnumeric.
 * `nTicksY` is the number of yticks displayed. @isnumeric.
-* `imageresolution` is the resolution in ppp of the tiff images. Default is 96ppp. @isnumeric.
+* `imageResolution` is the resolution in ppp of the tiff images. Default is 96ppp. @isnumeric.
 * `imageSize` is the size of the image in cm. @isnumeric (e.g., X creates X by X cm images, [X Y] creates X by Y cm images. The default image size is 720*480 pixels.
 * `imageFontSize` is the font size of images. Default is 12. @isnumeric.
 
