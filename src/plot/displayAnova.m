@@ -11,7 +11,7 @@ function []=displayAnova(mapF,Fthreshold,anovaEffects,Fs,xlab,ylab,ylimits,dimen
 anovaEffects=anovaEffects(:)';
 
 if isempty(imageSize)
-    figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
+    figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
 elseif max(size(imageSize))==1
     figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize, imageSize],'visible','off');
 else

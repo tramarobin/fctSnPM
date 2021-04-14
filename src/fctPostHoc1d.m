@@ -746,8 +746,14 @@ if nEffects>1
     if isInteraction==1 | doAllInteractions==1
         
         loop=0;
-        f1=figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
         
+        if isempty(imageSize)
+            f1=figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
+        elseif max(size(imageSize))==1
+            f1=figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize, imageSize],'visible','off');
+        else
+            f1=figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize(1), imageSize(2)],'visible','off');
+        end
         % number of combinations + plot of each
         if nEffects==2
             

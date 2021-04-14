@@ -1,7 +1,7 @@
 function []=plotmean(Data,IC,xlab,ylab,Fs,xlimits,nx,ny,colorLine,imageFontSize,imageSize,transparancy1D,ylimits)
 
 if isempty(imageSize)
-    figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
+    figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
 elseif max(size(imageSize))==1
     figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize, imageSize],'visible','off');
 else

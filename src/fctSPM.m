@@ -17,7 +17,7 @@
 % 2D examples are maps obtained with continuous wavelet transforms
 
 % Please visit http://spm1d.org/index.html for information
-% spm1d package for matlab : https://github.com/0todd0000/spm1dmatlab
+% spm1d package for matlab is published elswhere : https://github.com/0todd0000/spm1dmatlab
 
 % please cite for spm1d : Pataky TC (2010). Generalized n-dimensional biomechanical field analysis using statistical parametric mapping. Journal of Biomechanics 43, 1976-1982.
 % please cite for permutation tests : Nichols TE, Holmes AP (2002). Nonparametric permutation tests for functional neuroimaging: a primer with examples. Human Brain Mapping 15(1), 1–25.
@@ -40,11 +40,11 @@
 % * `Post hoc` for the post-hoc analysis.
 
 % Each folder is composed of two different types of files :
-% * `.m` files in which all data and statistical analysis can be found
+% * `.mat` files in which all data and statistical analysis can be found
 % * `.TIF` and `.fig` files representing the statistical analysis on different graphics.
 
 % ### ANOVA folder ###
-% `anova.m` file is composed of different fields (same for 1D and 2D) :
+% `anova.mat` file is composed of different fields (same for 1D and 2D) :
 % * `type` is the type of ANOVA performed
 % * `effectNames` is a structure (one cell for each effect) that represent the names of the effects tested (mains and interactions)
 % * `alpha` is the alpha risk used for the anova
@@ -66,7 +66,7 @@
 
 % ### Post hoc folder ###
 % This folder contains additional folders (0 (for anova1), 3 (for anova2) or 7 (for anova3)) that contain figures and metrics representing the different post-hoc tests.
-% `posthoc.m` file is composed of different fields :
+% `posthoc.mat` file is composed of different fields :
 % * `data.names` is a structure that contains the name of the conditions used in the analysis (\cap is the union of different conditions for interactions).
 % * `data.continuum` is a structure that contains the data used in the analysis.
 
@@ -136,7 +136,7 @@
 
 % OPTIONAL
 % see the description at begining of the function (inputParser)
-% see ...\FCT_SPM\Examples for help
+% see .\fctSPM\Examples for help
 
 %% OUTPUTS
 % Figures : One for each effect of the anova, and for each post hoc (means, means + SPM results, differences, relative differences, effect size and SPM analysis for each comparison)
@@ -189,8 +189,8 @@ addParameter(p,'xlimits',[],@isnumeric); % change xticks to correspond to the sp
 % specified either samplefrequency or xlimits, but not both
 addParameter(p,'nTicksX',5,@isnumeric); % number of xticks displayed
 addParameter(p,'nTicksY',[],@isnumeric); % number of yticks displayed
-addParameter(p,'imageresolution',300,@isnumeric); % resolution in ppp of the tiff images
-addParameter(p,'imageSize',[],@isnumeric) % size of the image in cm. X --> X*X images, [X Y] X*Y imgages. By default the unit is normalized [0 0 1 1].
+addParameter(p,'imageresolution',96,@isnumeric); % resolution in ppp of the tiff images
+addParameter(p,'imageSize',[],@isnumeric) % size of the image in cm. X --> X*X images, [X Y] X*Y imgages. By default the unit is pixels [0 0 720 480].
 addParameter(p,'imageFontSize',12,@isnumeric) % font size of images
 addParameter(p,'ylimits',[],@isnumeric); % change yticks to correspond to the specified range
 

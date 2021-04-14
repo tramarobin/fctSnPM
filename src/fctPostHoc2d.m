@@ -23,7 +23,14 @@ if nEffects==1
     
     positionDiffPlot=[];
     positionSPMPlot=[];
-    f1=figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
+    
+    if isempty(imageSize)
+        f1=figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
+    elseif max(size(imageSize))==1
+        f1=figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize, imageSize],'visible','off');
+    else
+        f1=figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize(1), imageSize(2)],'visible','off');
+    end
     
     for i=1:nCombi
         
@@ -218,8 +225,13 @@ if nEffects==2
         
         positionDiffPlot=[];
         positionSPMPlot=[];
-        f1=figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
-        
+        if isempty(imageSize)
+            f1=figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
+        elseif max(size(imageSize))==1
+            f1=figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize, imageSize],'visible','off');
+        else
+            f1=figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize(1), imageSize(2)],'visible','off');
+        end
         for i=1:nCombi
             % means
             meansData=reshape(mean(maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1),:)),dimensions(1),dimensions(2));
@@ -415,7 +427,15 @@ if nEffects==3
         
         positionDiffPlot=[];
         positionSPMPlot=[];
-        f1=figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
+        
+        if isempty(imageSize)
+            f1=figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
+        elseif max(size(imageSize))==1
+            f1=figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize, imageSize],'visible','off');
+        else
+            f1=figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize(1), imageSize(2)],'visible','off');
+        end
+        
         for i=1:nCombi
             
             % means
@@ -617,7 +637,16 @@ if nEffects==3
             
             positionDiffPlot=[];
             positionSPMPlot=[];
-            f1=figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
+            
+            
+            if isempty(imageSize)
+                f1=figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
+            elseif max(size(imageSize))==1
+                f1=figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize, imageSize],'visible','off');
+            else
+                f1=figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize(1), imageSize(2)],'visible','off');
+            end
+            
             for i=1:nCombi
                 
                 % means
@@ -834,8 +863,15 @@ if nEffects>1
         loop=0;
         positionDiffPlot=[];
         positionSPMPlot=[];
-        f1=figure('Units', 'Normalized', 'OuterPosition', [0, 0, 1, 1],'visible','off');
         
+        
+        if isempty(imageSize)
+            f1=figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
+        elseif max(size(imageSize))==1
+            f1=figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize, imageSize],'visible','off');
+        else
+            f1=figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize(1), imageSize(2)],'visible','off');
+        end
         % number of combinations + plot of each
         if nEffects==2
             
