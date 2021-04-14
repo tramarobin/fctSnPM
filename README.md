@@ -58,11 +58,11 @@ This fonction creates two folders:
 * `Post hoc` for the post-hoc analysis.  
 
 Each folder is composed of two different types of files : 
-* `.m` files in which all data and statistical analysis can be found
+* `.mat` files in which all data and statistical analysis can be found
 * `.TIF` and `.fig` files representing the statistical analysis on different graphics.  
 
 ### ANOVA folder ###
-`anova.m` file is composed of different fields (same for 1D and 2D) :  
+`anova.mat` file is composed of different fields (same for 1D and 2D) :  
 * `type` is the type of ANOVA performed
 * `effectNames` is a structure (one cell for each effect) that represent the names of the effects tested (mains and interactions) 
 * `alpha` is the alpha risk used for the anova
@@ -84,7 +84,7 @@ For 2D: The map represents the `Fcontinuum`, with a colorbar maximum at `Fthresh
 
 ### Post hoc folder ###
 This folder contains additional folders (0 (for anova1), 3 (for anova2) or 7 (for anova3)) that contain figures and metrics representing the different post-hoc tests.  
-`posthoc.m` file is composed of different fields :
+`posthoc.mat` file is composed of different fields :
 * `data.names` is a structure that contains the name of the conditions used in the analysis (\cap is the union of different conditions for interactions).
 * `data.continuum` is a structure that contains the data used in the analysis.
 
