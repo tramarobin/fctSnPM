@@ -73,7 +73,7 @@ Each folder is composed of two different types of files :
 * `Fthreshold` is a structure that represent the statistical threshold for the F-values (statistical inference)
 * `Fsignificant` is a structure that contains the logical for the significance (Fcontinuum > Fthreshold) of each effect of the ANOVA (1 if significant, 0 if not).  
 * `clusterLocation` is a structure (one for each significant cluster) that contains the location (start and end as indexes) of each significant cluster.
-* `clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster.  
+* `clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster. This value is corrected with inverse Bonferonni correction.
 
 `clusterLocation` and `clusterP` are created only in one dimension
 
@@ -106,7 +106,7 @@ For the following outputs, the number of cells of the structure correspond to th
 * `tTests.Tsignificant` contains the logical for the significance (Tcontinuum > Tthreshold) (1 if significant, 0 if not). This value is corrected with the result of the corresponding ANOVA and previous t-tests.
 
 * `tTests.clusterLocation` is a structure (one for each significant cluster) that contains the location (start and end as indexes) of each significant cluster.
-* `tTests.clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster.  
+* `tTests.clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster. This value is corrected with inverse Bonferonni correction.
 `clusterLocation` and `clusterP` are created only in one dimension and are not corrected with the result of the ANOVA.
 
 * `tTests.contourSignificant` represents a modified T-value continuum to display smoother contour plots.
