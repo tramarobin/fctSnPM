@@ -36,7 +36,7 @@ if ~ignoreAnova
             if min(dimensions)==1
                 for c=1:numel(clustersAnova)
                     anova.clusterLocation{c}=clustersAnova{c}.endpoints;
-                    anova.clusterP(c)=clustersAnova{c}.P;
+                    anova.clusterP(c)=clustersAnova{c}.P*(0.05/alpha);;
                 end
             end
             
@@ -66,7 +66,7 @@ if ~ignoreAnova
                 if min(dimensions)==1
                     for c=1:numel(clustersAnova)
                         anova.clusterLocation{k}{c}=clustersAnova{c}.endpoints;
-                        anova.clusterP{k}(c)=clustersAnova{c}.P;
+                        anova.clusterP{k}(c)=clustersAnova{c}.P*(0.05/alpha);
                     end
                 end
                 
