@@ -189,7 +189,7 @@ addParameter(p,'xlimits',[],@isnumeric); % change xticks to correspond to the sp
 % specified either samplefrequency or xlimits, but not both
 addParameter(p,'nTicksX',5,@isnumeric); % number of xticks displayed
 addParameter(p,'nTicksY',[],@isnumeric); % number of yticks displayed
-addParameter(p,'imageresolution',96,@isnumeric); % resolution in ppp of the tiff images
+addParameter(p,'imageResolution',96,@isnumeric); % resolution in ppp of the tiff images
 addParameter(p,'imageSize',[],@isnumeric) % size of the image in cm. X --> X*X images, [X Y] X*Y imgages. By default the unit is pixels [0 0 720 480].
 addParameter(p,'imageFontSize',12,@isnumeric) % font size of images
 addParameter(p,'ylimits',[],@isnumeric); % change yticks to correspond to the specified range
@@ -235,7 +235,7 @@ xlimits=p.Results.xlimits;
 nTicksX=p.Results.nTicksX;
 nTicksY=p.Results.nTicksY;
 displayContour=p.Results.displaycontour;
-imageResolution=['-r' num2str(p.Results.imageresolution)];
+imageResolution=['-r' num2str(p.Results.imageResolution)];
 colorbarLabel=p.Results.colorbarLabel;
 limitMeanMaps=p.Results.limitMeanMaps;
 CI=p.Results.CI;
