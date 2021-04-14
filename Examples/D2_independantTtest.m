@@ -1,12 +1,10 @@
-% This function takes ~8 seconds on i5 processor and files takes 130 Mo of
+% This function takes ~15 seconds on i5 processor and files takes 6 Mo of
 % storage
+% don't forget to add the source code path
 
 clear
 close all
 clc
-
-% add source code path
-addpath(genpath("../src"))
 
 
 % data

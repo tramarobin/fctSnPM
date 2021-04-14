@@ -1,11 +1,9 @@
-% This function takes ~700 seconds on i5 processor and files takes 175 Mo of space
+% This function takes ~360 seconds on i5 processor and files takes 175 Mo of space
+% don't forget to add the source code path
 
 clear
 close all
 clc
-
-% add source code path
-addpath(genpath("../src"))
 
 % data
 load ExampleDatas
@@ -37,7 +35,7 @@ nTicksY=17;
 % SPM
 tic
 fctSPM(DATA,EFFET_ind,EFFET_rm,...
-    'savedir',savedir,'imageSize',25,...
+    'savedir',savedir,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...
     'xlimits',xlimits,'ylimits',ylimits,'nTicksY',nTicksY,'colorline',colorLine);

@@ -1,12 +1,11 @@
-% This function takes ~33 seconds on i5 processor and files takes 300 Mo of
+% This function takes ~40 seconds on i5 processor and files takes 12 Mo of
 % storage
+% don't forget to add the source code path
+
 
 clear
 close all
 clc
-
-% add source code path
-addpath(genpath("../src"))
 
 
 % data
@@ -22,7 +21,7 @@ effectNames={'Group'};
 % ANOVA1 accepts unbalanced data
 
 
-savedir='Results/2D_ANOVA1';
+savedir=[];
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=500;
@@ -33,7 +32,7 @@ ylimits=[10 130];
 % SPM
 tic
 fctSPM(DATA,EFFET_ind,EFFET_rm,...
-    'savedir',savedir,'IT',20,...
+    'savedir',savedir,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...
     'sampleFrequency',Fs,'colorbarLabel',colorbarLabel,...

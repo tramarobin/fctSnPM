@@ -1,12 +1,11 @@
-% This function takes ~60 seconds on i5 processor and files takes 140 Mo of
+% This function takes ~60 seconds on i5 processor and files takes 30 Mo of
 % storage
+% don't forget to add the source code path
 
 clear
 close all
 clc
 
-% add source code path
-addpath(genpath("../src"))
 
 % data
 load ExampleDatas
@@ -30,16 +29,14 @@ Fs=500;
 colorbarLabel='Amplitude (m\cdots^-^2)';
 limitMeanMaps=12;
 ylimits=[10 130];
-mIT=20;
 
 % SPM
 tic
 fctSPM(DATA,EFFET_ind,EFFET_rm,...
-    'savedir',savedir,'multiIT',mIT,...
+    'savedir',savedir,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'nTicksX',6,'ylabel',ylab,'nTicksY',7,...
     'sampleFrequency',Fs,'colorbarLabel',colorbarLabel,...
     'limitMeanMaps',limitMeanMaps,...
-    'ylimits',ylimits,'imagesize',[15 10]);
-
+    'ylimits',ylimits);
 toc

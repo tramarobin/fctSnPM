@@ -1,11 +1,12 @@
-% This function takes ~50 seconds on i5 processor and files takes 520 Mo of
+% This function takes ~50 seconds on i5 processor and files takes 25 Mo of
 % storage
+% don't forget to add the source code path
+
 
 clear
 close all
 clc
-% add source code path
-addpath(genpath("../src"))
+
 
 % data
 load ExampleDatas
@@ -21,7 +22,7 @@ effectNames={'Shoes'};
 % Data(:,3) correspond to Shoes=C3
 % Data(:,4) correspond to Shoes=C4
 
-savedir='Results/2D_ANOVA1rm';
+savedir=[];
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=400;
