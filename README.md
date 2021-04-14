@@ -178,7 +178,7 @@ The significant cluster are circled in white. Note that the main effects are als
 
 ### Installation ###
 Install this package by adding the `src` directory and its subdirectories to the MATLAB path. 
-One way to do this is to call: `addpath(genpath("./fctSPM/src"))`, where `/fctSPM/src` is the full path to the `src` directory. 
+One way to do this is to call: `addpath(genpath("./fctSPM/src"))`, where `./fctSPM/src` is the full path to the `src` directory. 
 Refer to the [MATLAB documentation regarding search paths](https://fr.mathworks.com/help/matlab/matlab_env/add-remove-or-reorder-folders-on-the-search-path.html) for alternative ways to set the path for current and future sessions.
 
 ### Usage ###
@@ -242,8 +242,8 @@ Specified either samplefrequency or xlimits, but not both.
 * `ylimits` changes the yticks to correspond to the specified range (can be negative). @isnumeric (e.g., [0 100]). 
 * `nTicksX` is the number of xticks displayed. @isnumeric.
 * `nTicksY` is the number of yticks displayed. @isnumeric.
-* `imageresolution` is the resolution in ppp of the tiff images. Default is 300ppp. @isnumeric.
-* `imageSize` is the size of the image in cm. y default the unit is normalized [0 0 1 1]. @isnumeric (e.g., X creates X by X cm images, [X Y] creates X by Y cm images.
+* `imageresolution` is the resolution in ppp of the tiff images. Default is 96ppp. @isnumeric.
+* `imageSize` is the size of the image in cm. @isnumeric (e.g., X creates X by X cm images, [X Y] creates X by Y cm images. The default image size is 720*480 pixels.
 * `imageFontSize` is the font size of images. Default is 12. @isnumeric.
 
 #### 2D plot parameters ####
