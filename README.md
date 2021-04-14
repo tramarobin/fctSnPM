@@ -177,10 +177,9 @@ The significant cluster are circled in white. Note that the main effects are als
 ## Using fctSPM ##
 
 ### Installation ###
-Put the folder fctSPM in any directory of your choice and make sure it is added to your path.  
-To add source code directory to your path use `addpath(genpath("./fctSPM/src"))`  
-If your are running examples from ./fctSPM/Examples, you can use `addpath(genpath("../src"))` to add the source code directory to your path
-
+Install this package by adding the `src` directory and its subdirectories to the MATLAB path. 
+One way to do this is to call: `addpath(genpath("./fctSPM/src"))`, where `/fctSPM/src` is the full path to the `src` directory. 
+Refer to the [MATLAB documentation regarding search paths](https://fr.mathworks.com/help/matlab/matlab_env/add-remove-or-reorder-folders-on-the-search-path.html) for alternative ways to set the path for current and future sessions.
 
 ### Usage ###
 ```matlab
