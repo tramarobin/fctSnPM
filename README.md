@@ -219,14 +219,12 @@ These options act on the name of the created folders.
 These options act at a statistical level, modifying the alpha error or the number of iterations.
 
 * `alpha` is the alpha error risk for the ANOVA. Default is 0.05. @isnumeric.
-* `multiIT` define the number of permutations as multiIT/alpha. Default is 10, corresponds to 200 iterations for 5% risk.  
+* `alphaT` is the original alpha used for post hoc tests (Bonferonni correction is applied after as alphaT/number of comparisons. Default is the same as `alpha`. @isnumeric.
+* `multiIT` define the number of permutations as multiIT/alpha. Default is 1, corresponds to 20 iterations for 5% risk.  
 **Must be increased for better reproductibility.**
 * `IT` is a fixed number of iterations (override the multiIterations - not recommended).    
 Specified either multiIterations or IT, but not both.
 * `maximalIT` is the limit of the number of maximal permutations in case of too many multiple comparisons. Default is 10000. @isnumeric.
-* `alphaT` is the original alpha used for post hoc tests (Bonferonni correction is applied after as alphaT/number of comparisons. Default is 0.05. @isnumeric. (changes are not recommended)
-* `nT` is the number of post hoc tests performed (override the alphaT - not recommended). @isnumeric.    
-Specified either alphaT or nT, but not both.
 * `doAllInteractions` By default, all post hoc tested are made even if ANOVA did not revealed interaction. Use 0 to performed only post-hoc when interaction was found. @isnumeric.
 * `ignoreAnova` By default, consider the ANOVA significant location to interpret post-hoc. Use 1 to interpret only post-hoc tests (not recommended). @isnumeric.
 

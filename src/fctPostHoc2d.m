@@ -1,4 +1,4 @@
-function []=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,contourColor,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nx,ny,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalIT,doAllInteractions,dashedColor,transparency,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,nT,linestyle)
+function []=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,contourColor,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nx,ny,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalIT,doAllInteractions,dashedColor,transparency,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,alphaAOV,linestyle)
 close all
 if isempty(nx)
     nx=5;
@@ -8,6 +8,11 @@ if isempty(ny)
 end
 set(0, 'DefaultFigureVisible', 'off');
 savedir=[savedir '/Post hoc/'];
+
+%% define alpha risk
+if isempty(alphaT)
+    alphaT=alphaAOV;
+end
 
 %% T-TEST 1 EFFECT = MAIN EFFECT
 if nEffects==1
@@ -76,11 +81,7 @@ if nEffects==1
     end
     
     nComp=size(Comp,2);
-    if ~isempty(nT)
-        alphaOriginal=0.05/nT;
-    else
-        alphaOriginal=alphaT/nComp;
-    end
+    alphaOriginal=alphaT/nComp;
     
     for comp=1:nComp
         
@@ -275,11 +276,7 @@ if nEffects==2
         end
         
         nComp=size(Comp,2);
-        if ~isempty(nT)
-            alphaOriginal=0.05/nT;
-        else
-            alphaOriginal=alphaT/nComp;
-        end
+        alphaOriginal=alphaT/nComp;
         
         for comp=1:nComp
             alphaOriginal=alphaT/nComp;
@@ -481,11 +478,7 @@ if nEffects==3
         end
         
         nComp=size(Comp,2);
-        if ~isempty(nT)
-            alphaOriginal=0.05/nT;
-        else
-            alphaOriginal=alphaT/nComp;
-        end
+        alphaOriginal=alphaT/nComp;
         
         for comp=1:nComp
             alphaOriginal=alphaT/nComp;
@@ -697,11 +690,7 @@ if nEffects==3
             end
             
             nComp=size(Comp,2);
-            if ~isempty(nT)
-                alphaOriginal=0.05/nT;
-            else
-                alphaOriginal=alphaT/nComp;
-            end
+            alphaOriginal=alphaT/nComp;
             
             isPlot=find(isPlot==1);
             
@@ -987,11 +976,7 @@ if nEffects>1
         end
         
         nComp=size(Comp,2);
-        if ~isempty(nT)
-            alphaOriginal=0.05/nT;
-        else
-            alphaOriginal=alphaT/nComp;
-        end
+        alphaOriginal=alphaT/nComp;
         
         isPlot=find(isPlot==1);
         

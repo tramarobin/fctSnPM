@@ -5,7 +5,7 @@ savedir=[savedir '/Post hoc/'];
 
 %% define alpha risk
 if isempty(alphaT)
-    alphaT=alphaAOV;
+    alphaT=alpha;
 end
 
 %% T-TEST 1 EFFECT = MAIN EFFECT
@@ -219,7 +219,11 @@ if nEffects==2
             end
             
             nComp=size(Comp,2);
-            alphaOriginal=alphaT/nComp;
+            if ~isempty(nT)
+                alphaOriginal=0.05/nT;
+            else
+                alphaOriginal=alphaT/nComp;
+            end
             
             for comp=1:nComp
                 
@@ -381,7 +385,11 @@ if nEffects==3
             end
             
             nComp=size(Comp,2);
-            alphaOriginal=alphaT/nComp;
+            if ~isempty(nT)
+                alphaOriginal=0.05/nT;
+            else
+                alphaOriginal=alphaT/nComp;
+            end
             
             for comp=1:nComp
                 
@@ -556,7 +564,11 @@ if nEffects==3
             end
             
             nComp=size(Comp,2);
-            alphaOriginal=alphaT/nComp;
+            if ~isempty(nT)
+                alphaOriginal=0.05/nT;
+            else
+                alphaOriginal=alphaT/nComp;
+            end
             
             for comp=1:nComp
                 
@@ -827,7 +839,11 @@ if nEffects>1
         end
         
         nComp=size(Comp,2);
-        alphaOriginal=alphaT/nComp;
+        if ~isempty(nT)
+            alphaOriginal=0.05/nT;
+        else
+            alphaOriginal=alphaT/nComp;
+        end
         
         for comp=1:nComp
             

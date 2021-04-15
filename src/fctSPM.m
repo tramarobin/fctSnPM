@@ -171,13 +171,11 @@ addParameter(p,'nameSub',[],@iscell) % names of the different subjects
 
 % statistical parameters
 addParameter(p,'alpha',0.05,@isnumeric); % alpha used for the ANOVA
+addParameter(p,'alphaT',[],@isnumeric); % original alpha used for post hoc tests (Bonferonni correction is applied afetr as alphaT/ number of comparisons). By default, this value is the same than the alpha used for the ANOVA.
 addParameter(p,'multiIT',10,@isnumeric); % the number of permutations is multiIT/alpha. Must be increased for better reproductibility
 addParameter(p,'IT',[],@isnumeric); % fixed number of iterations (override the multiIterations - not recommanded)
 % specified either multiIterations or IT, but not both
 addParameter(p,'maximalIT',10000,@isnumeric); % limits the number of maximal permutations in case of too many multiple comparisons.
-addParameter(p,'alphaT',0.05,@isnumeric); % original alpha used for post hoc tests (Bonferonni correction is applied afetr as alphaT/ number of comparisons)
-addParameter(p,'nT',[],@isnumeric); % number of post hoc tests performed (override the alphaT - not recommanded)
-% specified either alphaT or nT, but not both
 addParameter(p,'doAllInteractions',1,@isnumeric); % by default, all post hoc tested are made even if anova did not revealed interaction. 0 to performed only posthoc were interaction was found.
 addParameter(p,'ignoreAnova',0,@isnumeric); % by default, consider the ANOVA signifant location to interpert post-hoc. 1 to interpret only post-hoc tests.
 
@@ -221,7 +219,6 @@ parse(p,varargin{:});
 
 alpha=p.Results.alpha;
 alphaT=p.Results.alphaT;
-nT=p.Results.nT;
 contourColor=p.Results.contourcolor;
 ylab=p.Results.ylabel;
 xlab=p.Results.xlabel;
@@ -278,9 +275,9 @@ end
 
 %% Choose and perform post-hocs
 if min(dimensions)==1 %1D
-    fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,nT,transparancy1D,ratioSPM,yLimitES,spmPos,aovColor);
+    fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,alpha,transparancy1D,ratioSPM,yLimitES,spmPos,aovColor);
 else %2D
-    fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,contourColor,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalIT,doAllInteractions,dashedColor,transparancy,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,nT,linestyle);
+    fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,contourColor,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalIT,doAllInteractions,dashedColor,transparancy,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,alpha,linestyle);
 end
 
 
