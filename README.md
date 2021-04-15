@@ -220,7 +220,7 @@ These options act at a statistical level, modifying the alpha error or the numbe
 
 * `alpha` is the alpha error risk for the ANOVA. Default is 0.05. @isnumeric.
 * `alphaT` is the original alpha used for post hoc tests (Bonferonni correction is applied after as alphaT/number of comparisons. Default is the same as `alpha`. @isnumeric.
-* `multiIT` define the number of permutations as multiIT/alpha. Default is 1, corresponds to 20 iterations for 5% risk.  
+* `multiIT` define the number of permutations as multiIT/alpha. Default is 10, corresponds to 200 iterations for 5% risk.  
 **Must be increased for better reproductibility.**
 * `IT` is a fixed number of iterations (override the multiIterations - not recommended).    
 Specified either multiIterations or IT, but not both.
@@ -273,5 +273,4 @@ These option are specific to 1D plots.
 * `ratioSPM` is the ratio of SPM subplot relative to total figure (default if 1/3 of the figure). @isnumeric (e.g., [1 3]).
 * `yLimitES` is the y-axis limits for ES representation. By default, the maps wont necessary be with the same range but will be automatically scaled at their maximum.
 * `spmPos` is the position of SPM plot, default SPM analysis is displayed at the bottom of the figure. Any value will set the position to up.
-* `aovColor` is the color of ANOVA on SPM plot. Default is black. Use 'color' or rgb.
-
+* `aovColor` is the color of ANOVA on SPM plot. Default is black. Use 'color' or rgb.  
