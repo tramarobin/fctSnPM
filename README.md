@@ -64,16 +64,16 @@ Each folder is composed of two different types of files :
 ### ANOVA folder ###
 `anova.mat` file is composed of different fields (same for 1D and 2D) :  
 * `type` is the type of ANOVA performed
-* `effectNames` is a structure (one cell for each effect) that represent the names of the effects tested (mains and interactions) 
-* `alpha` is the alpha risk used for the anova
-* `alphaOriginal` is the alpha risk choosen for the anova (default is 0.05 (5%)). Warning message is displayed if this value is modified.
+* `effectNames` is a structure (one cell for each effect) that represent the names of the effects tested (mains and interactions)
+* `alphaOriginal` is the alpha risk choosen for the anova (default is 0.05 (5%)).  
+* `pCritical` is the alpha risk used for the anova. Warning message is displayed if this value is modified.
 * `nIterations` is the number of iterations performed for the anova.
 * `maxIterations` is the number of maximal iterations possible for the anova.
 * `Fcontinuum` is a structure that represent the F-value for each node
 * `Fthreshold` is a structure that represent the statistical threshold for the F-values (statistical inference)
 * `Fsignificant` is a structure that contains the logical for the significance (Fcontinuum > Fthreshold) of each effect of the ANOVA (1 if significant, 0 if not).  
 * `clusterLocation` is a structure (one for each significant cluster) that contains the location (start and end as indexes) of each significant cluster.
-* `clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster. This value is corrected with inverse Bonferonni correction.
+* `clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster. 
 
 `clusterLocation` and `clusterP` are created only in one dimension
 
@@ -97,8 +97,8 @@ For the following outputs, the number of cells of the structure correspond to th
 * `tTests.type` is the type of t-test performed (independant or paired)
 * `tTests.names` is the name of the conditions (the first minus the second) used in the differences and t-tests.
 * `tTests.nWarning` represents the number of warnings displyed during the analysis : 0 is OK, 1 means the number of iterations was reduced but the original alpha risk was conserved, 2 means that the number of iterations was reduced and the original alpha was reduced. In this case, more subjects are required to performed the analysis. 
-* `tTests.alphaOriginal` is the alpha risk choosen for the post hoc tests (default is 0.05 (5%)/ number of comparisons). Warning message is displayed if this value is modified.
-* `tTests.alpha` is the alpha risk used for the post hoc tests
+* `tTests.alphaOriginal` is the alpha risk choosen for the post hoc tests  before Bonferronni correction (default is the same as the ANOVA). Warning message is displayed if this value is modified.
+* `tTests.pCritical` is the alpha risk used for the post hoc tests after Bonferronni correction.
 * `tTests.nIterations` is the number of iterations performed for the t-test.
 * `tTests.maxIterations` is the number of maximal iterations possible for the t-test.
 * `tTests.Tcontinuum` represents the T-value for each node

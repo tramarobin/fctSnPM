@@ -93,8 +93,8 @@ if nEffects==1
             % inference
             posthoc.tTests.names=posthoc.differences.names;
             [posthoc.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
-            posthoc.tTests.alphaOriginal{comp}=alphaOriginal;
-            posthoc.tTests.alpha{comp}=alpha;
+            posthoc.tTests.alphaOriginal=alphaT;
+            posthoc.tTests.pCritical=alpha;
             posthoc.tTests.nIterations{comp}=iterations;
             Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
             posthoc.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
@@ -106,7 +106,7 @@ if nEffects==1
             clustersT=extractClusterData(Ttest_inf.clusters);
             for c=1:numel(clustersT)
                 posthoc.tTests.clusterLocation{comp}{c}=clustersT{c}.endpoints;
-                posthoc.tTests.clusterP{comp}(c)=clustersT{c}.P*(0.05/alpha);
+                posthoc.tTests.clusterP{comp}(c)=clustersT{c}.P*nComp;
             end
             
             plotmean(differencesData,IC,xlab,ylab,Fs,xlimits,nx,[],[],imageFontSize,imageSize,transparancy1D,[])
@@ -270,8 +270,8 @@ if nEffects==2
                 % inference
                 posthoc.tTests.names=posthoc.differences.names;
                 [posthoc.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
-                posthoc.tTests.alphaOriginal{comp}=alphaOriginal;
-                posthoc.tTests.alpha{comp}=alpha;
+                posthoc.tTests.alphaOriginal=alphaT;
+                posthoc.tTests.pCritical=alpha;
                 posthoc.tTests.nIterations{comp}=iterations;
                 Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
                 posthoc.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
@@ -283,7 +283,7 @@ if nEffects==2
                 clustersT=extractClusterData(Ttest_inf.clusters);
                 for c=1:numel(clustersT)
                     posthoc.tTests.clusterLocation{comp}{c}=clustersT{c}.endpoints;
-                    posthoc.tTests.clusterP{comp}(c)=clustersT{c}.P*(0.05/alpha);
+                    posthoc.tTests.clusterP{comp}(c)=clustersT{c}.P*nComp;
                 end
                 % plot of spm analysis
                 displayTtest(posthoc.tTests.Tcontinuum{1,comp},posthoc.tTests.Tthreshold{comp},posthoc.tTests.Tsignificant{1,comp},Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,transparancy1D)
@@ -434,8 +434,8 @@ if nEffects==3
                 % inference
                 posthoc.tTests.names=posthoc.differences.names;
                 [posthoc.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
-                posthoc.tTests.alphaOriginal{comp}=alphaOriginal;
-                posthoc.tTests.alpha{comp}=alpha;
+                posthoc.tTests.alphaOriginal=alphaT;
+                posthoc.tTests.pCritical=alpha;
                 posthoc.tTests.nIterations{comp}=iterations;
                 Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
                 posthoc.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
@@ -447,7 +447,7 @@ if nEffects==3
                 clustersT=extractClusterData(Ttest_inf.clusters);
                 for c=1:numel(clustersT)
                     posthoc.tTests.clusterLocation{comp}{c}=clustersT{c}.endpoints;
-                    posthoc.tTests.clusterP{comp}(c)=clustersT{c}.P*(0.05/alpha);
+                    posthoc.tTests.clusterP{comp}(c)=clustersT{c}.P*nComp;
                 end
                 
                 
@@ -610,8 +610,8 @@ if nEffects==3
                 % inference
                 posthoc.tTests.names=posthoc.differences.names;
                 [posthoc.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
-                posthoc.tTests.alphaOriginal{comp}=alphaOriginal;
-                posthoc.tTests.alpha{comp}=alpha;
+                posthoc.tTests.alphaOriginal=alphaT;
+                posthoc.tTests.pCritical=alpha;
                 posthoc.tTests.nIterations{comp}=iterations;
                 Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
                 posthoc.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
@@ -629,7 +629,7 @@ if nEffects==3
                 clustersT=extractClusterData(Ttest_inf.clusters);
                 for c=1:numel(clustersT)
                     posthoc.tTests.clusterLocation{comp}{c}=clustersT{c}.endpoints;
-                    posthoc.tTests.clusterP{comp}(c)=clustersT{c}.P*(0.05/alpha);
+                    posthoc.tTests.clusterP{comp}(c)=clustersT{c}.P*nComp;
                 end
                 
                 
@@ -886,8 +886,8 @@ if nEffects>1
             % inference
             posthoc.tTests.names=posthoc.differences.names;
             [posthoc.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
-            posthoc.tTests.alphaOriginal{comp}=alphaOriginal;
-            posthoc.tTests.alpha{comp}=alpha;
+            posthoc.tTests.alphaOriginal=alphaT;
+            posthoc.tTests.pCritical=alpha;
             posthoc.tTests.nIterations{comp}=iterations;
             Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
             posthoc.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
@@ -900,7 +900,7 @@ if nEffects>1
             clustersT=extractClusterData(Ttest_inf.clusters);
             for c=1:numel(clustersT)
                 posthoc.tTests.clusterLocation{comp}{c}=clustersT{c}.endpoints;
-                posthoc.tTests.clusterP{comp}(c)=clustersT{c}.P*(0.05/alpha);
+                posthoc.tTests.clusterP{comp}(c)=clustersT{c}.P*nComp;
             end
             
             if nEffects==2

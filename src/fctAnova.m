@@ -16,8 +16,8 @@ if ~ignoreAnova
         
         % Verify the number of iterations
         [nWarning,iterations,alpha]=fctWarningIterationsAOV(ANOVA,alphaOriginal,multiIterations,maximalIT,IT);
-        anova.alpha=alpha;
         anova.alphaOriginal=alphaOriginal;
+        anova.pCritical=alpha;
         anova.nIterations=iterations;
         
         % Statistical Inference
@@ -36,7 +36,7 @@ if ~ignoreAnova
             if min(dimensions)==1
                 for c=1:numel(clustersAnova)
                     anova.clusterLocation{c}=clustersAnova{c}.endpoints;
-                    anova.clusterP(c)=clustersAnova{c}.P*(0.05/alpha);
+                    anova.clusterP(c)=clustersAnova{c}.P;
                 end
             end
             
@@ -66,7 +66,7 @@ if ~ignoreAnova
                 if min(dimensions)==1
                     for c=1:numel(clustersAnova)
                         anova.clusterLocation{k}{c}=clustersAnova{c}.endpoints;
-                        anova.clusterP{k}(c)=clustersAnova{c}.P*(0.05/alpha);
+                        anova.clusterP{k}(c)=clustersAnova{c}.P;
                     end
                 end
                 
