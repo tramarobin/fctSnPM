@@ -124,8 +124,8 @@ if nEffects==1
         % inference
         posthoc.tTests.names=posthoc.differences.names;
         [posthoc.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
-        posthoc.tTests.alphaOriginal{comp}=alphaOriginal;
-        posthoc.tTests.alpha{comp}=alpha;
+        posthoc.tTests.alphaOriginal{comp}=alphaT;
+        posthoc.tTests.pCritical{comp}=alpha;
         posthoc.tTests.nIterations{comp}=iterations;
         Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
         posthoc.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
@@ -319,8 +319,8 @@ if nEffects==2
             
             % inference
             [posthoc.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
-            posthoc.tTests.alphaOriginal{comp}=alphaOriginal;
-            posthoc.tTests.alpha{comp}=alpha;
+            posthoc.tTests.alphaOriginal{comp}=alphaT;
+            posthoc.tTests.pCritical{comp}=alpha;
             posthoc.tTests.nIterations{comp}=iterations;
             Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
             posthoc.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
@@ -518,8 +518,8 @@ if nEffects==3
             
             % inference
             [posthoc.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
-            posthoc.tTests.alphaOriginal{comp}=alphaOriginal;
-            posthoc.tTests.alpha{comp}=alpha;
+            posthoc.tTests.alphaOriginal{comp}=alphaT;
+            posthoc.tTests.pCritical{comp}=alpha;
             posthoc.tTests.nIterations{comp}=iterations;
             Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
             posthoc.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
@@ -735,8 +735,8 @@ if nEffects==3
                 
                 % inference
                 [posthoc.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
-                posthoc.tTests.alphaOriginal{comp}=alphaOriginal;
-                posthoc.tTests.alpha{comp}=alpha;
+                posthoc.tTests.alphaOriginal{comp}=alphaT;
+                posthoc.tTests.pCritical{comp}=alpha;
                 posthoc.tTests.nIterations{comp}=iterations;
                 Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
                 posthoc.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
@@ -1025,8 +1025,8 @@ if nEffects>1
             
             % inference
             [posthoc.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
-            posthoc.tTests.alphaOriginal{comp}=alphaOriginal;
-            posthoc.tTests.alpha{comp}=alpha;
+            posthoc.tTests.alphaOriginal{comp}=alphaT;
+            posthoc.tTests.pCritical{comp}=alpha;
             posthoc.tTests.nIterations{comp}=iterations;
             Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
             posthoc.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
