@@ -12,9 +12,9 @@ load ExampleDatas
 DATA=ExampleDatas.ACCELECHO;
 
 % parameters
-EFFET_ind=[];
-EFFET_rm{1}={'ACC','ACC','US','US'};
-EFFET_rm{2}={'Contracted','Relaxed','Contracted','Relaxed'};
+independantEffects=[];
+repeatedMeasuresEffects{1}={'ACC','ACC','US','US'};
+repeatedMeasuresEffects{2}={'Contracted','Relaxed','Contracted','Relaxed'};
 effectNames={'Device','Activation'};
 % There is 15 subjects
 % Data(:,1) correspond to Device=ACC and Activation=Contracted
@@ -32,7 +32,7 @@ ylimits=[10 130];
 
 % SPM
 tic
-fctSPM(DATA,EFFET_ind,EFFET_rm,...
+fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'nTicksX',6,'ylabel',ylab,'nTicksY',7,...

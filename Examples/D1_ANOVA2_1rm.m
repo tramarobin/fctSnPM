@@ -14,11 +14,11 @@ DATA=DATA(:,[1 5]);
 % funtion parameters
 effectNames={'Sex','Side'};
 
-EFFET_ind{1}={'M','M','M','F','M','F','F','M','F','M','M','F','F','M','F','F','M','F','F','M'}; % same number than participants
+independantEffects{1}={'M','M','M','F','M','F','F','M','F','M','M','F','F','M','F','F','M','F','F','M'}; % same number than participants
 colorLine{1}=[rgb('blue'); rgb('magenta')];
 % There are 20 subjects
 
-EFFET_rm{1}={'Right','Left'};
+repeatedMeasuresEffects{1}={'Right','Left'};
 colorLine{2}=[rgb('green'); rgb('red')];
 
 savedir=[];
@@ -31,7 +31,7 @@ nTicksX=7;
 
 % SPM
 tic
-fctSPM(DATA,EFFET_ind,EFFET_rm,...
+fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...

@@ -14,8 +14,8 @@ DATA=ExampleDatas.Ratios(:,[1 5]);
 
 % function parameters
 effectNames={'Side'};
-EFFET_ind=[]; % empty
-EFFET_rm{1}={'Right','Left'}; % Side
+independantEffects=[]; % empty
+repeatedMeasuresEffects{1}={'Right','Left'}; % Side
 
 
 savedir=[];
@@ -27,7 +27,7 @@ nTicksY=8;
 
 % SPM
 tic
-fctSPM(DATA,EFFET_ind,EFFET_rm,...
+fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
     'savedir',savedir,'CI',0,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...

@@ -12,13 +12,13 @@ DATA=ExampleDatas.Ratios;
 % parameters
 effectNames={'Sex','Speed','Side'};
 
-EFFET_ind{1}={'M','M','M','F','M','F','F','M','F','M','M','F','F','M','F','F','M','F','F','M'}; % same number than participants
+independantEffects{1}={'M','M','M','F','M','F','F','M','F','M','M','F','F','M','F','F','M','F','F','M'}; % same number than participants
 colorLine{1}=[rgb('cyan'); rgb('magenta')];
 
-EFFET_rm{1}={'RC60','RC180','RFKF','RFKE','RC60','RC180','RFKF','RFKE'};
+repeatedMeasuresEffects{1}={'RC60','RC180','RFKF','RFKE','RC60','RC180','RFKF','RFKE'};
 colorLine{2}=[rgb('green'); rgb('blue'); rgb('red'); rgb('black')];
 
-EFFET_rm{2}={'Right','Right','Right','Right','Left','Left','Left','Left'};
+repeatedMeasuresEffects{2}={'Right','Right','Right','Right','Left','Left','Left','Left'};
 colorLine{3}=[rgb('gray'); rgb('darkgray')];
 
 % There are 20 subjects
@@ -34,7 +34,7 @@ nTicksY=17;
 
 % SPM
 tic
-fctSPM(DATA,EFFET_ind,EFFET_rm,...
+fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...

@@ -11,9 +11,9 @@ load ExampleDatas
 DATA=ExampleDatas.ACCELECHO;
 
 % paramètres de la fonction SPM
-EFFET_ind{1}={'L','L','L','L','L','M','M','M','M','M','S','S','S','S','S'}; % same number than participants
-EFFET_rm{1}={'ACC','ACC','US','US'};
-EFFET_rm{2}={'Contracted','Relaxed','Contracted','Relaxed'};
+independantEffects{1}={'L','L','L','L','L','M','M','M','M','M','S','S','S','S','S'}; % same number than participants
+repeatedMeasuresEffects{1}={'ACC','ACC','US','US'};
+repeatedMeasuresEffects{2}={'Contracted','Relaxed','Contracted','Relaxed'};
 effectNames={'Group','Device','Activation'};
 % There are 15 subjects
 % Subjects 1 to 5 are 'L', 6 to 10 are 'M', and 11 to 15 are 'S'
@@ -33,7 +33,7 @@ ylimits=[10 130];
 
 % SPM
 tic
-fctSPM(DATA,EFFET_ind,EFFET_rm,...
+fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...

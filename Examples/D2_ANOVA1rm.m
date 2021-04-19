@@ -13,8 +13,8 @@ load ExampleDatas
 DATA=ExampleDatas.BAB;
 
 % parameters
-EFFET_ind=[];
-EFFET_rm{1}={'C1','C2','C3','C4'};
+independantEffects=[];
+repeatedMeasuresEffects{1}={'C1','C2','C3','C4'};
 effectNames={'Shoes'};
 % There are 9 subjects
 % Data(:,1) correspond to Shoes=C1
@@ -32,7 +32,7 @@ ylimits=[15 200];
 
 % SPM
 tic
-fctSPM(DATA,EFFET_ind,EFFET_rm,...
+fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...

@@ -14,7 +14,7 @@ DATA=DATA(:,[1:4]);
 
 % funtion parameters
 effectNames={'Speed'};
-EFFET_rm{1}={'RC60','RC180','RFKF','RFKE'};
+repeatedMeasuresEffects{1}={'RC60','RC180','RFKF','RFKE'};
 colorLine{1}=[rgb('green'); rgb('blue'); rgb('red'); rgb('black')];
 % There are 20 subjects
 
@@ -27,7 +27,7 @@ nTicksY=17;
 
 % SPM
 tic
-fctSPM(DATA,[],EFFET_rm,...
+fctSPM(DATA,[],repeatedMeasuresEffects,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...

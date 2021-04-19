@@ -12,8 +12,8 @@ DATA=ExampleDatas.Ratios(:,1);
 
 % function parameters
 effectNames={'Sex'};
-EFFET_ind{1}={'M','M','M','F','M','F','F','M','F','M','M','F','F','M','F','F','M','F','F','M'}; % same number than participants
-EFFET_rm=[]; % empty
+independantEffects{1}={'M','M','M','F','M','F','F','M','F','M','M','F','F','M','F','F','M','F','F','M'}; % same number than participants
+repeatedMeasuresEffects=[]; % empty
 
 savedir=[];
 xlab='Angle (°)';
@@ -23,7 +23,7 @@ ylimits=[0 1.2];
 
 % SPM
 tic
-fctSPM(DATA,EFFET_ind,EFFET_rm,...
+fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...
