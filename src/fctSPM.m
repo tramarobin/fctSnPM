@@ -41,7 +41,7 @@
 %`spmAnalysis.anova` is composed of different fields :  
 %* `type` is the type of ANOVA performed
 %* `effectNames` is a structure (one cell for each effect) that represent the names of the effects tested (mains and interactions)
-%* `alphaOriginal` is the alpha risk choosen for the anova (default is 0.05 (5%)).  
+%* `alpha` is the alpha risk choosen for the anova (default is 0.05 (5%)).  
 %* `pCritical` is the alpha risk used for the anova. Warning message is displayed if this value is modified.
 %* `nIterations` is the number of iterations performed for the anova.
 %* `maxIterations` is the number of maximal iterations possible for the anova.
