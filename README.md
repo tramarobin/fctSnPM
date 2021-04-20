@@ -5,7 +5,7 @@ The function automatically adapts to 1D and 2D data.
 
 The general usage is:
 ```matlab
-fctSPM(data, independantEffects, repeatedMeasuresEffects, varargin)
+spmAnalysis=fctSPM(data, independantEffects, repeatedMeasuresEffects, varargin)
 ```
 
 
@@ -17,8 +17,9 @@ fctSPM(data, independantEffects, repeatedMeasuresEffects, varargin)
 - [Outputs](#Outputs)
 - [Examples](#Examples)
 - [Using fctSPM](#Using-fctSPM)
-- [Obligatory INPUTS](#Obligatory-INPUTS)
-- [Optional INPUTS](#Optional-INPUTS)
+- [Obligatory inputs](#Obligatory-inputs)
+- [Optional inputs](#Optional-inputs)
+- [Optional functions](#Optional-functions)
 
 ## Warnings ##
 - Unbalanced two- and three-way repeated-measures ANOVA results have not been verified.
@@ -53,16 +54,11 @@ Compatible from Matlab R2017b
 
 
 ## Outputs ##
-This fonction creates two folders:
-* `ANOVA` (no ANOVA folder is created if the analysis is a t-test).  
-* `Post hoc` for the post-hoc analysis.  
 
-Each folder is composed of two different types of files : 
-* `.mat` files in which all data and statistical analysis can be found
-* `.TIF` and `.fig` files representing the statistical analysis on different graphics.  
+### spmAnalysis ###
+`spmAnalaysis.mat` is a structure composed of the results of teh statistical analysis (ANOVA + Post Hoc). 
 
-### ANOVA folder ###
-`anova.mat` file is composed of different fields (same for 1D and 2D) :  
+`spmAnalysis.anova` is composed of different fields :  
 * `type` is the type of ANOVA performed
 * `effectNames` is a structure (one cell for each effect) that represent the names of the effects tested (mains and interactions)
 * `alphaOriginal` is the alpha risk choosen for the anova (default is 0.05 (5%)).  
@@ -77,14 +73,7 @@ Each folder is composed of two different types of files :
 
 `clusterLocation` and `clusterP` are created only in one dimension
 
-Each effect is also display on a specific figure in `.TIF` format named after `effectNames`, a floder named FIG is also created and contains the figures in `.fig` format.   
-For 1D:  The curve represents the `Fcontinuum`, the horizontal line is the `Fthreshold`, the highlighted parts of the curve in blue represents the significant cluster(s), and the vertical lines are the start and end indexes.
-For 2D: The map represents the `Fcontinuum`, with a colorbar maximum at `Fthreshold`, the white clusters represent the significant clusters.
-
-
-### Post hoc folder ###
-This folder contains additional folders (0 (for anova1), 3 (for anova2) or 7 (for anova3)) that contain figures and metrics representing the different post-hoc tests.  
-`posthoc.mat` file is composed of different fields :
+`spmAnalysis.posthoc` is a strucure of cells (one for each effect of the ANOVA) composed of different fields :
 * `data.names` is a structure that contains the name of the conditions used in the analysis (\cap is the union of different conditions for interactions).
 * `data.continuum` is a structure that contains the data used in the analysis.
 
@@ -96,9 +85,11 @@ For the following outputs, the number of cells of the structure correspond to th
 * `differences.ESsd` is the standard deviation of the effect size.
 * `tTests.type` is the type of t-test performed (independant or paired)
 * `tTests.names` is the name of the conditions (the first minus the second) used in the differences and t-tests.
-* `tTests.nWarning` represents the number of warnings displyed during the analysis : 0 is OK, 1 means the number of iterations was reduced but the original alpha risk was conserved, 2 means that the number of iterations was reduced and the original alpha was reduced. In this case, more subjects are required to performed the analysis. 
-* `tTests.alphaOriginal` is the alpha risk choosen for the post hoc tests  before Bonferronni correction (default is the same as the ANOVA). Warning message is displayed if this value is modified.
-* `tTests.pCritical` is the alpha risk used for the post hoc tests after Bonferronni correction.
+* `tTests.nWarning` represents the number of warnings displayed during the analysis : 0 is OK, 1 means the number of iterations was reduced but `pCritical` = `alphaBonferronni`, 2 means that the number of iterations was reduced and `pCritical` > `alphaBonferronni`. In this case, more subjects are required to performed the analysis. %* `tTests.alphaOriginal` is the alpha risk choosen for the post hoc tests  before Bonferronni correction (default is the same as the ANOVA).
+* `tTests.alphaOriginal` is the alpha risk choosen for the post hoc tests  before Bonferronni correction (default is the same as the ANOVA).
+* `warning` : only if alphaOrignial is modified with `alphaT` input.
+* `tTests.alphaBonferronni` is the alpha risk choosen for the post hoc tests after  Bonferronni correction.
+* `tTests.pCritical` is the alpha risk used for the post hoc tests. Warning message is displayed if this value does not meet alphaBonferronni.
 * `tTests.nIterations` is the number of iterations performed for the t-test.
 * `tTests.maxIterations` is the number of maximal iterations possible for the t-test.
 * `tTests.Tcontinuum` represents the T-value for each node
@@ -113,7 +104,17 @@ For the following outputs, the number of cells of the structure correspond to th
 `tTests.contourSignificant is created only in two dimensions.  
 
 
-#### Figures ####
+### Figures ###
+Two folders composed of figures in `.TIF` and `.fig` are created
+
+#### ANOVA ####
+Each effect is also display on a specific figure in `.TIF` format named after `effectNames`, a floder named FIG is also created and contains the figures in `.fig` format.   
+For 1D:  The curve represents the `Fcontinuum`, the horizontal line is the `Fthreshold`, the highlighted parts of the curve in blue represents the significant cluster(s), and the vertical lines are the start and end indexes.
+For 2D: The map represents the `Fcontinuum`, with a colorbar maximum at `Fthreshold`, the white clusters represent the significant clusters.
+
+#### Post Hoc ####
+This folder contains additional folders (0 (for anova1), 3 (for anova2) or 7 (for anova3)) that contain figures and metrics representing the different post-hoc tests.  
+
 Interaction folders (AxB or AxBxC) contain 2 or 3 folders in which one effect is investigated.
 
 ##### In one dimension #####
@@ -183,11 +184,11 @@ Refer to the [MATLAB documentation regarding search paths](https://fr.mathworks.
 
 ### Usage ###
 ```matlab
-fctSPM(data, independantEffects, repeatedMeasuresEffects, varargin)
+spmAnalysis=fctSPM(data, independantEffects, repeatedMeasuresEffects, varargin)
 ```
 
 
-### Obligatory INPUTS ###
+### Obligatory inputs ###
 
 * `data` is a x by y cell array.  
 x corresponds to a subjects and y corresponds to a repeated measure.     
@@ -200,10 +201,10 @@ Each cell contains the name ('char') of each modality for the given subject and 
 Each cell contains the name ('char') of each modality for the given condition and must correspond to the number of conditions/columns (y). 
 
 
-### Optional INPUTS ###
+### Optional inputs ###
 Optional inputs are available to personalize the figures.  
 ```matlab
-fctSPM(data, independantEffects, repeatedMeasuresEffects, 'Optional Input Name', value)
+spmAnalysis=fctSPM(data, independantEffects, repeatedMeasuresEffects, 'Optional Input Name', value)
 ```
 
 
@@ -219,7 +220,7 @@ These options act on the name of the created folders.
 These options act at a statistical level, modifying the alpha error or the number of iterations.
 
 * `alpha` is the alpha error risk for the ANOVA. Default is 0.05. @isnumeric.
-* `alphaT` is the original alpha used for post hoc tests (Bonferonni correction is applied after as alphaT/number of comparisons. Default is the same as `alpha`. @isnumeric.
+* `alphaT`. Do not modify except for exploratory purposes. `alphaT` is the original alpha used for post hoc tests (Bonferonni correction is applied after as alphaT/number of comparisons. Default is the same as `alpha`. @isnumeric.
 * `multiIT` define the number of permutations as multiIT/alpha. Default is 10, corresponds to 200 iterations for 5% risk.  
 **Must be increased for better reproductibility.**
 * `IT` is a fixed number of iterations (override the multiIterations - not recommended).    
@@ -274,3 +275,16 @@ These option are specific to 1D plots.
 * `yLimitES` is the y-axis limits for ES representation. By default, the maps wont necessary be with the same range but will be automatically scaled at their maximum.
 * `spmPos` is the position of SPM plot, default SPM analysis is displayed at the bottom of the figure. Any value will set the position to up.
 * `aovColor` is the color of ANOVA on SPM plot. Default is black. Use 'color' or rgb.  
+
+
+## Otional functions ##
+in addition of `fctSPM`, this repository contains two similar funtions. 
+*`fctSPMS` performs the same analysis than `fctSPM`, however, the figures are not ploted and saved. The inputs are the same at the exception that there is no savedir and no plot parameters.
+*`saveNplot` permits to save and plot the analysis obtain with `fctSPM` and `fctSPMS`.
+
+The general use of these funtion are :
+```matlab
+spmAnalysis=fctSPMS(data, independantEffects, repeatedMeasuresEffects, 'Optional Input Name', value)
+saveNplot(spmAnalysis,'Optional Input Name', value)
+```
+It may be useful to use `saveNplot` when a 2D analysis is performed, it may permit to redo quickly figures without the long time of analysis. This function is less relevant in 1D as some of the plot can't be save. Besides, 1D analysis is shorter and there is only a little gain in time.
