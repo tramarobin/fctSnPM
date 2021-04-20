@@ -1,4 +1,4 @@
-% Trama Robin (LIBM) 30/03/2021 --> release 1.4.3
+% Trama Robin (LIBM) 04/2021 --> JOSS
 % trama.robin@gmail.com
 
 % available at :
@@ -12,6 +12,7 @@
 % Using spm1d package (v.0.4.3), compute anova and post-hoc tests from anova1 to anova3rm, with a non-parametric approach (permutation tests)
 % The type of anova (if required) and post-hoc are choosen regarding the independant or repeated measure effect given in parameters.
 % The function automatically adapts to 1D and 2D data
+% Analysis and figures of the analysis are saved
 % Examples are in ...\fctSPM\Examples
 % 1D examples are torque ratios
 % 2D examples are maps obtained with continuous wavelet transforms
@@ -35,91 +36,91 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % OUTPUTS
-% This fonction creates two folders:
-% * `ANOVA` (no ANOVA folder is created if the analysis is a t-test).
-% * `Post hoc` for the post-hoc analysis.
+%`spmAnalaysis.mat` is a structure composed of the results of teh statistical analysis (ANOVA + Post Hoc). 
 
-% Each folder is composed of two different types of files :
-% * `.mat` files in which all data and statistical analysis can be found
-% * `.TIF` and `.fig` files representing the statistical analysis on different graphics.
+%`spmAnalysis.anova` is composed of different fields :  
+%* `type` is the type of ANOVA performed
+%* `effectNames` is a structure (one cell for each effect) that represent the names of the effects tested (mains and interactions)
+%* `alphaOriginal` is the alpha risk choosen for the anova (default is 0.05 (5%)).  
+%* `pCritical` is the alpha risk used for the anova. Warning message is displayed if this value is modified.
+%* `nIterations` is the number of iterations performed for the anova.
+%* `maxIterations` is the number of maximal iterations possible for the anova.
+%* `Fcontinuum` is a structure that represent the F-value for each node
+%* `Fthreshold` is a structure that represent the statistical threshold for the F-values (statistical inference)
+%* `Fsignificant` is a structure that contains the logical for the significance (Fcontinuum > Fthreshold) of each effect of the ANOVA (1 if significant, 0 if not).  
+%* `clusterLocation` is a structure (one for each significant cluster) that contains the location (start and end as indexes) of each significant cluster.
+%* `clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster. 
 
-% ### ANOVA folder ###
-% `anova.mat` file is composed of different fields (same for 1D and 2D) :
-% * `type` is the type of ANOVA performed
-% * `effectNames` is a structure (one cell for each effect) that represent the names of the effects tested (mains and interactions)
-% * `alphaOriginal` is the alpha risk choosen for the anova (default is 0.05 (5%)).
-% * `pCritical` is the alpha risk used for the anova.  Warning message is displayed if this value is modified.
-% * `nIterations` is the number of iterations performed for the anova.
-% * `maxIterations` is the number of maximal iterations possible for the anova.
-% * `Fcontinuum` is a structure that represent the F-value for each node
-% * `Fthreshold` is a structure that represent the statistical threshold for the F-values (statistical inference)
-% * `Fsignificant` is a structure that contains the logical for the significance (Fcontinuum > Fthreshold) of each effect of the ANOVA (1 if significant, 0 if not).
-% * `clusterLocation` is a structure (one for each significant cluster) that contains the location (start and end as indexes) of each significant cluster.
-% * `clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster.
+%`clusterLocation` and `clusterP` are created only in one dimension
 
-% `clusterLocation` and `clusterP` are created only in one dimension
+%`spmAnalysis.posthoc` is a strucure of cells (one for each effect of the ANOVA) composed of different fields :
+%* `data.names` is a structure that contains the name of the conditions used in the analysis (\cap is the union of different conditions for interactions).
+%* `data.continuum` is a structure that contains the data used in the analysis.
 
-% Each effect is also display on a specific figure in `.TIF` format named after `effectNames`, a floder named FIG is also created and contains the figures in `.fig` format.
-% For 1D:  The curve represents the `Fcontinuum`, the horizontal line is the `Fthreshold`, the highlighted parts of the curve in blue represents the significant cluster(s), and the vertical lines are the start and end indexes.
-% For 2D: The map represents the `Fcontinuum`, with a colorbar maximum at `Fthreshold`, the white clusters represent the significant clusters.
+%For the following outputs, the number of cells of the structure correspond to the number of t-tests performed, one t-test corresponds to one cell.
+%* `differences.names` is the name of the conditions (the first minus the second) used in the differences and t-tests.
+%* `differences.continuum` is the data used to plot differences.
+%* `differences.continuumRelative` is the data used to plot relative differences
+%* `differences.ES` is the effect size that correspond to the differences (Hedge's g)
+%* `differences.ESsd` is the standard deviation of the effect size.
+%* `tTests.type` is the type of t-test performed (independant or paired)
+%* `tTests.names` is the name of the conditions (the first minus the second) used in the differences and t-tests.
+%* `tTests.nWarning` represents the number of warnings displayed during the analysis : 0 is OK, 1 means the number of iterations was reduced but `pCritical` = `alphaBonferronni`, 2 means that the number of iterations was reduced and `pCritical` > `alphaBonferronni`. In this case, more subjects are required to performed the analysis. %* `tTests.alphaOriginal` is the alpha risk choosen for the post hoc tests  before Bonferronni correction (default is the same as the ANOVA).
+%* `tTests.alphaOriginal` is the alpha risk choosen for the post hoc tests  before Bonferronni correction (default is the same as the ANOVA).
+%* `warning` : only if alphaOrignial is modified with `alphaT` input.
+%* `tTests.alphaBonferronni` is the alpha risk choosen for the post hoc tests after  Bonferronni correction.
+%* `tTests.pCritical` is the alpha risk used for the post hoc tests. Warning message is displayed if this value does not meet alphaBonferronni.
+%* `tTests.nIterations` is the number of iterations performed for the t-test.
+%* `tTests.maxIterations` is the number of maximal iterations possible for the t-test.
+%* `tTests.Tcontinuum` represents the T-value for each node
+%* `tTests.Tthreshold` represents the statistical threshold for the T-values (statistical inference)
+%* `tTests.Tsignificant` contains the logical for the significance (Tcontinuum > Tthreshold) (1 if significant, 0 if not). This value is corrected with the result of the corresponding ANOVA and previous t-tests.
 
+%* `tTests.clusterLocation` is a structure (one for each significant cluster) that contains the location (start and end as indexes) of each significant cluster.
+%* `tTests.clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster. This value is corrected with inverse Bonferonni correction.
+%`clusterLocation` and `clusterP` are created only in one dimension and are not corrected with the result of the ANOVA.
 
-% ### Post hoc folder ###
-% This folder contains additional folders (0 (for anova1), 3 (for anova2) or 7 (for anova3)) that contain figures and metrics representing the different post-hoc tests.
-% `posthoc.mat` file is composed of different fields :
-% * `data.names` is a structure that contains the name of the conditions used in the analysis (\cap is the union of different conditions for interactions).
-% * `data.continuum` is a structure that contains the data used in the analysis.
-
-% For the following outputs, the number of cells of the structure correspond to the number of t-tests performed, one t-test corresponds to one cell.
-% * `differences.names` is the name of the conditions (the first minus the second) used in the differences and t-tests.
-% * `differences.continuum` is the data used to plot differences.
-% * `differences.continuumRelative` is the data used to plot relative differences
-% * `differences.ES` is the effect size that correspond to the differences (Hedge's g)
-% * `differences.ESsd` is the standard deviation of the effect size.
-% * `tTests.type` is the type of t-test performed (independant or paired)
-% * `tTests.names` is the name of the conditions (the first minus the second) used in the differences and t-tests.
-% * `tTests.nWarning` represents the number of warnings displyed during the analysis : 0 is OK, 1 means the number of iterations was reduced but the original alpha risk was conserved, 2 means that the number of iterations was reduced and the original alpha was reduced. In this case, more subjects are required to performed the analysis.
-% * `tTests.alphaOriginal` is the alpha risk choosen for the post hoc tests before the Bonferronni corection (default is the same as the ANOVA). Warning message is displayed if this value is modified.
-% * `tTests.pCritical` is the alpha risk used for the post hoc tests after Bonferronni correction
-% * `tTests.nIterations` is the number of iterations performed for the t-test.
-% * `tTests.maxIterations` is the number of maximal iterations possible for the t-test.
-% * `tTests.Tcontinuum` represents the T-value for each node
-% * `tTests.Tthreshold` represents the statistical threshold for the T-values (statistical inference)
-% * `tTests.Tsignificant` contains the logical for the significance (Tcontinuum > Tthreshold) (1 if significant, 0 if not). This value is corrected with the result of the corresponding ANOVA and previous t-tests.
-
-% * `tTests.clusterLocation` is a structure (one for each significant cluster) that contains the location (start and end as indexes) of each significant cluster.
-% * `tTests.clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster. The p-value is corrected by inverse Bonferroni correction
-% `clusterLocation` and `clusterP` are created only in one dimension and are not corrected with the result of the ANOVA.
-%
-% * `tTests.contourSignificant` represents a modified T-value continuum to display smoother contour plots.
-% `tTests.contourSignificant is created only in two dimensions.
+%* `tTests.contourSignificant` represents a modified T-value continuum to display smoother contour plots.
+%`tTests.contourSignificant is created only in two dimensions.  
 
 
-% #### Figures ####
-% Interaction folders (AxB or AxBxC) contain 2 or 3 folders in which one effect is investigated.
 
-% ##### In one dimension #####
-% A total of 5 figures with the name of the effect represent the means and standard deviations between subject for each condition (grouped in fuction of the effect investigated).
-% Under this plot, a second graph display the result of the ANOVA (or ANOVAs for interaction) and the significant post-hoc tests for pairewise comparisons.
-% The differences between the 5 figures are the representation of the ANOVA and the disposition of the statistical analysis (subplot or same plot, see optional inputs)
+%### Figures ###
+%Two folders composed of figures in `.TIF` and `.fig` are created
 
-% Subfolders : Contains the pairewise comparison results
-% * DIFF: Differences plots. Filenames with '%' at the end are the relative differences
-% * ES: Effect size plots. Bold blue lines are located at the significant differences (corrected with the ANOVA).
-% * SPM: Tcontinuum and statistical inferences plots. Bold blue lines are located at the significant differences (corrected with the ANOVA).
-% * FIG folder contains the above mentionned folder with the figures in `.fig` format.
+%#### ANOVA ####
+%Each effect is also display on a specific figure in `.TIF` format named after `effectNames`, a floder named FIG is also created and contains the figures in `.fig` format.   
+%For 1D:  The curve represents the `Fcontinuum`, the horizontal line is the `Fthreshold`, the highlighted parts of the curve in blue represents the significant cluster(s), and the vertical lines are the start and end indexes.
+%For 2D: The map represents the `Fcontinuum`, with a colorbar maximum at `Fthreshold`, the white clusters represent the significant clusters.
+
+%#### Post Hoc ####
+%This folder contains additional folders (0 (for anova1), 3 (for anova2) or 7 (for anova3)) that contain figures and metrics representing the different post-hoc tests.  
+
+%Interaction folders (AxB or AxBxC) contain 2 or 3 folders in which one effect is investigated.
+
+%##### In one dimension #####
+%A total of 5 figures with the name of the effect represent the means and standard deviations between subject for each condition (grouped in fuction of the effect investigated).  
+%Under this plot, a second graph display the result of the ANOVA (or ANOVAs for interaction) and the significant post-hoc tests for pairewise comparisons.  
+%The differences between the 5 figures are the representation of the ANOVA and the disposition of the statistical analysis (subplot or same plot, see optional inputs)
+
+%Subfolders : Contains the pairewise comparison results 
+%* DIFF: Differences plots. Filenames with '%' at the end are the relative differences
+%* ES: Effect size plots. Bold blue lines are located at the significant differences (corrected with the ANOVA).
+%* SPM: Tcontinuum and statistical inferences plots. Bold blue lines are located at the significant differences (corrected with the ANOVA).
+%* FIG folder contains the above mentionned folder with the figures in `.fig` format.
 
 
-% ##### In two dimensions #####
-% Means maps for each condition are represented in one figure each.
-% The global effect of the post hoc precedure is display on a figure with the name of the effect. Mean maps are represented on the diagonal, pairewise differences on the top-right panel, and pairewise spm inferences on the bottom-left panel.
+%##### In two dimensions #####
+%Means maps for each condition are represented in one figure each. 
+%The global effect of the post hoc precedure is display on a figure with the name of the effect. Mean maps are represented on the diagonal, pairewise differences on the top-right panel, and pairewise spm inferences on the bottom-left panel. 
 
-% Subfolders : Contains the pairewise comparison results (In one folder for ANOVA1, in 2 or 3 folders for ANOVA2 and ANOVA3)
-% * SD : standard deviation of the maps for each condition.
-% * DIFF: Differences plots. Filenames with '%' at the end are the relative differences. White clusters represent the significant effect (corrected with ANOVA)
-% * ES: Effect size plots. Whites clusters represent the significant effect (corrected with ANOVA)
-% * SPM: Tcontinuum and statistical inferences plots. Whites clusters represent the significant effect (no correction with the ANOVA)
-% * FIG folder contains the above mentionned folder with the figures in `.fig` format.
+%Subfolders : Contains the pairewise comparison results (In one folder for ANOVA1, in 2 or 3 folders for ANOVA2 and ANOVA3)
+%* SD : standard deviation of the maps for each condition.
+%* DIFF: Differences plots. Filenames with '%' at the end are the relative differences. White clusters represent the significant effect (corrected with ANOVA)
+%* ES: Effect size plots. Whites clusters represent the significant effect (corrected with ANOVA)
+%* SPM: Tcontinuum and statistical inferences plots. Whites clusters represent the significant effect (no correction with the ANOVA)
+%* FIG folder contains the above mentionned folder with the figures in `.fig` format.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -138,14 +139,6 @@
 % see the description at begining of the function (inputParser)
 % see .\fctSPM\Examples for help
 
-%% OUTPUTS
-% Figures : One for each effect of the anova, and for each post hoc (means, means + SPM results, differences, relative differences, effect size and SPM analysis for each comparison)
-% .mat files for ANOVA and multiple comparison (indicate the number of iterations, the alpha, and teh warning associated)
-% Type of ANOVA is choosen in regards of the effects defined in the function (ANOVA1 --> ANOVA3rm)
-% Post-hoc are corrected with Bonferonni and paired or not in fuction of the effect(s) tested (WARNING : Post-hoc tests with Bonferonni correction are only approximate)
-% The SPM results displayed in 1D or 2D correspond to the intersection of the ANOVA and the t-test (a t-test is only significant if the anova is significant at the same location)
-% for the interactions, main effects at the location where only main effects are located are used to display a global map of main effects+interaction on the same figure
-
 %% Informations
 % All the dataset must be balanced for ANOVA 2 and 3
 % Post-hoc tests with Bonferonni correction are only approximate
@@ -157,7 +150,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function fctSPM(mapsAll,effectsInd,effectsRm,varargin)
+function spmAnalysis=fctSPM(mapsAll,effectsInd,effectsRm,varargin)
 
 %% Optional inputs
 p = inputParser;
@@ -171,7 +164,7 @@ addParameter(p,'nameSub',[],@iscell) % names of the different subjects
 
 % statistical parameters
 addParameter(p,'alpha',0.05,@isnumeric); % alpha used for the ANOVA
-addParameter(p,'alphaT',[],@isnumeric); % original alpha used for post hoc tests (Bonferonni correction is applied afetr as alphaT/ number of comparisons). By default, this value is the same than the alpha used for the ANOVA.
+addParameter(p,'alphaT',[],@isnumeric); % Do not modify except for exploratory purposes. Original alpha used for post hoc tests (Bonferonni correction is applied afetr as alphaT/ number of comparisons). By default, this value is the same than the alpha used for the ANOVA. 
 addParameter(p,'multiIT',10,@isnumeric); % the number of permutations is multiIT/alpha. Must be increased for better reproductibility
 addParameter(p,'IT',[],@isnumeric); % fixed number of iterations (override the multiIterations - not recommanded)
 % specified either multiIterations or IT, but not both
@@ -271,14 +264,18 @@ end
 [maps1d,dimensions,sujets,nRm,nEffects,typeEffectsAll,modalitiesAll,indicesEffects]=findModalities(mapsAll,effectsRm,effectsInd);
 
 %% Choose and perform ANOVA
-[anovaEffects]=fctAnova(maps1d,dimensions,indicesEffects,sujets,nEffects,nRm,effectNames,alpha,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,imageResolution,xlimits,maximalIT,ignoreAnova,displayContour,contourColor,dashedColor,transparancy,lineWidth,linestyle,colorMap,imageSize,imageFontSize);
+[anovaEffects,anova]=fctAnova(maps1d,dimensions,indicesEffects,sujets,nEffects,nRm,effectNames,alpha,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,imageResolution,xlimits,maximalIT,ignoreAnova,displayContour,contourColor,dashedColor,transparancy,lineWidth,linestyle,colorMap,imageSize,imageFontSize);
 
 %% Choose and perform post-hocs
 if min(dimensions)==1 %1D
-    fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,alpha,transparancy1D,ratioSPM,yLimitES,spmPos,aovColor);
+    posthoc=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,alpha,transparancy1D,ratioSPM,yLimitES,spmPos,aovColor);
 else %2D
-    fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,contourColor,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalIT,doAllInteractions,dashedColor,transparancy,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,alpha,linestyle);
+    posthoc=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,contourColor,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalIT,doAllInteractions,dashedColor,transparancy,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,alpha,linestyle);
 end
 
+%% Save analysis
+spmAnalysis.anova=anova;
+spmAnalysis.posthoc=posthoc;
+save([savedir '/spmAnalysis'], 'spmAnalysis')
 
 end

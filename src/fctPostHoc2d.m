@@ -1,4 +1,4 @@
-function []=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,contourColor,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nx,ny,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalIT,doAllInteractions,dashedColor,transparency,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,alphaAOV,linestyle)
+function posthoc=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,contourColor,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nx,ny,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalIT,doAllInteractions,dashedColor,transparency,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,alphaAOV,linestyle)
 close all
 if isempty(nx)
     nx=5;
@@ -12,12 +12,21 @@ savedir=[savedir '/Post hoc/'];
 %% define alpha risk
 if isempty(alphaT)
     alphaT=alphaAOV;
+    warnT=0;
+else
+    if alphaT~=alphaAOV
+        warning('Post-hoc analysis is not valid. Please keep the same alpha risk for ANOVA and post hoc tests');
+        warnT=1;
+    else
+        warnT=0;
+    end
 end
 
 %% T-TEST 1 EFFECT = MAIN EFFECT
 if nEffects==1
     
     createSavedir2d(savedir)
+    posthoc{1}.name=eNames{1};
     
     loop=0;
     for i=1:max(indicesEffects)
@@ -42,9 +51,9 @@ if nEffects==1
         % means
         meansData=reshape(mean(maps1d(indicesEffects==combi{i}(1),:)),dimensions(1),dimensions(2));
         stdData=reshape(std(maps1d(indicesEffects==combi{i}(1),:)),dimensions(1),dimensions(2));
-        posthoc.data.names{i}=[char(modalitiesAll{1}(combi{i}(1)))];
-        posthoc.data.meanContinuum{i}=meansData;
-        posthoc.data.sdContinuum{i}=stdData;
+        posthoc{1}.data.names{i}=[char(modalitiesAll{1}(combi{i}(1)))];
+        posthoc{1}.data.meanContinuum{i}=meansData;
+        posthoc{1}.data.sdContinuum{i}=stdData;
         positionDiffPlot=[positionDiffPlot,(i-1)*nCombi+i+1:(i-1)*nCombi+i+1+nCombi-i-1];
         positionSPMPlot=[positionSPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
         
@@ -81,7 +90,7 @@ if nEffects==1
     end
     
     nComp=size(Comp,2);
-    alphaOriginal=alphaT/nComp;
+    alphaBonferronni=alphaT/nComp;
     
     for comp=1:nComp
         
@@ -89,7 +98,7 @@ if nEffects==1
             % comparison + name
             DATA{i}=maps1d(indicesEffects==combi{Comp{comp}(i)}(1),:);
         end
-        posthoc.differences.names{1,comp}=char([modalitiesAll{1}{combi{Comp{comp}(1)}(1)} ' - ' modalitiesAll{1}{combi{Comp{comp}(2)}(1)}]);
+        posthoc{1}.differences.names{1,comp}=char([modalitiesAll{1}{combi{Comp{comp}(1)}(1)} ' - ' modalitiesAll{1}{combi{Comp{comp}(2)}(1)}]);
         
         if typeEffectsAll>0
             
@@ -97,12 +106,12 @@ if nEffects==1
             differencesData=reshape(mean(DATA{1}-DATA{2}),dimensions(1),dimensions(2));
             relativeDifferencesData=reshape(100*mean((DATA{1}-DATA{2})./DATA{2}),dimensions(1),dimensions(2));
             
-            posthoc.differences.continuum{1,comp}=differencesData;
-            posthoc.differences.continuumRelative{1,comp}=relativeDifferencesData;
+            posthoc{1}.differences.continuum{1,comp}=differencesData;
+            posthoc{1}.differences.continuumRelative{1,comp}=relativeDifferencesData;
             
             Ttest=spm1d.stats.nonparam.ttest_paired(DATA{1},DATA{2});
-            posthoc.tTests.type{comp}='paired';
-            [posthoc.differences.ES{comp},posthoc.differences.ESsd{comp}]=esCalculation(DATA);
+            posthoc{1}.tTests.type{comp}='paired';
+            [posthoc{1}.differences.ES{comp},posthoc{1}.differences.ESsd{comp}]=esCalculation(DATA);
             
         else
             
@@ -110,54 +119,58 @@ if nEffects==1
             differencesData=reshape(mean(DATA{1})-mean(DATA{2}),dimensions(1),dimensions(2));
             relativeDifferencesData=reshape(100*(mean(DATA{1})-mean(DATA{2}))./mean(DATA{2}),dimensions(1),dimensions(2));
             
-            posthoc.differences.continuum{1,comp}=differencesData;
-            posthoc.differences.continuumRelative{1,comp}=relativeDifferencesData;
+            posthoc{1}.differences.continuum{1,comp}=differencesData;
+            posthoc{1}.differences.continuumRelative{1,comp}=relativeDifferencesData;
             
             Ttest=spm1d.stats.nonparam.ttest2(DATA{1},DATA{2});
-            posthoc.tTests.type{comp}='independant';
-            [posthoc.differences.ES{comp},posthoc.differences.ESsd{comp}]=esCalculation(DATA);
+            posthoc{1}.tTests.type{comp}='independant';
+            [posthoc{1}.differences.ES{comp},posthoc{1}.differences.ESsd{comp}]=esCalculation(DATA);
         end
         
-        posthoc.differences.ES{comp}=reshape(posthoc.differences.ES{comp},dimensions(1),dimensions(2));
-        posthoc.differences.ESsd{comp}=reshape(posthoc.differences.ESsd{comp},dimensions(1),dimensions(2));
+        posthoc{1}.differences.ES{comp}=reshape(posthoc{1}.differences.ES{comp},dimensions(1),dimensions(2));
+        posthoc{1}.differences.ESsd{comp}=reshape(posthoc{1}.differences.ESsd{comp},dimensions(1),dimensions(2));
         
         % inference
-        posthoc.tTests.names=posthoc.differences.names;
-        [posthoc.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
-        posthoc.tTests.alphaOriginal{comp}=alphaT;
-        posthoc.tTests.pCritical{comp}=alpha;
-        posthoc.tTests.nIterations{comp}=iterations;
+        posthoc{1}.tTests.names=posthoc{1}.differences.names;
+        [posthoc{1}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaBonferronni,multiIterations,maximalIT,IT);
+        posthoc{1}.tTests.alphaOriginal=alphaT;
+        if warnT==1
+            posthoc{1}.tTests.warning="alphaOriginal is not valid";
+        end
+        posthoc{1}.tTests.alphaBonferronni=alphaBonferronni;
+        posthoc{1}.tTests.pCritical{comp}=alpha;
+        posthoc{1}.tTests.nIterations{comp}=iterations;
         Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
-        posthoc.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
-        posthoc.tTests.Tthreshold{comp}=Ttest_inf.zstar;
-        posthoc.tTests.Tcontinuum{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
-        mapLogical=abs(posthoc.tTests.Tcontinuum{1,comp})>=posthoc.tTests.Tthreshold{comp};
-        posthoc.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
-        posthoc.tTests.Tsignificant{1,comp}(anovaEffects{1})=mapLogical(anovaEffects{1});
-        posthoc.tTests.contourSignificant{1,comp}=zeros(dimensions(1),dimensions(2));
-        posthoc.tTests.contourSignificant{1,comp}(find(posthoc.tTests.Tsignificant{1,comp}==1))=abs(posthoc.tTests.Tcontinuum{1,comp}(find(posthoc.tTests.Tsignificant{1,comp}==1)));
-        datanoAnova=abs(posthoc.tTests.Tcontinuum{1,comp}(find(posthoc.tTests.Tsignificant{1,comp}==0)));
-        datanoAnova(find(datanoAnova>=posthoc.tTests.Tthreshold{comp}))=posthoc.tTests.Tthreshold{comp}-0.01*posthoc.tTests.Tthreshold{comp};
-        posthoc.tTests.contourSignificant{1,comp}(find(posthoc.tTests.Tsignificant{1,comp}==0))=datanoAnova;
-        posthoc.tTests.contourSignificant{1,comp}=reshape(posthoc.tTests.contourSignificant{1,comp},dimensions(1),dimensions(2));
+        posthoc{1}.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
+        posthoc{1}.tTests.Tthreshold{comp}=Ttest_inf.zstar;
+        posthoc{1}.tTests.Tcontinuum{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
+        mapLogical=abs(posthoc{1}.tTests.Tcontinuum{1,comp})>=posthoc{1}.tTests.Tthreshold{comp};
+        posthoc{1}.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
+        posthoc{1}.tTests.Tsignificant{1,comp}(anovaEffects{1})=mapLogical(anovaEffects{1});
+        posthoc{1}.tTests.contourSignificant{1,comp}=zeros(dimensions(1),dimensions(2));
+        posthoc{1}.tTests.contourSignificant{1,comp}(find(posthoc{1}.tTests.Tsignificant{1,comp}==1))=abs(posthoc{1}.tTests.Tcontinuum{1,comp}(find(posthoc{1}.tTests.Tsignificant{1,comp}==1)));
+        datanoAnova=abs(posthoc{1}.tTests.Tcontinuum{1,comp}(find(posthoc{1}.tTests.Tsignificant{1,comp}==0)));
+        datanoAnova(find(datanoAnova>=posthoc{1}.tTests.Tthreshold{comp}))=posthoc{1}.tTests.Tthreshold{comp}-0.01*posthoc{1}.tTests.Tthreshold{comp};
+        posthoc{1}.tTests.contourSignificant{1,comp}(find(posthoc{1}.tTests.Tsignificant{1,comp}==0))=datanoAnova;
+        posthoc{1}.tTests.contourSignificant{1,comp}=reshape(posthoc{1}.tTests.contourSignificant{1,comp},dimensions(1),dimensions(2));
         
         % full plot of difference
         displayDiffMaps(differencesData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMapDiff,diffRatio)
         if displayContour
-            dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+            dispContour(abs(posthoc{1}.tTests.contourSignificant{1,comp}),posthoc{1}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
         end
-        title(posthoc.differences.names{1,comp})
-        print('-dtiff',imageResolution,[savedir '/DIFF/' verifSaveName(posthoc.differences.names{1,comp})])
-        savefig([savedir '/FIG/DIFF/' verifSaveName(posthoc.differences.names{1,comp})])
+        title(posthoc{1}.differences.names{1,comp})
+        print('-dtiff',imageResolution,[savedir '/DIFF/' verifSaveName(posthoc{1}.differences.names{1,comp})])
+        savefig([savedir '/FIG/DIFF/' verifSaveName(posthoc{1}.differences.names{1,comp})])
         close
         
         displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff,relativeRatio)
         if displayContour
-            dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+            dispContour(abs(posthoc{1}.tTests.contourSignificant{1,comp}),posthoc{1}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
         end
-        title(posthoc.differences.names{1,comp})
-        print('-dtiff',imageResolution,[savedir '/DIFF/' verifSaveName(posthoc.differences.names{1,comp}) ' %'])
-        savefig([savedir '/FIG/DIFF/' verifSaveName(posthoc.differences.names{1,comp}) ' %'])
+        title(posthoc{1}.differences.names{1,comp})
+        print('-dtiff',imageResolution,[savedir '/DIFF/' verifSaveName(posthoc{1}.differences.names{1,comp}) ' %'])
+        savefig([savedir '/FIG/DIFF/' verifSaveName(posthoc{1}.differences.names{1,comp}) ' %'])
         close
         
         % subplot of differences
@@ -165,32 +178,32 @@ if nEffects==1
         ax=subplot(nCombi,nCombi,positionDiffPlot(comp));
         displayDiffMaps_sub(differencesData,Fs,limitMeanMaps,diffRatio,colorMapDiff,ax)
         if displayContour
-            dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
+            dispContour(abs(posthoc{1}.tTests.contourSignificant{1,comp}),posthoc{1}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
         end
         
         % full plot of spm analysis
-        displayTtest(posthoc.tTests.Tcontinuum{1,comp},posthoc.tTests.Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
+        displayTtest(posthoc{1}.tTests.Tcontinuum{1,comp},posthoc{1}.tTests.Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
         if displayContour
-            dispContour(abs(posthoc.tTests.Tcontinuum{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+            dispContour(abs(posthoc{1}.tTests.Tcontinuum{1,comp}),posthoc{1}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
         end
-        title(posthoc.differences.names{1,comp})
-        print('-dtiff',imageResolution,[savedir '/SPM/' verifSaveName(posthoc.differences.names{1,comp})])
-        savefig([savedir '/FIG/SPM/' verifSaveName(posthoc.differences.names{1,comp})])
+        title(posthoc{1}.differences.names{1,comp})
+        print('-dtiff',imageResolution,[savedir '/SPM/' verifSaveName(posthoc{1}.differences.names{1,comp})])
+        savefig([savedir '/FIG/SPM/' verifSaveName(posthoc{1}.differences.names{1,comp})])
         close
         
         % subplot of spm analysis
         set(0, 'currentfigure', f1);
         ax=subplot(nCombi,nCombi,positionSPMPlot(comp));
-        displayTtest_sub(posthoc.tTests.Tcontinuum{1,comp},posthoc.tTests.Tthreshold{comp},Fs,colorMapDiff,ax)
+        displayTtest_sub(posthoc{1}.tTests.Tcontinuum{1,comp},posthoc{1}.tTests.Tthreshold{comp},Fs,colorMapDiff,ax)
         
-        %     cohen's d
-        displayMapsES(posthoc.differences.ES{comp},Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
-        title(posthoc.differences.names{1,comp})
+        %     ES
+        displayMapsES(posthoc{1}.differences.ES{comp},Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
+        title(posthoc{1}.differences.names{1,comp})
         if displayContour
-            dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+            dispContour(abs(posthoc{1}.tTests.contourSignificant{1,comp}),posthoc{1}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
         end
-        print('-dtiff',imageResolution,[savedir '/ES/' verifSaveName(posthoc.differences.names{1,comp})])
-        savefig([savedir '/FIG/ES/' verifSaveName(posthoc.differences.names{1,comp})])
+        print('-dtiff',imageResolution,[savedir '/ES/' verifSaveName(posthoc{1}.differences.names{1,comp})])
+        savefig([savedir '/FIG/ES/' verifSaveName(posthoc{1}.differences.names{1,comp})])
         close
         
     end
@@ -201,8 +214,7 @@ if nEffects==1
     savefig([savedir '/FIG/' verifSaveName(eNames{1})])
     close
     
-    save([savedir 'posthoc'], 'posthoc')
-    clear Comp combi isPlot posthoc
+    clear Comp combi isPlot
     
 end
 
@@ -216,6 +228,7 @@ if nEffects==2
         mainEffect(fixedEffect)=[];
         
         createSavedir2d([savedir eNames{mainEffect(1)}])
+        posthoc{mainEffect(1)}.name=eNames{mainEffect(1)};
         
         loop=0;
         for i=1:max(indicesEffects(:,mainEffect(1)))
@@ -237,9 +250,9 @@ if nEffects==2
             % means
             meansData=reshape(mean(maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1),:)),dimensions(1),dimensions(2));
             stdData=reshape(std(maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1),:)),dimensions(1),dimensions(2));
-            posthoc.data.names{i}=[char(modalitiesAll{mainEffect(1)}(combi{i}(1)))];
-            posthoc.data.meanContinuum{i}=meansData;
-            posthoc.data.sdContinuum{i}=stdData;
+            posthoc{mainEffect(1)}.data.names{i}=[char(modalitiesAll{mainEffect(1)}(combi{i}(1)))];
+            posthoc{mainEffect(1)}.data.meanContinuum{i}=meansData;
+            posthoc{mainEffect(1)}.data.sdContinuum{i}=stdData;
             positionDiffPlot=[positionDiffPlot,(i-1)*nCombi+i+1:(i-1)*nCombi+i+1+nCombi-i-1];
             positionSPMPlot=[positionSPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
             
@@ -276,15 +289,15 @@ if nEffects==2
         end
         
         nComp=size(Comp,2);
-        alphaOriginal=alphaT/nComp;
+        alphaBonferronni=alphaT/nComp;
         
         for comp=1:nComp
-            alphaOriginal=alphaT/nComp;
+            alphaBonferronni=alphaT/nComp;
             for i=1:2
                 % comparison + name
                 DATA{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1),:);
             end
-            posthoc.differences.names{1,comp}=char([modalitiesAll{mainEffect(1)}{combi{Comp{comp}(1)}(1)} ' - ' modalitiesAll{mainEffect(1)}{combi{Comp{comp}(2)}(1)}]);
+            posthoc{mainEffect(1)}.differences.names{1,comp}=char([modalitiesAll{mainEffect(1)}{combi{Comp{comp}(1)}(1)} ' - ' modalitiesAll{mainEffect(1)}{combi{Comp{comp}(2)}(1)}]);
             
             % t-test
             if typeEffectsAll(mainEffect)==1
@@ -293,12 +306,12 @@ if nEffects==2
                 differencesData=reshape(mean(DATA{1}-DATA{2}),dimensions(1),dimensions(2));
                 relativeDifferencesData=reshape(100*mean((DATA{1}-DATA{2})./DATA{2}),dimensions(1),dimensions(2));
                 
-                posthoc.differences.continuum{1,comp}=differencesData;
-                posthoc.differences.continuumRelative{1,comp}=relativeDifferencesData;
+                posthoc{mainEffect(1)}.differences.continuum{1,comp}=differencesData;
+                posthoc{mainEffect(1)}.differences.continuumRelative{1,comp}=relativeDifferencesData;
                 
                 Ttest=spm1d.stats.nonparam.ttest_paired(DATA{1},DATA{2});
-                posthoc.tTests.type{comp}='paired';
-                [posthoc.differences.ES{comp},posthoc.differences.ESsd{comp}]=esCalculation(DATA);
+                posthoc{mainEffect(1)}.tTests.type{comp}='paired';
+                [posthoc{mainEffect(1)}.differences.ES{comp},posthoc{mainEffect(1)}.differences.ESsd{comp}]=esCalculation(DATA);
                 
             else
                 
@@ -306,53 +319,57 @@ if nEffects==2
                 differencesData=reshape(mean(DATA{1})-mean(DATA{2}),dimensions(1),dimensions(2));
                 relativeDifferencesData=reshape(100*(mean(DATA{1})-mean(DATA{2}))./mean(DATA{2}),dimensions(1),dimensions(2));
                 
-                posthoc.differences.continuum{1,comp}=differencesData;
-                posthoc.differences.continuumRelative{1,comp}=relativeDifferencesData;
+                posthoc{mainEffect(1)}.differences.continuum{1,comp}=differencesData;
+                posthoc{mainEffect(1)}.differences.continuumRelative{1,comp}=relativeDifferencesData;
                 
                 Ttest=spm1d.stats.nonparam.ttest2(DATA{1},DATA{2});
-                posthoc.tTests.type{comp}='independant';
-                [posthoc.differences.ES{comp},posthoc.differences.ESsd{comp}]=esCalculation(DATA);
+                posthoc{mainEffect(1)}.tTests.type{comp}='independant';
+                [posthoc{mainEffect(1)}.differences.ES{comp},posthoc{mainEffect(1)}.differences.ESsd{comp}]=esCalculation(DATA);
             end
             
-            posthoc.differences.ES{comp}=reshape(posthoc.differences.ES{comp},dimensions(1),dimensions(2));
-            posthoc.differences.ESsd{comp}=reshape(posthoc.differences.ESsd{comp},dimensions(1),dimensions(2));
+            posthoc{mainEffect(1)}.differences.ES{comp}=reshape(posthoc{mainEffect(1)}.differences.ES{comp},dimensions(1),dimensions(2));
+            posthoc{mainEffect(1)}.differences.ESsd{comp}=reshape(posthoc{mainEffect(1)}.differences.ESsd{comp},dimensions(1),dimensions(2));
             
             % inference
-            [posthoc.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
-            posthoc.tTests.alphaOriginal{comp}=alphaT;
-            posthoc.tTests.pCritical{comp}=alpha;
-            posthoc.tTests.nIterations{comp}=iterations;
+            [posthoc{mainEffect(1)}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaBonferronni,multiIterations,maximalIT,IT);
+            posthoc{mainEffect(1)}.tTests.alphaOriginal=alphaT;
+            if warnT==1
+                posthoc{mainEffect(1)}.tTests.warning="alphaOriginal is not valid";
+            end
+            posthoc{mainEffect(1)}.tTests.alphaBonferronni=alphaBonferronni;
+            posthoc{mainEffect(1)}.tTests.pCritical{comp}=alpha;
+            posthoc{mainEffect(1)}.tTests.nIterations{comp}=iterations;
             Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
-            posthoc.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
-            posthoc.tTests.Tthreshold{comp}=Ttest_inf.zstar;
-            posthoc.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
-            posthoc.tTests.Tcontinuum{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
-            mapLogical=abs(posthoc.tTests.Tcontinuum{1,comp})>=posthoc.tTests.Tthreshold{comp};
-            posthoc.tTests.Tsignificant{1,comp}(anovaEffects{mainEffect})=mapLogical(anovaEffects{mainEffect});
-            posthoc.tTests.contourSignificant{1,comp}=zeros(dimensions(1),dimensions(2));
-            posthoc.tTests.contourSignificant{1,comp}(find(posthoc.tTests.Tsignificant{1,comp}==1))=abs(posthoc.tTests.Tcontinuum{1,comp}(find(posthoc.tTests.Tsignificant{1,comp}==1)));
-            datanoAnova=abs(posthoc.tTests.Tcontinuum{1,comp}(find(posthoc.tTests.Tsignificant{1,comp}==0)));
-            datanoAnova(find(datanoAnova>=posthoc.tTests.Tthreshold{comp}))=posthoc.tTests.Tthreshold{comp}-0.01*posthoc.tTests.Tthreshold{comp};
-            posthoc.tTests.contourSignificant{1,comp}(find(posthoc.tTests.Tsignificant{1,comp}==0))=datanoAnova;
-            posthoc.tTests.contourSignificant{1,comp}=reshape(posthoc.tTests.contourSignificant{1,comp},dimensions(1),dimensions(2));
+            posthoc{mainEffect(1)}.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
+            posthoc{mainEffect(1)}.tTests.Tthreshold{comp}=Ttest_inf.zstar;
+            posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
+            posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
+            mapLogical=abs(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp})>=posthoc{mainEffect(1)}.tTests.Tthreshold{comp};
+            posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp}(anovaEffects{mainEffect})=mapLogical(anovaEffects{mainEffect});
+            posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}=zeros(dimensions(1),dimensions(2));
+            posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}(find(posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp}==1))=abs(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp}(find(posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp}==1)));
+            datanoAnova=abs(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp}(find(posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp}==0)));
+            datanoAnova(find(datanoAnova>=posthoc{mainEffect(1)}.tTests.Tthreshold{comp}))=posthoc{mainEffect(1)}.tTests.Tthreshold{comp}-0.01*posthoc{mainEffect(1)}.tTests.Tthreshold{comp};
+            posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}(find(posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp}==0))=datanoAnova;
+            posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}=reshape(posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp},dimensions(1),dimensions(2));
             
             % full plot of differences
             displayDiffMaps(differencesData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMapDiff,diffRatio)
             if displayContour
-                dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+                dispContour(abs(posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}),posthoc{mainEffect(1)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
-            title(posthoc.differences.names{1,comp})
-            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/DIFF/' verifSaveName(posthoc.differences.names{1,comp})])
-            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/DIFF/' verifSaveName(posthoc.differences.names{1,comp})])
+            title(posthoc{mainEffect(1)}.differences.names{1,comp})
+            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/DIFF/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
+            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/DIFF/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
             close
             
             displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff,relativeRatio)
             if displayContour
-                dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+                dispContour(abs(posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}),posthoc{mainEffect(1)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
-            title(posthoc.differences.names{1,comp})
-            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/DIFF/' verifSaveName(posthoc.differences.names{1,comp}) ' %'])
-            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/DIFF/' verifSaveName(posthoc.differences.names{1,comp}) ' %'])
+            title(posthoc{mainEffect(1)}.differences.names{1,comp})
+            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/DIFF/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp}) ' %'])
+            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/DIFF/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp}) ' %'])
             close
             
             % subplot of differences
@@ -360,33 +377,33 @@ if nEffects==2
             ax=subplot(nCombi,nCombi,positionDiffPlot(comp));
             displayDiffMaps_sub(differencesData,Fs,limitMeanMaps,diffRatio,colorMapDiff,ax)
             if displayContour
-                dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
+                dispContour(abs(posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}),posthoc{mainEffect(1)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
             end
             
             %  full plot of spm analysis
-            displayTtest(posthoc.tTests.Tcontinuum{1,comp},posthoc.tTests.Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
+            displayTtest(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp},posthoc{mainEffect(1)}.tTests.Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
             if displayContour
-                dispContour(abs(posthoc.tTests.Tcontinuum{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+                dispContour(abs(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp}),posthoc{mainEffect(1)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
-            title(posthoc.differences.names{1,comp})
-            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/SPM/' verifSaveName(posthoc.differences.names{1,comp})])
-            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/SPM/' verifSaveName(posthoc.differences.names{1,comp})])
+            title(posthoc{mainEffect(1)}.differences.names{1,comp})
+            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/SPM/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
+            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/SPM/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
             close
             
-            %     cohen's
-            displayMapsES(posthoc.differences.ES{comp},Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
-            title(posthoc.differences.names{1,comp})
+            %     ES
+            displayMapsES(posthoc{mainEffect(1)}.differences.ES{comp},Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
+            title(posthoc{mainEffect(1)}.differences.names{1,comp})
             if displayContour
-                dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+                dispContour(abs(posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}),posthoc{mainEffect(1)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
-            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/ES/' verifSaveName(posthoc.differences.names{1,comp})])
-            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/ES/' verifSaveName(posthoc.differences.names{1,comp})])
+            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/ES/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
+            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/ES/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
             close
             
             % subplot of spm analysis
             set(0, 'currentfigure', f1);
             ax=subplot(nCombi,nCombi,positionSPMPlot(comp));
-            displayTtest_sub(posthoc.tTests.Tcontinuum{1,comp},posthoc.tTests.Tthreshold{comp},Fs,colorMapDiff,ax)
+            displayTtest_sub(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp},posthoc{mainEffect(1)}.tTests.Tthreshold{comp},Fs,colorMapDiff,ax)
             
         end
         
@@ -396,9 +413,8 @@ if nEffects==2
         savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/' verifSaveName(eNames{mainEffect(1)})])
         close
         
-        mainForInteraction{mainEffect}=posthoc.tTests.Tsignificant;
-        save([savedir verifSaveName(eNames{mainEffect(1)}) '/posthoc'], 'posthoc')
-        clear Comp combi isPlot posthoc
+        mainForInteraction{mainEffect}=posthoc{mainEffect(1)}.tTests.Tsignificant;
+        clear Comp combi isPlot
         
     end
     
@@ -414,6 +430,7 @@ if nEffects==3
         mainEffect(fixedEffect)=[];
         
         createSavedir2d([savedir verifSaveName(eNames{mainEffect(1)})])
+        posthoc{mainEffect(1)}.name=eNames{mainEffect(1)};
         
         loop=0;
         for i=1:max(indicesEffects(:,mainEffect(1)))
@@ -438,9 +455,9 @@ if nEffects==3
             % means
             meansData=reshape(mean(maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1),:)),dimensions(1),dimensions(2));
             stdData=reshape(std(maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1),:)),dimensions(1),dimensions(2));
-            posthoc.data.names{i}=[char(modalitiesAll{mainEffect(1)}(combi{i}(1)))];
-            posthoc.data.meanContinuum{i}=meansData;
-            posthoc.data.sdContinuum{i}=stdData;
+            posthoc{mainEffect(1)}.data.names{i}=[char(modalitiesAll{mainEffect(1)}(combi{i}(1)))];
+            posthoc{mainEffect(1)}.data.meanContinuum{i}=meansData;
+            posthoc{mainEffect(1)}.data.sdContinuum{i}=stdData;
             positionDiffPlot=[positionDiffPlot,(i-1)*nCombi+i+1:(i-1)*nCombi+i+1+nCombi-i-1];
             positionSPMPlot=[positionSPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
             
@@ -478,16 +495,16 @@ if nEffects==3
         end
         
         nComp=size(Comp,2);
-        alphaOriginal=alphaT/nComp;
+        alphaBonferronni=alphaT/nComp;
         
         for comp=1:nComp
-            alphaOriginal=alphaT/nComp;
+            alphaBonferronni=alphaT/nComp;
             
             for i=1:2
                 % comparison + name
                 DATA{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1),:);
             end
-            posthoc.differences.names{1,comp}=char([modalitiesAll{mainEffect(1)}{combi{Comp{comp}(1)}(1)} ' - ' modalitiesAll{mainEffect(1)}{combi{Comp{comp}(2)}(1)}]);
+            posthoc{mainEffect(1)}.differences.names{1,comp}=char([modalitiesAll{mainEffect(1)}{combi{Comp{comp}(1)}(1)} ' - ' modalitiesAll{mainEffect(1)}{combi{Comp{comp}(2)}(1)}]);
             
             
             % t-test
@@ -495,63 +512,67 @@ if nEffects==3
                 differencesData=reshape(mean(DATA{1}-DATA{2}),dimensions(1),dimensions(2));
                 relativeDifferencesData=reshape(100*mean((DATA{1}-DATA{2})./DATA{2}),dimensions(1),dimensions(2));
                 
-                posthoc.differences.continuum{1,comp}=differencesData;
-                posthoc.differences.continuumRelative{1,comp}=relativeDifferencesData;
+                posthoc{mainEffect(1)}.differences.continuum{1,comp}=differencesData;
+                posthoc{mainEffect(1)}.differences.continuumRelative{1,comp}=relativeDifferencesData;
                 
                 Ttest=spm1d.stats.nonparam.ttest_paired(DATA{1},DATA{2});
-                posthoc.tTests.type{comp}='paired';
-                [posthoc.differences.ES{comp},posthoc.differences.ESsd{comp}]=esCalculation(DATA);
+                posthoc{mainEffect(1)}.tTests.type{comp}='paired';
+                [posthoc{mainEffect(1)}.differences.ES{comp},posthoc{mainEffect(1)}.differences.ESsd{comp}]=esCalculation(DATA);
             else
                 differencesData=reshape(mean(DATA{1})-mean(DATA{2}),dimensions(1),dimensions(2));
                 relativeDifferencesData=reshape(100*(mean(DATA{1})-mean(DATA{2}))./mean(DATA{2}),dimensions(1),dimensions(2));
                 
-                posthoc.differences.continuum{1,comp}=differencesData;
-                posthoc.differences.continuumRelative{1,comp}=relativeDifferencesData;
+                posthoc{mainEffect(1)}.differences.continuum{1,comp}=differencesData;
+                posthoc{mainEffect(1)}.differences.continuumRelative{1,comp}=relativeDifferencesData;
                 
                 Ttest=spm1d.stats.nonparam.ttest2(DATA{1},DATA{2});
-                posthoc.tTests.type{comp}='independant';
-                [posthoc.differences.ES{comp},posthoc.differences.ESsd{comp}]=esCalculation(DATA);
+                posthoc{mainEffect(1)}.tTests.type{comp}='independant';
+                [posthoc{mainEffect(1)}.differences.ES{comp},posthoc{mainEffect(1)}.differences.ESsd{comp}]=esCalculation(DATA);
             end
             
-            posthoc.differences.ES{comp}=reshape(posthoc.differences.ES{comp},dimensions(1),dimensions(2));
-            posthoc.differences.ESsd{comp}=reshape(posthoc.differences.ESsd{comp},dimensions(1),dimensions(2));
+            posthoc{mainEffect(1)}.differences.ES{comp}=reshape(posthoc{mainEffect(1)}.differences.ES{comp},dimensions(1),dimensions(2));
+            posthoc{mainEffect(1)}.differences.ESsd{comp}=reshape(posthoc{mainEffect(1)}.differences.ESsd{comp},dimensions(1),dimensions(2));
             
             % inference
-            [posthoc.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
-            posthoc.tTests.alphaOriginal{comp}=alphaT;
-            posthoc.tTests.pCritical{comp}=alpha;
-            posthoc.tTests.nIterations{comp}=iterations;
+            [posthoc{mainEffect(1)}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaBonferronni,multiIterations,maximalIT,IT);
+            posthoc{mainEffect(1)}.tTests.alphaOriginal=alphaT;
+            if warnT==1
+                posthoc{mainEffect(1)}.tTests.warning="alphaOriginal is not valid";
+            end
+            posthoc{mainEffect(1)}.tTests.alphaBonferronni=alphaBonferronni;
+            posthoc{mainEffect(1)}.tTests.pCritical{comp}=alpha;
+            posthoc{mainEffect(1)}.tTests.nIterations{comp}=iterations;
             Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
-            posthoc.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
-            posthoc.tTests.Tthreshold{comp}=Ttest_inf.zstar;
-            posthoc.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
-            posthoc.tTests.Tcontinuum{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
-            mapLogical=abs(posthoc.tTests.Tcontinuum{1,comp})>=posthoc.tTests.Tthreshold{comp};
-            posthoc.tTests.Tsignificant{1,comp}(anovaEffects{mainEffect})=mapLogical(anovaEffects{mainEffect});
-            posthoc.tTests.contourSignificant{1,comp}=zeros(dimensions(1),dimensions(2));
-            posthoc.tTests.contourSignificant{1,comp}(find(posthoc.tTests.Tsignificant{1,comp}==1))=abs(posthoc.tTests.Tcontinuum{1,comp}(find(posthoc.tTests.Tsignificant{1,comp}==1)));
-            datanoAnova=abs(posthoc.tTests.Tcontinuum{1,comp}(find(posthoc.tTests.Tsignificant{1,comp}==0)));
-            datanoAnova(find(datanoAnova>=posthoc.tTests.Tthreshold{comp}))=posthoc.tTests.Tthreshold{comp}-0.01*posthoc.tTests.Tthreshold{comp};
-            posthoc.tTests.contourSignificant{1,comp}(find(posthoc.tTests.Tsignificant{1,comp}==0))=datanoAnova;
-            posthoc.tTests.contourSignificant{1,comp}=reshape(posthoc.tTests.contourSignificant{1,comp},dimensions(1),dimensions(2));
+            posthoc{mainEffect(1)}.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
+            posthoc{mainEffect(1)}.tTests.Tthreshold{comp}=Ttest_inf.zstar;
+            posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
+            posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
+            mapLogical=abs(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp})>=posthoc{mainEffect(1)}.tTests.Tthreshold{comp};
+            posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp}(anovaEffects{mainEffect})=mapLogical(anovaEffects{mainEffect});
+            posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}=zeros(dimensions(1),dimensions(2));
+            posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}(find(posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp}==1))=abs(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp}(find(posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp}==1)));
+            datanoAnova=abs(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp}(find(posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp}==0)));
+            datanoAnova(find(datanoAnova>=posthoc{mainEffect(1)}.tTests.Tthreshold{comp}))=posthoc{mainEffect(1)}.tTests.Tthreshold{comp}-0.01*posthoc{mainEffect(1)}.tTests.Tthreshold{comp};
+            posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}(find(posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp}==0))=datanoAnova;
+            posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}=reshape(posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp},dimensions(1),dimensions(2));
             
             % full plot of differences
             displayDiffMaps(differencesData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMapDiff,diffRatio)
             if displayContour
-                dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+                dispContour(abs(posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}),posthoc{mainEffect(1)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
-            title(posthoc.differences.names{1,comp})
-            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/DIFF/' verifSaveName(posthoc.differences.names{1,comp})])
-            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/DIFF/' verifSaveName(posthoc.differences.names{1,comp})])
+            title(posthoc{mainEffect(1)}.differences.names{1,comp})
+            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/DIFF/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
+            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/DIFF/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
             close
             
             displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff,relativeRatio)
             if displayContour
-                dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+                dispContour(abs(posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}),posthoc{mainEffect(1)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
-            title(posthoc.differences.names{1,comp})
-            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/DIFF/' verifSaveName(posthoc.differences.names{1,comp}) ' %'])
-            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/DIFF/' verifSaveName(posthoc.differences.names{1,comp}) ' %'])
+            title(posthoc{mainEffect(1)}.differences.names{1,comp})
+            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/DIFF/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp}) ' %'])
+            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/DIFF/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp}) ' %'])
             close
             
             % subplot of differences
@@ -559,33 +580,33 @@ if nEffects==3
             ax=subplot(nCombi,nCombi,positionDiffPlot(comp));
             displayDiffMaps_sub(differencesData,Fs,limitMeanMaps,diffRatio,colorMapDiff,ax)
             if displayContour
-                dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
+                dispContour(abs(posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}),posthoc{mainEffect(1)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
             end
             
             %  full plot of spm analysis
-            displayTtest(posthoc.tTests.Tcontinuum{1,comp},posthoc.tTests.Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
+            displayTtest(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp},posthoc{mainEffect(1)}.tTests.Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
             if displayContour
-                dispContour(abs(posthoc.tTests.Tcontinuum{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+                dispContour(abs(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp}),posthoc{mainEffect(1)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
-            title(posthoc.differences.names{1,comp})
-            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/SPM/' verifSaveName(posthoc.differences.names{1,comp})])
-            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/SPM/' verifSaveName(posthoc.differences.names{1,comp})])
+            title(posthoc{mainEffect(1)}.differences.names{1,comp})
+            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/SPM/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
+            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/SPM/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
             close
             
-            %     cohen's d
-            displayMapsES(posthoc.differences.ES{comp},Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
-            title(posthoc.differences.names{1,comp})
+            %     ES
+            displayMapsES(posthoc{mainEffect(1)}.differences.ES{comp},Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
+            title(posthoc{mainEffect(1)}.differences.names{1,comp})
             if displayContour
-                dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+                dispContour(abs(posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}),posthoc{mainEffect(1)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
-            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/ES/' verifSaveName(posthoc.differences.names{1,comp})])
-            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/ES/' verifSaveName(posthoc.differences.names{1,comp})])
+            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/ES/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
+            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/ES/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
             close
             
             % subplot of spm analysis
             set(0, 'currentfigure', f1);
             ax=subplot(nCombi,nCombi,positionSPMPlot(comp));
-            displayTtest_sub(posthoc.tTests.Tcontinuum{1,comp},posthoc.tTests.Tthreshold{comp},Fs,colorMapDiff,ax)
+            displayTtest_sub(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp},posthoc{mainEffect(1)}.tTests.Tthreshold{comp},Fs,colorMapDiff,ax)
             
         end
         
@@ -595,9 +616,8 @@ if nEffects==3
         savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/' verifSaveName(eNames{mainEffect(1)})])
         close
         
-        mainForInteraction{mainEffect}=posthoc.tTests.Tsignificant;
-        save([savedir verifSaveName(eNames{mainEffect(1)}) '/posthoc'], 'posthoc')
-        clear Comp combi isPlot posthoc
+        mainForInteraction{mainEffect}=posthoc{mainEffect(1)}.tTests.Tsignificant;
+        clear Comp combi isPlot
         
     end
 end
@@ -612,6 +632,8 @@ if nEffects==3
         anovaFixedCorr=[3 2 1];
         
         if max(anovaEffects{3+anovaFixedCorr(fixedEffect)})==1 | doAllInteractions==1
+            
+            posthoc{3+anovaFixedCorr(fixedEffect)}.name=[eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}];
             
             for e=1:2
                 createSavedir2dInt([savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(e)})])
@@ -645,9 +667,9 @@ if nEffects==3
                 % means
                 meansData=reshape(mean(maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1) & indicesEffects(:,mainEffect(2))==combi{i}(2),:)),dimensions(1),dimensions(2));
                 stdData=reshape(std(maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1) & indicesEffects(:,mainEffect(2))==combi{i}(2),:)),dimensions(1),dimensions(2));
-                posthoc.data.names{i}=[char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' x ' char(modalitiesAll{mainEffect(2)}(combi{i}(2)))];
-                posthoc.data.meanContinuum{i}=meansData;
-                posthoc.data.sdContinuum{i}=stdData;
+                posthoc{3+anovaFixedCorr(fixedEffect)}.data.names{i}=[char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' x ' char(modalitiesAll{mainEffect(2)}(combi{i}(2)))];
+                posthoc{3+anovaFixedCorr(fixedEffect)}.data.meanContinuum{i}=meansData;
+                posthoc{3+anovaFixedCorr(fixedEffect)}.data.sdContinuum{i}=stdData;
                 positionDiffPlot=[positionDiffPlot,(i-1)*nCombi+i+1:(i-1)*nCombi+i+1+nCombi-i-1];
                 positionSPMPlot=[positionSPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
                 
@@ -690,13 +712,13 @@ if nEffects==3
             end
             
             nComp=size(Comp,2);
-            alphaOriginal=alphaT/nComp;
+            alphaBonferronni=alphaT/nComp;
             
             isPlot=find(isPlot==1);
             
             for comp=1:nComp
                 
-                alphaOriginal=alphaT/nComp;
+                alphaBonferronni=alphaT/nComp;
                 
                 for i=1:2
                     % comparison + name
@@ -704,7 +726,7 @@ if nEffects==3
                     intForInteractions{anovaFixedCorr(eff_fixed)}.comp{comp}(i,:)=combi{Comp{comp}(i)};
                 end
                 [eFixed,eTested,modalFixed,modalTested]=findWhichTitle([combi{Comp{comp}(1)};combi{Comp{comp}(2)}]);
-                posthoc.differences.names{1,comp}=char([modalitiesAll{mainEffect(eFixed)}{modalFixed} ' (' modalitiesAll{mainEffect(eTested)}{modalTested(1)} ' - ' modalitiesAll{mainEffect(eTested)}{modalTested(2)} ')']);
+                posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp}=char([modalitiesAll{mainEffect(eFixed)}{modalFixed} ' (' modalitiesAll{mainEffect(eTested)}{modalTested(1)} ' - ' modalitiesAll{mainEffect(eTested)}{modalTested(2)} ')']);
                 
                 
                 % t-test
@@ -712,65 +734,69 @@ if nEffects==3
                     differencesData=reshape(mean(DATA{1}-DATA{2}),dimensions(1),dimensions(2));
                     relativeDifferencesData=reshape(100*mean((DATA{1}-DATA{2})./DATA{2}),dimensions(1),dimensions(2));
                     
-                    posthoc.differences.continuum{1,comp}=differencesData;
-                    posthoc.differences.continuumRelative{1,comp}=relativeDifferencesData;
+                    posthoc{3+anovaFixedCorr(fixedEffect)}.differences.continuum{1,comp}=differencesData;
+                    posthoc{3+anovaFixedCorr(fixedEffect)}.differences.continuumRelative{1,comp}=relativeDifferencesData;
                     
                     Ttest=spm1d.stats.nonparam.ttest_paired(DATA{1},DATA{2});
-                    posthoc.tTests.type{comp}='paired';
-                    [posthoc.differences.ES{comp},posthoc.differences.ESsd{comp}]=esCalculation(DATA);
+                    posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.type{comp}='paired';
+                    [posthoc{3+anovaFixedCorr(fixedEffect)}.differences.ES{comp},posthoc{3+anovaFixedCorr(fixedEffect)}.differences.ESsd{comp}]=esCalculation(DATA);
                 else
                     differencesData=reshape(mean(DATA{1})-mean(DATA{2}),dimensions(1),dimensions(2));
                     relativeDifferencesData=reshape(100*(mean(DATA{1})-mean(DATA{2}))./mean(DATA{2}),dimensions(1),dimensions(2));
                     
-                    posthoc.differences.continuum{1,comp}=differencesData;
-                    posthoc.differences.continuumRelative{1,comp}=relativeDifferencesData;
+                    posthoc{3+anovaFixedCorr(fixedEffect)}.differences.continuum{1,comp}=differencesData;
+                    posthoc{3+anovaFixedCorr(fixedEffect)}.differences.continuumRelative{1,comp}=relativeDifferencesData;
                     
                     Ttest=spm1d.stats.nonparam.ttest2(DATA{1},DATA{2});
-                    posthoc.tTests.type{comp}='independant';
-                    [posthoc.differences.ES{comp},posthoc.differences.ESsd{comp}]=esCalculation(DATA);
+                    posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.type{comp}='independant';
+                    [posthoc{3+anovaFixedCorr(fixedEffect)}.differences.ES{comp},posthoc{3+anovaFixedCorr(fixedEffect)}.differences.ESsd{comp}]=esCalculation(DATA);
                 end
                 
-                posthoc.differences.ES{comp}=reshape(posthoc.differences.ES{comp},dimensions(1),dimensions(2));
-                posthoc.differences.ESsd{comp}=reshape(posthoc.differences.ESsd{comp},dimensions(1),dimensions(2));
+                posthoc{3+anovaFixedCorr(fixedEffect)}.differences.ES{comp}=reshape(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.ES{comp},dimensions(1),dimensions(2));
+                posthoc{3+anovaFixedCorr(fixedEffect)}.differences.ESsd{comp}=reshape(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.ESsd{comp},dimensions(1),dimensions(2));
                 
                 % inference
-                [posthoc.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
-                posthoc.tTests.alphaOriginal{comp}=alphaT;
-                posthoc.tTests.pCritical{comp}=alpha;
-                posthoc.tTests.nIterations{comp}=iterations;
+                [posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaBonferronni,multiIterations,maximalIT,IT);
+                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.alphaOriginal=alphaT;
+                if warnT==1
+                    posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.warning="alphaOriginal is not valid";
+                end
+                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.alphaBonferronni=alphaBonferronni;
+                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.pCritical{comp}=alpha;
+                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.nIterations{comp}=iterations;
                 Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
-                posthoc.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
-                posthoc.tTests.Tthreshold{comp}=Ttest_inf.zstar;
-                posthoc.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
-                posthoc.tTests.Tcontinuum{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
-                mapLogical=abs(posthoc.tTests.Tcontinuum{1,comp})>=posthoc.tTests.Tthreshold{comp};
+                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
+                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp}=Ttest_inf.zstar;
+                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
+                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tcontinuum{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
+                mapLogical=abs(posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tcontinuum{1,comp})>=posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp};
                 effectCorr=anovaEffects{3+anovaFixedCorr(fixedEffect)}(:);
-                posthoc.tTests.Tsignificant{1,comp}(effectCorr)=mapLogical(effectCorr);
+                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tsignificant{1,comp}(effectCorr)=mapLogical(effectCorr);
                 indiceMain=findWhichMain(modalitiesAll{mainEffect(testedEffect{comp})},combi{Comp{comp}(1)}(testedEffect{comp}),combi{Comp{comp}(2)}(testedEffect{comp}));
                 tMainEffect=abs(mainForInteraction{mainEffect(testedEffect{comp})}{indiceMain})>0;
                 tMainEffect(effectCorr==1)=0;
-                realEffect{comp}=reshape(max([tMainEffect(:)';posthoc.tTests.Tsignificant{1,comp}(:)']),dimensions(1),dimensions(2));
-                posthoc.tTests.Tsignificant{1,comp}=realEffect{comp};
-                posthoc.tTests.contourSignificant{1,comp}=zeros(dimensions(1),dimensions(2));
-                posthoc.tTests.contourSignificant{1,comp}(find(posthoc.tTests.Tsignificant{1,comp}==1))=1.1*posthoc.tTests.Tthreshold{comp};
+                realEffect{comp}=reshape(max([tMainEffect(:)';posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tsignificant{1,comp}(:)']),dimensions(1),dimensions(2));
+                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tsignificant{1,comp}=realEffect{comp};
+                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.contourSignificant{1,comp}=zeros(dimensions(1),dimensions(2));
+                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.contourSignificant{1,comp}(find(posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tsignificant{1,comp}==1))=1.1*posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp};
                 
                 % full plot of differences
                 displayDiffMaps(differencesData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMapDiff,diffRatio)
                 if displayContour
-                    dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+                    dispContour(abs(posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.contourSignificant{1,comp}),posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
                 end
-                title(posthoc.differences.names{1,comp})
-                print('-dtiff',imageResolution,[savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/DIFF/' verifSaveName(posthoc.differences.names{1,comp})])
-                savefig([savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/FIG/DIFF/' verifSaveName(posthoc.differences.names{1,comp})])
+                title(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp})
+                print('-dtiff',imageResolution,[savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/DIFF/' verifSaveName(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp})])
+                savefig([savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/FIG/DIFF/' verifSaveName(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp})])
                 close
                 
                 displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff,relativeRatio)
                 if displayContour
-                    dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+                    dispContour(abs(posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.contourSignificant{1,comp}),posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
                 end
-                title(posthoc.differences.names{1,comp})
-                print('-dtiff',imageResolution,[savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/DIFF/' verifSaveName(posthoc.differences.names{1,comp}) ' %'])
-                savefig([savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/FIG/DIFF/' verifSaveName(posthoc.differences.names{1,comp}) ' %'])
+                title(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp})
+                print('-dtiff',imageResolution,[savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/DIFF/' verifSaveName(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp}) ' %'])
+                savefig([savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/FIG/DIFF/' verifSaveName(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp}) ' %'])
                 close
                 
                 
@@ -779,33 +805,33 @@ if nEffects==3
                 ax=subplot(nCombi,nCombi,positionDiffPlot(isPlot(comp)));
                 displayDiffMaps_sub(differencesData,Fs,limitMeanMaps,diffRatio,colorMapDiff,ax)
                 if displayContour
-                    dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
+                    dispContour(abs(posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.contourSignificant{1,comp}),posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
                 end
                 
                 %  full plot of spm analysis
-                displayTtest(posthoc.tTests.Tcontinuum{1,comp},posthoc.tTests.Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
+                displayTtest(posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tcontinuum{1,comp},posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
                 if displayContour
-                    dispContour(abs(posthoc.tTests.Tcontinuum{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+                    dispContour(abs(posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tcontinuum{1,comp}),posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
                 end
-                title(posthoc.differences.names{1,comp})
-                print('-dtiff',imageResolution,[savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/SPM/' verifSaveName(posthoc.differences.names{1,comp})])
-                savefig([savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/FIG/SPM/' verifSaveName(posthoc.differences.names{1,comp})])
+                title(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp})
+                print('-dtiff',imageResolution,[savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/SPM/' verifSaveName(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp})])
+                savefig([savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/FIG/SPM/' verifSaveName(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp})])
                 close
                 
-                %     cohen's d
-                displayMapsES(posthoc.differences.ES{comp},Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
-                title(posthoc.differences.names{1,comp})
+                %     ES
+                displayMapsES(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.ES{comp},Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
+                title(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp})
                 if displayContour
-                    dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+                    dispContour(abs(posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.contourSignificant{1,comp}),posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
                 end
-                print('-dtiff',imageResolution,[savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/ES/' verifSaveName(posthoc.differences.names{1,comp})])
-                savefig([savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/FIG/ES/' verifSaveName(posthoc.differences.names{1,comp})])
+                print('-dtiff',imageResolution,[savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/ES/' verifSaveName(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp})])
+                savefig([savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/FIG/ES/' verifSaveName(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp})])
                 close
                 
                 % subplot of spm analysis
                 set(0, 'currentfigure', f1);
                 ax=subplot(nCombi,nCombi,positionSPMPlot(isPlot(comp)));
-                displayTtest_sub(posthoc.tTests.Tcontinuum{1,comp},posthoc.tTests.Tthreshold{comp},Fs,colorMapDiff,ax)
+                displayTtest_sub(posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tcontinuum{1,comp},posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp},Fs,colorMapDiff,ax)
                 
             end
             
@@ -816,8 +842,7 @@ if nEffects==3
             close
             
             intForInteractions{anovaFixedCorr(eff_fixed)}.t=realEffect;
-            save([savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/posthoc'], 'posthoc')
-            clear Comp combi isPlot realEffect posthoc
+            clear Comp combi isPlot realEffect
             
         end
     end
@@ -829,6 +854,8 @@ if nEffects>1
     if nEffects==2
         isInteraction=max(anovaEffects{3});
         savedir2=[verifSaveName([eNames{1} ' x ' eNames{2}])  '/'] ;
+        pos=3;
+        posthoc{pos}.name=[eNames{1} ' x ' eNames{2}];
         if isInteraction==1 | doAllInteractions==1
             createSavedir2dInt([savedir savedir2 verifSaveName(eNames{1})])
             createSavedir2dInt([savedir savedir2 verifSaveName(eNames{2})])
@@ -837,6 +864,8 @@ if nEffects>1
     elseif nEffects==3
         isInteraction=max(anovaEffects{7});
         savedir2=[verifSaveName([eNames{1} ' x ' eNames{2} ' x ' eNames{3}]) '/'];
+        pos=7;
+        posthoc{pos}.name=[eNames{1} ' x ' eNames{2} ' x ' eNames{3}];
         if isInteraction==1 | doAllInteractions==1
             createSavedir2dInt([savedir savedir2 verifSaveName(eNames{1})])
             createSavedir2dInt([savedir savedir2 verifSaveName(eNames{2})])
@@ -890,9 +919,9 @@ if nEffects>1
                 positionDiffPlot=[positionDiffPlot,(i-1)*nCombi+i+1:(i-1)*nCombi+i+1+nCombi-i-1];
                 positionSPMPlot=[positionSPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
                 
-                posthoc.data.names{i}=[char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2)))];
-                posthoc.data.meanContinuum{i}=meansData;
-                posthoc.data.sdContinuum{i}=stdData;
+                posthoc{pos}.data.names{i}=[char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2)))];
+                posthoc{pos}.data.meanContinuum{i}=meansData;
+                posthoc{pos}.data.sdContinuum{i}=stdData;
                 
                 % full plot of means
                 displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
@@ -937,9 +966,9 @@ if nEffects>1
                 end
                 positionDiffPlot=[positionDiffPlot,(i-1)*nCombi+i+1:(i-1)*nCombi+i+1+nCombi-i-1];
                 positionSPMPlot=[positionSPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
-                posthoc.data.names{i}=[char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2))) ' x '  char(modalitiesAll{3}(combi{i}(3)))];
-                posthoc.data.meanContinuum{i}=meansData;
-                posthoc.data.sdContinuum{i}=stdData;
+                posthoc{pos}.data.names{i}=[char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2))) ' x '  char(modalitiesAll{3}(combi{i}(3)))];
+                posthoc{pos}.data.meanContinuum{i}=meansData;
+                posthoc{pos}.data.sdContinuum{i}=stdData;
                 
                 % full plot of means
                 displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
@@ -976,7 +1005,7 @@ if nEffects>1
         end
         
         nComp=size(Comp,2);
-        alphaOriginal=alphaT/nComp;
+        alphaBonferronni=alphaT/nComp;
         
         isPlot=find(isPlot==1);
         
@@ -989,11 +1018,11 @@ if nEffects>1
                 if nEffects==2
                     DATA{i}=maps1d(indicesEffects(:,1)==combi{Comp{comp}(i)}(1) & indicesEffects(:,2)==combi{Comp{comp}(i)}(2),:);
                     [eFixed,eTested,modalFixed,modalTested]=findWhichTitle([combi{Comp{comp}(1)};combi{Comp{comp}(2)}]);
-                    posthoc.differences.names{1,comp}=char([modalitiesAll{eFixed}{modalFixed} ' (' modalitiesAll{eTested}{modalTested(1)} ' - ' modalitiesAll{eTested}{modalTested(2)} ')']);
+                    posthoc{pos}.differences.names{1,comp}=char([modalitiesAll{eFixed}{modalFixed} ' (' modalitiesAll{eTested}{modalTested(1)} ' - ' modalitiesAll{eTested}{modalTested(2)} ')']);
                 elseif nEffects==3
                     DATA{i}=maps1d(indicesEffects(:,1)==combi{Comp{comp}(i)}(1) & indicesEffects(:,2)==combi{Comp{comp}(i)}(2) & indicesEffects(:,3)==combi{Comp{comp}(i)}(3),:);
                     [eFixed,eTested,modalFixed,modalTested]=findWhichTitle([combi{Comp{comp}(1)};combi{Comp{comp}(2)}]);
-                    posthoc.differences.names{1,comp}=char([modalitiesAll{eFixed(1)}{modalFixed(1)} ' x ' modalitiesAll{eFixed(2)}{modalFixed(2)} ' (' modalitiesAll{eTested}{modalTested(1)} ' - ' modalitiesAll{eTested}{modalTested(2)} ')']);
+                    posthoc{pos}.differences.names{1,comp}=char([modalitiesAll{eFixed(1)}{modalFixed(1)} ' x ' modalitiesAll{eFixed(2)}{modalFixed(2)} ' (' modalitiesAll{eTested}{modalTested(1)} ' - ' modalitiesAll{eTested}{modalTested(2)} ')']);
                 end
             end
             
@@ -1002,38 +1031,42 @@ if nEffects>1
                 differencesData=reshape(mean(DATA{1}-DATA{2}),dimensions(1),dimensions(2));
                 relativeDifferencesData=reshape(100*mean((DATA{1}-DATA{2})./DATA{2}),dimensions(1),dimensions(2));
                 
-                posthoc.differences.continuum{1,comp}=differencesData;
-                posthoc.differences.continuumRelative{1,comp}=relativeDifferencesData;
+                posthoc{pos}.differences.continuum{1,comp}=differencesData;
+                posthoc{pos}.differences.continuumRelative{1,comp}=relativeDifferencesData;
                 
                 Ttest=spm1d.stats.nonparam.ttest_paired(DATA{1},DATA{2});
-                posthoc.tTests.type{comp}='paired';
-                [posthoc.differences.ES{comp},posthoc.differences.ESsd{comp}]=esCalculation(DATA);
+                posthoc{pos}.tTests.type{comp}='paired';
+                [posthoc{pos}.differences.ES{comp},posthoc{pos}.differences.ESsd{comp}]=esCalculation(DATA);
             else
                 differencesData=reshape(mean(DATA{1})-mean(DATA{2}),dimensions(1),dimensions(2));
                 relativeDifferencesData=reshape(100*(mean(DATA{1})-mean(DATA{2}))./mean(DATA{2}),dimensions(1),dimensions(2));
                 
-                posthoc.differences.continuum{1,comp}=differencesData;
-                posthoc.differences.continuumRelative{1,comp}=relativeDifferencesData;
+                posthoc{pos}.differences.continuum{1,comp}=differencesData;
+                posthoc{pos}.differences.continuumRelative{1,comp}=relativeDifferencesData;
                 
                 Ttest=spm1d.stats.nonparam.ttest2(DATA{1},DATA{2});
-                posthoc.tTests.type{comp}='independant';
-                [posthoc.differences.ES{comp},posthoc.differences.ESsd{comp}]=esCalculation(DATA);
+                posthoc{pos}.tTests.type{comp}='independant';
+                [posthoc{pos}.differences.ES{comp},posthoc{pos}.differences.ESsd{comp}]=esCalculation(DATA);
             end
             
-            posthoc.differences.ES{comp}=reshape(posthoc.differences.ES{comp},dimensions(1),dimensions(2));
-            posthoc.differences.ESsd{comp}=reshape(posthoc.differences.ESsd{comp},dimensions(1),dimensions(2));
+            posthoc{pos}.differences.ES{comp}=reshape(posthoc{pos}.differences.ES{comp},dimensions(1),dimensions(2));
+            posthoc{pos}.differences.ESsd{comp}=reshape(posthoc{pos}.differences.ESsd{comp},dimensions(1),dimensions(2));
             
             % inference
-            [posthoc.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaOriginal,multiIterations,maximalIT,IT);
-            posthoc.tTests.alphaOriginal{comp}=alphaT;
-            posthoc.tTests.pCritical{comp}=alpha;
-            posthoc.tTests.nIterations{comp}=iterations;
+            [posthoc{pos}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaBonferronni,multiIterations,maximalIT,IT);
+            posthoc{pos}.tTests.alphaOriginal=alphaT;
+            if warnT==1
+                posthoc{pos}.tTests.warning="alphaOriginal is not valid";
+            end
+            posthoc{pos}.tTests.alphaBonferronni=alphaBonferronni;
+            posthoc{pos}.tTests.pCritical{comp}=alpha;
+            posthoc{pos}.tTests.nIterations{comp}=iterations;
             Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
-            posthoc.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
-            posthoc.tTests.Tthreshold{comp}=Ttest_inf.zstar;
-            posthoc.tTests.Tcontinuum{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
-            posthoc.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
-            mapLogical=abs(posthoc.tTests.Tcontinuum{1,comp})>=posthoc.tTests.Tthreshold{comp}; % significant clusters
+            posthoc{pos}.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
+            posthoc{pos}.tTests.Tthreshold{comp}=Ttest_inf.zstar;
+            posthoc{pos}.tTests.Tcontinuum{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
+            posthoc{pos}.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
+            mapLogical=abs(posthoc{pos}.tTests.Tcontinuum{1,comp})>=posthoc{pos}.tTests.Tthreshold{comp}; % significant clusters
             if nEffects==2
                 % main effect
                 indiceMain=findWhichMain(modalitiesAll{testedEffect{comp}},combi{Comp{comp}(1)}(testedEffect{comp}),combi{Comp{comp}(2)}(testedEffect{comp}));
@@ -1049,71 +1082,71 @@ if nEffects>1
                 effectCorr=anovaEffects{7};
             end
             
-            posthoc.tTests.Tsignificant{1,comp}(effectCorr)=mapLogical(effectCorr);
+            posthoc{pos}.tTests.Tsignificant{1,comp}(effectCorr)=mapLogical(effectCorr);
             
             if nEffects==2
                 tMainEffect(effectCorr==1)=0;
-                realEffect{comp}=reshape(max([tMainEffect(:)';posthoc.tTests.Tsignificant{1,comp}(:)']),dimensions(1),dimensions(2));
+                realEffect{comp}=reshape(max([tMainEffect(:)';posthoc{pos}.tTests.Tsignificant{1,comp}(:)']),dimensions(1),dimensions(2));
             else
                 for interactions=1:2
                     tInteractionEffect{interactions}(effectCorr==1)=0;
                 end
-                realEffect{comp}=reshape(max([tInteractionEffect{1}';tInteractionEffect{2}';posthoc.tTests.Tsignificant{1,comp}(:)']),dimensions(1),dimensions(2));
+                realEffect{comp}=reshape(max([tInteractionEffect{1}';tInteractionEffect{2}';posthoc{pos}.tTests.Tsignificant{1,comp}(:)']),dimensions(1),dimensions(2));
             end
-            posthoc.tTests.Tsignificant{1,comp}=realEffect{comp};
-            posthoc.tTests.contourSignificant{1,comp}=zeros(dimensions(1),dimensions(2));
-            posthoc.tTests.contourSignificant{1,comp}(find(posthoc.tTests.Tsignificant{1,comp}==1))=1.1*posthoc.tTests.Tthreshold{comp};
+            posthoc{pos}.tTests.Tsignificant{1,comp}=realEffect{comp};
+            posthoc{pos}.tTests.contourSignificant{1,comp}=zeros(dimensions(1),dimensions(2));
+            posthoc{pos}.tTests.contourSignificant{1,comp}(find(posthoc{pos}.tTests.Tsignificant{1,comp}==1))=1.1*posthoc{pos}.tTests.Tthreshold{comp};
             
             %  full plot of spm analysis
-            displayTtest(posthoc.tTests.Tcontinuum{1,comp},posthoc.tTests.Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
+            displayTtest(posthoc{pos}.tTests.Tcontinuum{1,comp},posthoc{pos}.tTests.Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
             if displayContour
-                dispContour(abs(posthoc.tTests.Tcontinuum{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+                dispContour(abs(posthoc{pos}.tTests.Tcontinuum{1,comp}),posthoc{pos}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
-            title(posthoc.differences.names{1,comp})
-            print('-dtiff',imageResolution,[savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/SPM/' verifSaveName(posthoc.differences.names{1,comp})])
-            savefig([savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/FIG/SPM/' verifSaveName(posthoc.differences.names{1,comp})])
+            title(posthoc{pos}.differences.names{1,comp})
+            print('-dtiff',imageResolution,[savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/SPM/' verifSaveName(posthoc{pos}.differences.names{1,comp})])
+            savefig([savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/FIG/SPM/' verifSaveName(posthoc{pos}.differences.names{1,comp})])
             close
             
             % full plot of differences
             displayDiffMaps(differencesData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMapDiff,diffRatio)
             if displayContour
-                dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+                dispContour(abs(posthoc{pos}.tTests.contourSignificant{1,comp}),posthoc{pos}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
-            title(posthoc.differences.names{1,comp})
-            print('-dtiff',imageResolution,[savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}}) '/DIFF/' verifSaveName(posthoc.differences.names{1,comp})])
-            savefig([savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/FIG/DIFF/' verifSaveName(posthoc.differences.names{1,comp})])
+            title(posthoc{pos}.differences.names{1,comp})
+            print('-dtiff',imageResolution,[savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}}) '/DIFF/' verifSaveName(posthoc{pos}.differences.names{1,comp})])
+            savefig([savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/FIG/DIFF/' verifSaveName(posthoc{pos}.differences.names{1,comp})])
             close
             
             displayRelativeDiffMaps(relativeDifferencesData,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff,relativeRatio)
             if displayContour
-                dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+                dispContour(abs(posthoc{pos}.tTests.contourSignificant{1,comp}),posthoc{pos}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
-            title(posthoc.differences.names{1,comp})
-            print('-dtiff',imageResolution,[savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}}) '/DIFF/' verifSaveName(posthoc.differences.names{1,comp}) ' %'])
-            savefig([savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/FIG/DIFF/' verifSaveName(posthoc.differences.names{1,comp}) ' %'])
+            title(posthoc{pos}.differences.names{1,comp})
+            print('-dtiff',imageResolution,[savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}}) '/DIFF/' verifSaveName(posthoc{pos}.differences.names{1,comp}) ' %'])
+            savefig([savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/FIG/DIFF/' verifSaveName(posthoc{pos}.differences.names{1,comp}) ' %'])
             close
             
-            %     cohen's d
-            displayMapsES(posthoc.differences.ES{comp},Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
-            title(posthoc.differences.names{1,comp})
+            %     ES
+            displayMapsES(posthoc{pos}.differences.ES{comp},Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
+            title(posthoc{pos}.differences.names{1,comp})
             if displayContour
-                dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
+                dispContour(abs(posthoc{pos}.tTests.contourSignificant{1,comp}),posthoc{pos}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
-            print('-dtiff',imageResolution,[savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/ES/' verifSaveName(posthoc.differences.names{1,comp})])
-            savefig([savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/FIG/ES/' verifSaveName(posthoc.differences.names{1,comp})])
+            print('-dtiff',imageResolution,[savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/ES/' verifSaveName(posthoc{pos}.differences.names{1,comp})])
+            savefig([savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/FIG/ES/' verifSaveName(posthoc{pos}.differences.names{1,comp})])
             close
             
             % subplot of spm analysis
             set(0, 'currentfigure', f1);
             ax=subplot(nCombi,nCombi,positionSPMPlot(isPlot(comp)));
-            displayTtest_sub(posthoc.tTests.Tcontinuum{1,comp},posthoc.tTests.Tthreshold{comp},Fs,colorMapDiff,ax)
+            displayTtest_sub(posthoc{pos}.tTests.Tcontinuum{1,comp},posthoc{pos}.tTests.Tthreshold{comp},Fs,colorMapDiff,ax)
             
             % subplot of differences
             set(0, 'currentfigure', f1);
             ax=subplot(nCombi,nCombi,positionDiffPlot(isPlot(comp)));
             displayDiffMaps_sub(differencesData,Fs,limitMeanMaps,diffRatio,colorMapDiff,ax)
             if displayContour
-                dispContour(abs(posthoc.tTests.contourSignificant{1,comp}),posthoc.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
+                dispContour(abs(posthoc{pos}.tTests.contourSignificant{1,comp}),posthoc{pos}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
             end
             
         end
@@ -1124,8 +1157,7 @@ if nEffects>1
         savefig([savedir savedir2 '/FIG/' figname])
         close
         
-        save([savedir figname '/posthoc'], 'posthoc')
-        clear Comp combi isPlot posthoc
+        clear Comp combi isPlot
         
     end
     
