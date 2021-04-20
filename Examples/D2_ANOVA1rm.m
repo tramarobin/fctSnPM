@@ -23,21 +23,36 @@ effectNames={'Shoes'};
 % Data(:,4) correspond to Shoes=C4
 
 savedir=[];
+savedir2=[];
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=400;
 colorbarLabel='Power (au)';
 limitMeanMaps=12;
 ylimits=[15 200];
+nTicksY=10;
+nTicksX=7;
 
-% SPM
+%SPM
 tic
-fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
+spmAnalysis=fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...
     'sampleFrequency',Fs,'colorbarLabel',colorbarLabel,...
     'limitMeanMaps',limitMeanMaps,...
-    'ylimits',ylimits);
+    'ylimits',ylimits,'nTicksX',nTicksX,'nTicksY',nTicksY);
 toc
 
+tic
+spmAnalysis2=fctSPMS(DATA,independantEffects,repeatedMeasuresEffects,'effectsNames',effectNames);
+toc
+
+tic
+saveNplot(spmAnalysis2,...
+    'savedir',savedir2,...
+    'xlabel',xlab,'ylabel',ylab,...
+    'sampleFrequency',Fs,'colorbarLabel',colorbarLabel,...
+    'limitMeanMaps',limitMeanMaps,...
+    'ylimits',ylimits,'nTicksX',nTicksX,'nTicksY',nTicksY);
+toc

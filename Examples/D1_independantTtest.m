@@ -16,17 +16,30 @@ independantEffects{1}={'M','M','M','F','M','F','F','M','F','M','M','F','F','M','
 repeatedMeasuresEffects=[]; % empty
 
 savedir=[];
+savedir2=[];
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];
 ylimits=[0 1.2];
+nTicksY=7;
+nTicksX=7;
 
 % SPM
 tic
-fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
+spmAnalysis=fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
-    'xlabel',xlab,'ylabel',ylab,...
+    'xlabel',xlab,'ylabel',ylab,'nTicksX',nTicksX,...
     'xlimits',xlimits,'ylimits',ylimits);
 toc
 
+tic
+spmAnalysis2=fctSPMS(DATA,independantEffects,repeatedMeasuresEffects,'effectsNames',effectNames);
+toc
+
+tic
+saveNplot(spmAnalysis2,...
+    'savedir',savedir2,...
+    'xlabel',xlab,'ylabel',ylab,'nTicksX',nTicksX,...
+    'xlimits',xlimits,'ylimits',ylimits);
+toc

@@ -23,22 +23,38 @@ effectNames={'Group','Device','Activation'};
 % Data(:,3) correspond to Device=US and Activation=Contracted
 % Data(:,4) correspond to Device=US and Activation=Relaxed
 
-savedir=[];
+savedir='C:\Users\LIBM_yb\Documents\DATA_MATLAB\spmTest\1';
+savedir2='C:\Users\LIBM_yb\Documents\DATA_MATLAB\spmTest\2';
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=500;
 colorbarLabel='Power (au)';
 limitMeanMaps=12;
 ylimits=[10 130];
+nTicksY=7;
+nTicksX=6;
 
 % SPM
 tic
-fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
+spmAnalysis=fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...
     'sampleFrequency',Fs,'colorbarLabel',colorbarLabel,...
     'limitMeanMaps',limitMeanMaps,...
-    'ylimits',ylimits);
+    'ylimits',ylimits,'nTicksX',nTicksX,'nTicksY',nTicksY);
+toc
+
+tic
+spmAnalysis2=fctSPMS(DATA,independantEffects,repeatedMeasuresEffects,'effectsNames',effectNames);
+toc
+
+tic
+saveNplot(spmAnalysis2,...
+    'savedir',savedir2,...
+    'xlabel',xlab,'ylabel',ylab,...
+    'sampleFrequency',Fs,'colorbarLabel',colorbarLabel,...
+    'limitMeanMaps',limitMeanMaps,...
+    'ylimits',ylimits,'nTicksX',nTicksX,'nTicksY',nTicksY);
 toc
 

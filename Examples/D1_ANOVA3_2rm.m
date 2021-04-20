@@ -25,19 +25,31 @@ colorLine{3}=[rgb('gray'); rgb('darkgray')];
 % ANOVA3 does not accept unbalanced data (10 males, 10 females)
 
 savedir=[];
-xlab='Angle (°)';
+savedir2=[];
+xlab='Angle (Â°)';
 ylab='Ratio';
 xlimits=[30 90];
 ylimits=[0 1.6];
-nTicksY=17;
-
+nTicksY=9;
+nTicksX=7;
 
 % SPM
 tic
-fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
+spmAnalysis=fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
-    'xlabel',xlab,'ylabel',ylab,...
+    'xlabel',xlab,'ylabel',ylab,'nTicksX',nTicksX,...
     'xlimits',xlimits,'ylimits',ylimits,'nTicksY',nTicksY,'colorline',colorLine);
+toc
+
+tic
+spmAnalysis2=fctSPMS(DATA,independantEffects,repeatedMeasuresEffects,'effectsNames',effectNames);
+toc
+
+tic
+saveNplot(spmAnalysis2,...
+    'savedir',savedir2,...
+    'xlabel',xlab,'ylabel',ylab,'nTicksX',nTicksX,...
+    'xlimits',xlimits,'ylimits',ylimits,'nTicksY',nTicksY);
 toc
 

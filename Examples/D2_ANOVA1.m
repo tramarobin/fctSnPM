@@ -22,21 +22,39 @@ effectNames={'Group'};
 
 
 savedir=[];
+savedir2=[];
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=500;
 colorbarLabel='Power (au)';
 limitMeanMaps=10;
 ylimits=[10 130];
+nTicksY=7;
+nTicksX=6;
 
-% SPM
+
+%SPM
 tic
-fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
+spmAnalysis=fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
     'savedir',savedir,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,...
     'sampleFrequency',Fs,'colorbarLabel',colorbarLabel,...
     'limitMeanMaps',limitMeanMaps,...
-    'ylimits',ylimits);
+    'ylimits',ylimits,'nTicksX',nTicksX,'nTicksY',nTicksY);
 toc
+
+tic
+spmAnalysis2=fctSPMS(DATA,independantEffects,repeatedMeasuresEffects,'effectsNames',effectNames);
+toc
+
+tic
+saveNplot(spmAnalysis2,...
+    'savedir',savedir2,...
+    'xlabel',xlab,'ylabel',ylab,...
+    'sampleFrequency',Fs,'colorbarLabel',colorbarLabel,...
+    'limitMeanMaps',limitMeanMaps,...
+    'ylimits',ylimits,'nTicksX',nTicksX,'nTicksY',nTicksY);
+toc
+
 

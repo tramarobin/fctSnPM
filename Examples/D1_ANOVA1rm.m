@@ -16,21 +16,34 @@ DATA=DATA(:,[1:4]);
 effectNames={'Speed'};
 repeatedMeasuresEffects{1}={'RC60','RC180','RFKF','RFKE'};
 colorLine{1}=[rgb('green'); rgb('blue'); rgb('red'); rgb('black')];
+independantEffects=[];
 % There are 20 subjects
 
 savedir=[];
+savedir2=[];
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];
 ylimits=[0 1.6];
-nTicksY=17;
+nTicksY=9;
+nTicksX=7;
 
 % SPM
 tic
-fctSPM(DATA,[],repeatedMeasuresEffects,...
-    'savedir',savedir,...
+spmAnalysis=fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
+    'savedir',savedir,'alpha',0.01,'alphaT',0.01,...
     'effectsNames',effectNames,...
-    'xlabel',xlab,'ylabel',ylab,...
-    'xlimits',xlimits,'ylimits',ylimits,'nTicksY',nTicksY,...
-    'transparancy1D',0.05,'colorline',colorLine);
+    'xlabel',xlab,'ylabel',ylab,'nTicksX',nTicksX,...
+    'xlimits',xlimits,'ylimits',ylimits,'nTicksY',nTicksY,'colorline',colorLine);
+toc
+
+tic
+spmAnalysis2=fctSPMS(DATA,independantEffects,repeatedMeasuresEffects,'effectsNames',effectNames,'alpha',0.01,'alphaT',0.05);
+toc
+
+tic
+saveNplot(spmAnalysis2,...
+    'savedir',savedir2,...
+    'xlabel',xlab,'ylabel',ylab,'nTicksX',nTicksX,...
+    'xlimits',xlimits,'ylimits',ylimits,'nTicksY',nTicksY);
 toc
