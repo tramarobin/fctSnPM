@@ -1,4 +1,4 @@
-function [anovaEffects]=fctAnova(maps1d,dimensions,indicesEffects,sujets,nEffects,nRm,eNames,alphaOriginal,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nx,ny,imageResolution,xlimits,maximalIT,ignoreAnova,displayContour,contourColor,dashedColor,transparency,lineWidth,linestyle,colorMap,imageSize,imageFontSize)
+function [anovaEffects,anova]=fctAnova(maps1d,dimensions,indicesEffects,sujets,nEffects,nRm,eNames,alphaOriginal,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nx,ny,imageResolution,xlimits,maximalIT,ignoreAnova,displayContour,contourColor,dashedColor,transparency,lineWidth,linestyle,colorMap,imageSize,imageFontSize)
 %% SETUP
 close all
 
@@ -49,7 +49,6 @@ if ~ignoreAnova
             print('-dtiff',imageResolution,[savedir '/ANOVA/' verifSaveName(anova.effectNames)])
             savefig([savedir '/ANOVA/FIG/' verifSaveName(anova.effectNames)])
             close
-            save([savedir '/ANOVA/anova'], 'anova')
             
             anovaEffects{1}(1,:)=anova.Fsignificant(:); % values saved for the interpretation of post-hoc tests
             
@@ -83,8 +82,6 @@ if ~ignoreAnova
                 anovaEffects{k}(1,:)=anova.Fsignificant{k}(:); % values saved for the interpretation of post-hoc tests
                 
             end
-            
-            save([savedir '/ANOVA/anova'], 'anova')
             
         end
     end
