@@ -67,7 +67,7 @@
 %* `tTests.names` is the name of the conditions (the first minus the second) used in the differences and t-tests.
 %* `tTests.nWarning` represents the number of warnings displayed during the analysis : 0 is OK, 1 means the number of iterations was reduced but `pCritical` = `pBonferroni`, 2 means that the number of iterations was reduced and `pCritical` > `pBonferroni`. In this case, more subjects are required to performed the analysis. %* `tTests.alpha` is the alpha risk choosen for the post hoc tests  before Bonferroni correction (default is the same as the ANOVA).
 %* `tTests.alpha` is the alpha risk choosen for the post hoc tests  before Bonferroni correction (default is the same as the ANOVA).
-%* `tTests.warning` : only if alphaOrignial is modified with `alphaT` input.
+%* `tTests.warning` : only if alpha is modified with `alphaT` input.
 %* `tTests.pBonferroni` is the alpha risk choosen for the post hoc tests after  Bonferroni correction.
 %* `tTests.pCritical` is the alpha risk used for the post hoc tests. Warning message is displayed if this value does not meet pBonferroni.
 %* `tTests.nIterations` is the number of iterations performed for the t-test.
