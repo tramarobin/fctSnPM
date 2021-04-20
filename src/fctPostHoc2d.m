@@ -90,7 +90,7 @@ if nEffects==1
     end
     
     nComp=size(Comp,2);
-    alphaBonferronni=alphaT/nComp;
+    pBonferroni=alphaT/nComp;
     
     for comp=1:nComp
         
@@ -132,12 +132,12 @@ if nEffects==1
         
         % inference
         posthoc{1}.tTests.names=posthoc{1}.differences.names;
-        [posthoc{1}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaBonferronni,multiIterations,maximalIT,IT);
-        posthoc{1}.tTests.alphaOriginal=alphaT;
+        [posthoc{1}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,pBonferroni,multiIterations,maximalIT,IT);
+        posthoc{1}.tTests.alpha=alphaT;
         if warnT==1
-            posthoc{1}.tTests.warning="alphaOriginal is not valid";
+            posthoc{1}.tTests.warning="alpha is not valid";
         end
-        posthoc{1}.tTests.alphaBonferronni=alphaBonferronni;
+        posthoc{1}.tTests.pBonferroni=pBonferroni;
         posthoc{1}.tTests.pCritical{comp}=alpha;
         posthoc{1}.tTests.nIterations{comp}=iterations;
         Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
@@ -289,10 +289,10 @@ if nEffects==2
         end
         
         nComp=size(Comp,2);
-        alphaBonferronni=alphaT/nComp;
+        pBonferroni=alphaT/nComp;
         
         for comp=1:nComp
-            alphaBonferronni=alphaT/nComp;
+            pBonferroni=alphaT/nComp;
             for i=1:2
                 % comparison + name
                 DATA{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1),:);
@@ -331,12 +331,12 @@ if nEffects==2
             posthoc{mainEffect(1)}.differences.ESsd{comp}=reshape(posthoc{mainEffect(1)}.differences.ESsd{comp},dimensions(1),dimensions(2));
             
             % inference
-            [posthoc{mainEffect(1)}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaBonferronni,multiIterations,maximalIT,IT);
-            posthoc{mainEffect(1)}.tTests.alphaOriginal=alphaT;
+            [posthoc{mainEffect(1)}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,pBonferroni,multiIterations,maximalIT,IT);
+            posthoc{mainEffect(1)}.tTests.alpha=alphaT;
             if warnT==1
-                posthoc{mainEffect(1)}.tTests.warning="alphaOriginal is not valid";
+                posthoc{mainEffect(1)}.tTests.warning="alpha is not valid";
             end
-            posthoc{mainEffect(1)}.tTests.alphaBonferronni=alphaBonferronni;
+            posthoc{mainEffect(1)}.tTests.pBonferroni=pBonferroni;
             posthoc{mainEffect(1)}.tTests.pCritical{comp}=alpha;
             posthoc{mainEffect(1)}.tTests.nIterations{comp}=iterations;
             Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
@@ -495,10 +495,10 @@ if nEffects==3
         end
         
         nComp=size(Comp,2);
-        alphaBonferronni=alphaT/nComp;
+        pBonferroni=alphaT/nComp;
         
         for comp=1:nComp
-            alphaBonferronni=alphaT/nComp;
+            pBonferroni=alphaT/nComp;
             
             for i=1:2
                 % comparison + name
@@ -534,12 +534,12 @@ if nEffects==3
             posthoc{mainEffect(1)}.differences.ESsd{comp}=reshape(posthoc{mainEffect(1)}.differences.ESsd{comp},dimensions(1),dimensions(2));
             
             % inference
-            [posthoc{mainEffect(1)}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaBonferronni,multiIterations,maximalIT,IT);
-            posthoc{mainEffect(1)}.tTests.alphaOriginal=alphaT;
+            [posthoc{mainEffect(1)}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,pBonferroni,multiIterations,maximalIT,IT);
+            posthoc{mainEffect(1)}.tTests.alpha=alphaT;
             if warnT==1
-                posthoc{mainEffect(1)}.tTests.warning="alphaOriginal is not valid";
+                posthoc{mainEffect(1)}.tTests.warning="alpha is not valid";
             end
-            posthoc{mainEffect(1)}.tTests.alphaBonferronni=alphaBonferronni;
+            posthoc{mainEffect(1)}.tTests.pBonferroni=pBonferroni;
             posthoc{mainEffect(1)}.tTests.pCritical{comp}=alpha;
             posthoc{mainEffect(1)}.tTests.nIterations{comp}=iterations;
             Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
@@ -712,13 +712,13 @@ if nEffects==3
             end
             
             nComp=size(Comp,2);
-            alphaBonferronni=alphaT/nComp;
+            pBonferroni=alphaT/nComp;
             
             isPlot=find(isPlot==1);
             
             for comp=1:nComp
                 
-                alphaBonferronni=alphaT/nComp;
+                pBonferroni=alphaT/nComp;
                 
                 for i=1:2
                     % comparison + name
@@ -756,12 +756,12 @@ if nEffects==3
                 posthoc{3+anovaFixedCorr(fixedEffect)}.differences.ESsd{comp}=reshape(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.ESsd{comp},dimensions(1),dimensions(2));
                 
                 % inference
-                [posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaBonferronni,multiIterations,maximalIT,IT);
-                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.alphaOriginal=alphaT;
+                [posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,pBonferroni,multiIterations,maximalIT,IT);
+                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.alpha=alphaT;
                 if warnT==1
-                    posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.warning="alphaOriginal is not valid";
+                    posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.warning="alpha is not valid";
                 end
-                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.alphaBonferronni=alphaBonferronni;
+                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.pBonferroni=pBonferroni;
                 posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.pCritical{comp}=alpha;
                 posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.nIterations{comp}=iterations;
                 Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
@@ -1005,7 +1005,7 @@ if nEffects>1
         end
         
         nComp=size(Comp,2);
-        alphaBonferronni=alphaT/nComp;
+        pBonferroni=alphaT/nComp;
         
         isPlot=find(isPlot==1);
         
@@ -1053,12 +1053,12 @@ if nEffects>1
             posthoc{pos}.differences.ESsd{comp}=reshape(posthoc{pos}.differences.ESsd{comp},dimensions(1),dimensions(2));
             
             % inference
-            [posthoc{pos}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,alphaBonferronni,multiIterations,maximalIT,IT);
-            posthoc{pos}.tTests.alphaOriginal=alphaT;
+            [posthoc{pos}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,pBonferroni,multiIterations,maximalIT,IT);
+            posthoc{pos}.tTests.alpha=alphaT;
             if warnT==1
-                posthoc{pos}.tTests.warning="alphaOriginal is not valid";
+                posthoc{pos}.tTests.warning="alpha is not valid";
             end
-            posthoc{pos}.tTests.alphaBonferronni=alphaBonferronni;
+            posthoc{pos}.tTests.pBonferroni=pBonferroni;
             posthoc{pos}.tTests.pCritical{comp}=alpha;
             posthoc{pos}.tTests.nIterations{comp}=iterations;
             Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));

@@ -38,7 +38,7 @@ spmAnalysis=fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
 toc
 
 tic
-spmAnalysis2=fctSPMS(DATA,independantEffects,repeatedMeasuresEffects,'effectsNames',effectNames,'alpha',0.01,'alphaT',0.05);
+spmAnalysis2=fctSPMS(DATA,independantEffects,repeatedMeasuresEffects,'effectsNames',effectNames);
 toc
 
 tic

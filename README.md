@@ -61,7 +61,7 @@ Compatible from Matlab R2017b
 `spmAnalysis.anova` is composed of different fields :  
 * `type` is the type of ANOVA performed
 * `effectNames` is a structure (one cell for each effect) that represent the names of the effects tested (mains and interactions)
-* `alphaOriginal` is the alpha risk choosen for the anova (default is 0.05 (5%)).  
+* `alpha` is the alpha risk choosen for the anova (default is 0.05 (5%)).  
 * `pCritical` is the alpha risk used for the anova. Warning message is displayed if this value is modified.
 * `nIterations` is the number of iterations performed for the anova.
 * `maxIterations` is the number of maximal iterations possible for the anova.
@@ -85,11 +85,11 @@ For the following outputs, the number of cells of the structure correspond to th
 * `differences.ESsd` is the standard deviation of the effect size.
 * `tTests.type` is the type of t-test performed (independant or paired)
 * `tTests.names` is the name of the conditions (the first minus the second) used in the differences and t-tests.
-* `tTests.nWarning` represents the number of warnings displayed during the analysis : 0 is OK, 1 means the number of iterations was reduced but `pCritical` = `alphaBonferronni`, 2 means that the number of iterations was reduced and `pCritical` > `alphaBonferronni`. In this case, more subjects are required to performed the analysis. %* `tTests.alphaOriginal` is the alpha risk choosen for the post hoc tests  before Bonferronni correction (default is the same as the ANOVA).
-* `tTests.alphaOriginal` is the alpha risk choosen for the post hoc tests  before Bonferronni correction (default is the same as the ANOVA).
+* `tTests.nWarning` represents the number of warnings displayed during the analysis : 0 is OK, 1 means the number of iterations was reduced but `pCritical` = `pBonferroni`, 2 means that the number of iterations was reduced and `pCritical` > `pBonferroni`. In this case, more subjects are required to performed the analysis. %* `tTests.alpha` is the alpha risk choosen for the post hoc tests  before Bonferroni correction (default is the same as the ANOVA).
+* `tTests.alpha` is the alpha risk choosen for the post hoc tests  before Bonferroni correction (default is the same as the ANOVA).
 * `tTests.warning` : only if alphaOrignial is modified with `alphaT` input.
-* `tTests.alphaBonferronni` is the alpha risk choosen for the post hoc tests after  Bonferronni correction.
-* `tTests.pCritical` is the alpha risk used for the post hoc tests. Warning message is displayed if this value does not meet alphaBonferronni.
+* `tTests.pBonferroni` is the alpha risk choosen for the post hoc tests after Bonferroni correction.
+* `tTests.pCritical` is the alpha risk used for the post hoc tests. Warning message is displayed if this value does not meet pBonferroni.
 * `tTests.nIterations` is the number of iterations performed for the t-test.
 * `tTests.maxIterations` is the number of maximal iterations possible for the t-test.
 * `tTests.Tcontinuum` represents the T-value for each node

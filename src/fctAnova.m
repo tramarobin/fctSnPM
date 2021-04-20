@@ -16,7 +16,7 @@ if ~ignoreAnova
         
         % Verify the number of iterations
         [nWarning,iterations,alpha]=fctWarningIterationsAOV(ANOVA,alphaOriginal,multiIterations,maximalIT,IT);
-        anova.alphaOriginal=alphaOriginal;
+        anova.alpha=alphaOriginal;
         anova.pCritical=alpha;
         anova.nIterations=iterations;
         
