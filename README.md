@@ -24,20 +24,19 @@ spmAnalysis=fctSPM(data, independantEffects, repeatedMeasuresEffects, varargin)
 
 
 ## Warnings ##
-- Unbalanced two- and three-way repeated-measures ANOVA results have not been verified.
+* Unbalanced two- and three-way repeated-measures ANOVA results have not been verified.
 Example: more subjects in Group 1 than in Group 2.
 Please interpret results for these designs with caution, and recognize that they might not be valid.
-- Post-hoc tests with Bonferonni correction are only approximate.
-- Somes warnings are displayed if the number of iterations is automatically modified or not sufficiant to perform the analysis with the defined alpha risk.
-- Effect sizes and confidence intervals are not validated and are just given as supplementary information.
-- For more information, please visit : https://spm1d.org/Documentation.html
+* Post-hoc tests with Bonferonni correction are only approximate.
+* Somes warnings are displayed if the number of iterations is automatically modified or not sufficiant to perform the analysis with the defined alpha risk.
+* Effect sizes and confidence intervals are not validated and are just given as supplementary information.
+* For more information, please visit : https://spm1d.org/Documentation.html
 
 
 ### Caution ###
-- Avoid the same typo (e.g., POST, POST2) for the effect names, it affects the recognition for the multiples comparisons 
-- Avoid underscore (_) or minus (-) sign. Spaces are OK
-- Use '/' when selecting a saving directory (`savedir` option)
-- Once you are ok with the created figure, increase the number of iterations (`multiIT` or `IT` options) to achieve numerical stability. 1000 iterations are a good start but if your hardware allows it, the more is the better
+* For `independantEffects` and `repeatedMeasuresEffects`, avoid underscore (_) or minus (-) signs. Spaces are OK. It affects the recognition of sub-data for the multiples comparisons 
+* Use '/' when indicating a saving directory (`savedir` option)
+* Once you are ok with the created figure, increase the number of iterations (`multiIT` or `IT` options) to achieve numerical stability. 1000 iterations are a good start but if your hardware allows it, the more is the better
 
 
 ## Statement of need ##
@@ -54,10 +53,10 @@ For post-hoc for interaction effects, the main effect is also displayed if locat
 
 
 ## Citing fctSPM ##
-- This function : under review in JOSS   
-- for spm1d : Pataky TC (2010). Generalized n-dimensional biomechanical field analysis using statistical parametric mapping. Journal of Biomechanics 43, 1976-1982.   
-- for permutation tests : Nichols TE, Holmes AP (2002). Nonparametric permutation tests for functional neuroimaging: a primer with examples. Human Brain Mapping 15(1), 1–25.   
-- spm1d package for matlab can be downloaded at : https://github.com/0todd0000/spm1dmatlab   
+* This function : under review in JOSS   
+* for spm1d : Pataky TC (2010). Generalized n-dimensional biomechanical field analysis using statistical parametric mapping. Journal of Biomechanics 43, 1976-1982.   
+* for permutation tests : Nichols TE, Holmes AP (2002). Nonparametric permutation tests for functional neuroimaging: a primer with examples. Human Brain Mapping 15(1), 1–25.   
+* spm1d package for matlab can be downloaded at : https://github.com/0todd0000/spm1dmatlab   
 
 
 ## MATLAB Release Compatibility ##
@@ -114,6 +113,7 @@ For the following outputs, the number of cells of the structure correspond to th
 * `tTests.contourSignificant` represents a modified T-value continuum to display smoother contour plots.
 `tTests.contourSignificant is created only in two dimensions.  
 
+* `tTests.combi` is only created for 2 and 3-way ANOVA and used in `saveNplot` to define the data to plot.
 
 ### Figures ###
 Two folders composed of figures in `.TIF` and `.fig` are created

@@ -455,10 +455,10 @@ if nEffects==3
                     posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.clusterLocation{comp}{c}=clustersT{c}.endpoints;
                     posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.clusterP{comp}(c)=clustersT{c}.P*nComp;
                 end
-                
             end
             
             intForInteractions{anovaFixedCorr(effectFixed)}.t=realEffect;
+            posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.combi=combi;
             clear Comp combi legendPlot
             
         end
@@ -645,6 +645,7 @@ if nEffects>1
         end
     end
     
+    posthoc{pos}.tTests.combi=combi;
     clear Comp combi legendPlot
 end
 

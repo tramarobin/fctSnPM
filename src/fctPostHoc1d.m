@@ -658,7 +658,6 @@ if nEffects==3
                     posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.clusterP{comp}(c)=clustersT{c}.P*nComp;
                 end
                 
-                
                 % plot of spm analysis
                 displayTtest(posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tcontinuum{1,comp},posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp},posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tsignificant{1,comp},Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,transparancy1D)
                 title(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{comp})
@@ -674,6 +673,7 @@ if nEffects==3
                 close
                 
             end
+            
             
             % full plot of means + SPM
             for p=1:nPlot
@@ -698,7 +698,7 @@ if nEffects==3
                 sizeSname=numel(sameName);
                 for nC=1:numel(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names)
                     nameCompare=[posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{nC} '___________________________'];
-                    whichCompare(nC)=strcmp(sameName,nameCompare(1:sizeSname));
+                    whichCompare(nC)=string([sameName ' '])==string(nameCompare(1:sizeSname+1));
                 end
                 
                 colorPlot=chooseColor(colorLine,mainEffect(whichFixed(2,p)));
@@ -728,6 +728,7 @@ if nEffects==3
                 
             end
             
+            posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.combi=combi;
             intForInteractions{anovaFixedCorr(effectFixed)}.t=realEffect;
             clear Comp combi legendPlot
             
@@ -765,13 +766,6 @@ if nEffects>1
         
         loop=0;
         
-        if isempty(imageSize)
-            f1=figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
-        elseif max(size(imageSize))==1
-            f1=figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize, imageSize],'visible','off');
-        else
-            f1=figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize(1), imageSize(2)],'visible','off');
-        end
         % number of combinations + plot of each
         if nEffects==2
             
@@ -803,7 +797,7 @@ if nEffects>1
                 print('-dtiff',imageResolution,[savedir savedir2 verifSaveName(eNames{whichFixed(2,p)}) '/' verifSaveName(modalitiesAll{whichFixed(1,p)}{whichModal(1,p)})])
                 savefig([savedir savedir2 verifSaveName(eNames{whichFixed(2,p)}) '/FIG/' verifSaveName(modalitiesAll{whichFixed(1,p)}{whichModal(1,p)})])
                 close
-                clear isEmptydata whichCompare
+                clear isEmptydata
             end
             
             posthoc{pos}.data.continuum=meansData;
@@ -832,10 +826,15 @@ if nEffects>1
             for p=1:nPlot
                 colorPlot=chooseColor(colorLine,whichFixed(1,p));
                 plotmean(meansData(whichPlot{p}),IC,xlab,ylab,Fs,xlimits,nx,ny,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
-                legend(legendPlot(whichPlot{p}),'Location','eastoutside','box','off')
+                data4empty=meansData(whichPlot{p});
+                for i=1:numel(whichPlot{p})
+                    isEmptydata(i)=~isempty(data4empty{i});
+                end
+                legend(legendPlot(whichPlot{p}(isEmptydata)),'Location','eastoutside','box','off')
                 print('-dtiff',imageResolution,[savedir savedir2 verifSaveName(eNames{whichFixed(1,p)}) '/' verifSaveName([modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)}])])
                 savefig([savedir savedir2 verifSaveName(eNames{whichFixed(1,p)}) '/FIG/' verifSaveName([modalitiesAll{whichFixed(2,p)}{whichModal(1,p)} ' x ' modalitiesAll{whichFixed(3,p)}{whichModal(2,p)}])])
                 close
+                clear isEmptydata
             end
             posthoc{pos}.data.continuum=meansData;
             clear meansData
@@ -1025,7 +1024,8 @@ if nEffects>1
             sizeSname=numel(sameName);
             for nC=1:numel(posthoc{pos}.differences.names)
                 nameCompare=[posthoc{pos}.differences.names{nC} '___________________________'];
-                whichCompare(nC)=strcmp(sameName,nameCompare(1:sizeSname));            end
+                whichCompare(nC)=string([sameName ' '])==string(nameCompare(1:sizeSname+1));
+            end
             
             if nEffects==2
                 colorPlot=chooseColor(colorLine,whichFixed(2,p));
@@ -1082,6 +1082,7 @@ if nEffects>1
             clear isEmptydata findT capPos whichCompare
         end
         
+        posthoc{pos}.tTests.combi=combi;
         clear Comp combi legendPlot
     end
     

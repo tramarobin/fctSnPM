@@ -1,4 +1,4 @@
-% Trama Robin (LIBM) 19/04/2021 --> release 2.0
+% Trama Robin (LIBM) 04/2021 --> JOSS
 % trama.robin@gmail.com
 
 % available at :
@@ -189,96 +189,98 @@ if spmAnalysis.anova.type~="no ANOVA"
         
     end
 end
+
 %% POST HOC 1D
 posthoc=spmAnalysis.posthoc;
 dimensions=size(spmAnalysis.posthoc{1}.tTests.Tcontinuum{1});
 if min(dimensions)==1
     
-    for np=1:numel(posthoc)
-        
-        savedir2=[savedir '/Post hoc/' posthoc{np}.name '/'];
-        createSavedir(savedir2)
-        
-        if numel(posthoc)==1
-            colorPlot=chooseColor(colorLine,1);
-        elseif numel(posthoc)==3
-            if np<3
-                colorPlot=chooseColor(colorLine,np);
+        for np=1:numel(posthoc)
+    
+            savedir2=[savedir '/Post hoc/' posthoc{np}.name '/'];
+            createSavedir(savedir2)
+    
+            if numel(posthoc)==1
+                colorPlot=chooseColor(colorLine,1);
+            elseif numel(posthoc)==3
+                if np<3
+                    colorPlot=chooseColor(colorLine,np);
+                else
+                    colorPlot=[];
+                end
             else
                 colorPlot=[];
             end
-        else
-            colorPlot=[];
+    
+            %% pairewise plots
+    
+            for comp=1:numel(posthoc{np}.differences.continuum)
+    
+                % differences
+                plotmean({posthoc{np}.differences.continuum{comp}},CI,xlab,ylab,Fs,xlimits,nTicksX,[],[],imageFontSize,imageSize,transparancy1D,[])
+                if min(size(posthoc{np}.differences.names{1,comp}))>1
+                    legend([posthoc{np}.differences.names{1,comp} ' - ' posthoc{np}.differences.names{2,comp}],'Location','eastoutside','box','off')
+                    print('-dtiff',imageResolution,[savedir2 'DIFF/' verifSaveName([posthoc{np}.name ' (' char(posthoc{np}.differences.names{1,comp}) ' - ' char(posthoc{np}.differences.names{2,comp}) ')'])])
+                    savefig([savedir2 '/FIG/DIFF/' verifSaveName([posthoc{np}.name ' (' char(posthoc{np}.differences.names{1,comp}) ' - ' char(posthoc{np}.differences.names{2,comp}) ')'])])
+                else
+                    legend(posthoc{np}.differences.names{comp},'Location','eastoutside','box','off')
+                    print('-dtiff',imageResolution,[savedir2 'DIFF/' verifSaveName(posthoc{np}.differences.names{comp})])
+                    savefig([savedir2 '/FIG/DIFF/' verifSaveName(posthoc{np}.differences.names{comp})])
+                end
+                close
+    
+                % relative differences
+                plotmean({posthoc{np}.differences.continuumRelative{comp}},CI,xlab,'Differences (%)',Fs,xlimits,nTicksX,[],[],imageFontSize,imageSize,transparancy1D,[])
+                if min(size(posthoc{np}.differences.names{1,comp}))>1
+                    legend([posthoc{np}.differences.names{1,comp} ' - ' posthoc{np}.differences.names{2,comp}],'Location','eastoutside','box','off')
+                    print('-dtiff',imageResolution,[savedir2 'DIFF/' verifSaveName([posthoc{np}.name ' (' char(posthoc{np}.differences.names{1,comp}) ' - ' char(posthoc{np}.differences.names{2,comp}) ')'])])
+                    savefig([savedir2 '/FIG/DIFF/' verifSaveName([posthoc{np}.name ' (' char(posthoc{np}.differences.names{1,comp}) ' - ' char(posthoc{np}.differences.names{2,comp}) ')'])])
+                else
+                    legend(posthoc{np}.differences.names{comp},'Location','eastoutside','box','off')
+                    print('-dtiff',imageResolution,[savedir2 'DIFF/' verifSaveName(posthoc{np}.differences.names{comp}) '%'])
+                    savefig([savedir2 '/FIG/DIFF/' verifSaveName(posthoc{np}.differences.names{comp}) '%'])
+                end
+                close
+    
+                % plot of spm analysis
+                displayTtest(posthoc{np}.tTests.Tcontinuum{1,comp},posthoc{np}.tTests.Tthreshold{comp},posthoc{np}.tTests.Tsignificant{1,comp},Fs,xlab,ylab,ylimits,dimensions,nTicksX,nTicksY,xlimits,imageFontSize,imageSize,transparancy1D)
+                if min(size(posthoc{np}.differences.names{1,comp}))>1
+                    legend([posthoc{np}.differences.names{1,comp} ' - ' posthoc{np}.differences.names{2,comp}],'Location','eastoutside','box','off')
+                    print('-dtiff',imageResolution,[savedir2 'SPM/' verifSaveName([posthoc{np}.name ' (' char(posthoc{np}.differences.names{1,comp}) ' - ' char(posthoc{np}.differences.names{2,comp}) ')'])])
+                    savefig([savedir2 '/FIG/SPM/' verifSaveName([posthoc{np}.name ' (' char(posthoc{np}.differences.names{1,comp}) ' - ' char(posthoc{np}.differences.names{2,comp}) ')'])])
+                else
+                    legend(posthoc{np}.differences.names{comp},'Location','eastoutside','box','off')
+                    print('-dtiff',imageResolution,[savedir2 'SPM/' verifSaveName(posthoc{np}.differences.names{comp})])
+                    savefig([savedir2 '/FIG/SPM/' verifSaveName(posthoc{np}.differences.names{comp})])
+                end
+                close
+    
+                % ES
+                plotES(posthoc{np}.differences.ES{comp},posthoc{np}.differences.ESsd{comp},posthoc{np}.tTests.Tsignificant{1,comp},Fs,xlab,nTicksX,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
+                if min(size(posthoc{np}.differences.names{1,comp}))>1
+                    legend([posthoc{np}.differences.names{1,comp} ' - ' posthoc{np}.differences.names{2,comp}],'Location','eastoutside','box','off')
+                    print('-dtiff',imageResolution,[savedir2 'ES/' verifSaveName([posthoc{np}.name ' (' char(posthoc{np}.differences.names{1,comp}) ' - ' char(posthoc{np}.differences.names{2,comp}) ')'])])
+                    savefig([savedir2 '/FIG/ES/' verifSaveName([posthoc{np}.name ' (' char(posthoc{np}.differences.names{1,comp}) ' - ' char(posthoc{np}.differences.names{2,comp}) ')'])])
+                else
+                    legend(posthoc{np}.differences.names{comp},'Location','eastoutside','box','off')
+                    print('-dtiff',imageResolution,[savedir2 'ES/' verifSaveName(posthoc{np}.differences.names{comp})])
+                    savefig([savedir2 '/FIG/ES/' verifSaveName(posthoc{np}.differences.names{comp})])
+                end
+                close
+    
+            end
         end
-        
-        % means
-        plotmean(posthoc{np}.data.continuum,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
-        legend(posthoc{np}.data.names,'Location','eastoutside','box','off')
-        print('-dtiff',imageResolution,[savedir2 verifSaveName(posthoc{np}.name)])
-        savefig([savedir2 '/FIG/' verifSaveName(posthoc{np}.name)])
-        close
-        
-        for comp=1:numel(posthoc{np}.differences.continuum)
-            
-            % differences
-            plotmean({posthoc{np}.differences.continuum{comp}},CI,xlab,ylab,Fs,xlimits,nTicksX,[],[],imageFontSize,imageSize,transparancy1D,[])
-            if min(size(posthoc{np}.differences.names{1,comp}))>1
-                legend([posthoc{np}.differences.names{1,comp} ' - ' posthoc{np}.differences.names{2,comp}],'Location','eastoutside','box','off')
-                print('-dtiff',imageResolution,[savedir2 'DIFF/' verifSaveName([posthoc{np}.name ' (' char(posthoc{np}.differences.names{1,comp}) ' - ' char(posthoc{np}.differences.names{2,comp}) ')'])])
-                savefig([savedir2 '/FIG/DIFF/' verifSaveName([posthoc{np}.name ' (' char(posthoc{np}.differences.names{1,comp}) ' - ' char(posthoc{np}.differences.names{2,comp}) ')'])])
-            else
-                legend(posthoc{np}.differences.names{comp},'Location','eastoutside','box','off')
-                print('-dtiff',imageResolution,[savedir2 'DIFF/' verifSaveName(posthoc{np}.differences.names{comp})])
-                savefig([savedir2 '/FIG/DIFF/' verifSaveName(posthoc{np}.differences.names{comp})])
-            end
-            close
-            
-            % relative differences
-            plotmean({posthoc{np}.differences.continuumRelative{comp}},CI,xlab,'Differences (%)',Fs,xlimits,nTicksX,[],[],imageFontSize,imageSize,transparancy1D,[])
-            if min(size(posthoc{np}.differences.names{1,comp}))>1
-                legend([posthoc{np}.differences.names{1,comp} ' - ' posthoc{np}.differences.names{2,comp}],'Location','eastoutside','box','off')
-                print('-dtiff',imageResolution,[savedir2 'DIFF/' verifSaveName([posthoc{np}.name ' (' char(posthoc{np}.differences.names{1,comp}) ' - ' char(posthoc{np}.differences.names{2,comp}) ')'])])
-                savefig([savedir2 '/FIG/DIFF/' verifSaveName([posthoc{np}.name ' (' char(posthoc{np}.differences.names{1,comp}) ' - ' char(posthoc{np}.differences.names{2,comp}) ')'])])
-            else
-                legend(posthoc{np}.differences.names{comp},'Location','eastoutside','box','off')
-                print('-dtiff',imageResolution,[savedir2 'DIFF/' verifSaveName(posthoc{np}.differences.names{comp}) '%'])
-                savefig([savedir2 '/FIG/DIFF/' verifSaveName(posthoc{np}.differences.names{comp}) '%'])
-            end
-            close
-            
-            % plot of spm analysis
-            displayTtest(posthoc{np}.tTests.Tcontinuum{1,comp},posthoc{np}.tTests.Tthreshold{comp},posthoc{np}.tTests.Tsignificant{1,comp},Fs,xlab,ylab,ylimits,dimensions,nTicksX,nTicksY,xlimits,imageFontSize,imageSize,transparancy1D)
-            if min(size(posthoc{np}.differences.names{1,comp}))>1
-                legend([posthoc{np}.differences.names{1,comp} ' - ' posthoc{np}.differences.names{2,comp}],'Location','eastoutside','box','off')
-                print('-dtiff',imageResolution,[savedir2 'SPM/' verifSaveName([posthoc{np}.name ' (' char(posthoc{np}.differences.names{1,comp}) ' - ' char(posthoc{np}.differences.names{2,comp}) ')'])])
-                savefig([savedir2 '/FIG/SPM/' verifSaveName([posthoc{np}.name ' (' char(posthoc{np}.differences.names{1,comp}) ' - ' char(posthoc{np}.differences.names{2,comp}) ')'])])
-            else
-                legend(posthoc{np}.differences.names{comp},'Location','eastoutside','box','off')
-                print('-dtiff',imageResolution,[savedir2 'SPM/' verifSaveName(posthoc{np}.differences.names{comp})])
-                savefig([savedir2 '/FIG/SPM/' verifSaveName(posthoc{np}.differences.names{comp})])
-            end
-            close
-            
-            % ES
-            plotES(posthoc{np}.differences.ES{comp},posthoc{np}.differences.ESsd{comp},posthoc{np}.tTests.Tsignificant{1,comp},Fs,xlab,nTicksX,xlimits,imageFontSize,imageSize,transparancy1D,yLimitES)
-            if min(size(posthoc{np}.differences.names{1,comp}))>1
-                legend([posthoc{np}.differences.names{1,comp} ' - ' posthoc{np}.differences.names{2,comp}],'Location','eastoutside','box','off')
-                print('-dtiff',imageResolution,[savedir2 'ES/' verifSaveName([posthoc{np}.name ' (' char(posthoc{np}.differences.names{1,comp}) ' - ' char(posthoc{np}.differences.names{2,comp}) ')'])])
-                savefig([savedir2 '/FIG/ES/' verifSaveName([posthoc{np}.name ' (' char(posthoc{np}.differences.names{1,comp}) ' - ' char(posthoc{np}.differences.names{2,comp}) ')'])])
-            else
-                legend(posthoc{np}.differences.names{comp},'Location','eastoutside','box','off')
-                print('-dtiff',imageResolution,[savedir2 'ES/' verifSaveName(posthoc{np}.differences.names{comp})])
-                savefig([savedir2 '/FIG/ES/' verifSaveName(posthoc{np}.differences.names{comp})])
-            end
-            close
-            
-        end
-    end
     
     %% Means + SPM plots
     
     % T-TESTS and ANOVA1
     if numel(posthoc)==1
+        
+        plotmean(posthoc{np}.data.continuum,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
+        legend(posthoc{np}.data.names,'Location','eastoutside','box','off')
+        print('-dtiff',imageResolution,[savedir2 verifSaveName(posthoc{np}.name)])
+        savefig([savedir2 '/FIG/' verifSaveName(posthoc{np}.name)])
+        close
         
         if spmAnalysis.anova.type~="no ANOVA" % plot with aov
             plotmeanSPM(posthoc{1}.data.continuum,posthoc{1}.tTests.Tcontinuum,posthoc{1}.tTests.Tsignificant,posthoc{1}.data.names,posthoc{1}.differences.names,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anova.Fsignificant,{posthoc{1}.name},ratioSPM,spmPos,aovColor)
@@ -305,6 +307,7 @@ if min(dimensions)==1
         close
         
         
+        % MAIN EFFECT FOR ANOVA 2 and 3
     else
         
         if numel(posthoc)==3
@@ -313,35 +316,274 @@ if min(dimensions)==1
             pMax=3;
         end
         
-        for np=1:pMax
-            
-            savedir2=[savedir '/Post hoc/'];
-            colorPlot=chooseColor(colorLine,np);
-            
-            
-            % full plot of means + SPM
-            plotmeanSPM(posthoc{np}.data.continuum,posthoc{np}.tTests.Tcontinuum,posthoc{np}.tTests.Tsignificant,posthoc{np}.data.names,posthoc{np}.differences.names,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anova.Fsignificant(np),anova.effectNames(np),ratioSPM,spmPos,aovColor)
-            print('-dtiff',imageResolution,[savedir2 verifSaveName(anova.effectNames{np}) '/' verifSaveName(anova.effectNames{np}) ' + SPM'])
-            savefig([savedir2 verifSaveName(anova.effectNames{np}) '/FIG/' verifSaveName(anova.effectNames{np}) ' + SPM'])
-            close
-            
-            plotmeanSPM(posthoc{np}.data.continuum,posthoc{np}.tTests.Tcontinuum,posthoc{np}.tTests.Tsignificant,posthoc{np}.data.names,posthoc{np}.differences.names,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos,aovColor)
-            print('-dtiff',imageResolution,[savedir2 verifSaveName(anova.effectNames{np}) '/' verifSaveName(anova.effectNames{np}) ' + SPMnoAOV'])
-            savefig([savedir2 verifSaveName(anova.effectNames{np}) '/FIG/' verifSaveName(anova.effectNames{np}) ' + SPMnoAOV'])
-            close
-            
-            plotmeanSPMsub(posthoc{np}.data.continuum,posthoc{np}.tTests.Tcontinuum,posthoc{np}.tTests.Tsignificant,posthoc{np}.data.names,posthoc{np}.differences.names,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anova.Fsignificant(np),anova.effectNames(np),ratioSPM,spmPos,aovColor)
-            print('-dtiff',imageResolution,[savedir2 verifSaveName(anova.effectNames{np}) '/' verifSaveName(anova.effectNames{np}) ' + SPMsub'])
-            savefig([savedir2 verifSaveName(anova.effectNames{np}) '/FIG/' verifSaveName(anova.effectNames{np}) ' + SPMsub'])
-            close
-            
-            plotmeanSPMsub(posthoc{np}.data.continuum,posthoc{np}.tTests.Tcontinuum,posthoc{np}.tTests.Tsignificant,posthoc{np}.data.names,posthoc{np}.differences.names,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos,aovColor)
-            print('-dtiff',imageResolution,[savedir2 verifSaveName(anova.effectNames{np}) '/' verifSaveName(anova.effectNames{np}) ' + SPMsubNoAOV'])
-            savefig([savedir2 verifSaveName(anova.effectNames{np}) '/FIG/' verifSaveName(anova.effectNames{np}) ' + SPMsubNoAOV'])
-            close
-            
+                for np=1:pMax
+        
+                    savedir2=[savedir '/Post hoc/'];
+                    colorPlot=chooseColor(colorLine,np);
+        
+                    plotmean(posthoc{np}.data.continuum,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
+                    legend(posthoc{np}.data.names,'Location','eastoutside','box','off')
+                    print('-dtiff',imageResolution,[savedir2 verifSaveName(posthoc{np}.name) '/' verifSaveName(posthoc{np}.name)])
+                    savefig([savedir2 verifSaveName(anova.effectNames{np}) '/FIG/' verifSaveName(posthoc{np}.name)])
+                    close
+        
+                    plotmeanSPM(posthoc{np}.data.continuum,posthoc{np}.tTests.Tcontinuum,posthoc{np}.tTests.Tsignificant,posthoc{np}.data.names,posthoc{np}.differences.names,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anova.Fsignificant(np),anova.effectNames(np),ratioSPM,spmPos,aovColor)
+                    print('-dtiff',imageResolution,[savedir2 verifSaveName(anova.effectNames{np}) '/' verifSaveName(anova.effectNames{np}) ' + SPM'])
+                    savefig([savedir2 verifSaveName(anova.effectNames{np}) '/FIG/' verifSaveName(anova.effectNames{np}) ' + SPM'])
+                    close
+        
+                    plotmeanSPM(posthoc{np}.data.continuum,posthoc{np}.tTests.Tcontinuum,posthoc{np}.tTests.Tsignificant,posthoc{np}.data.names,posthoc{np}.differences.names,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos,aovColor)
+                    print('-dtiff',imageResolution,[savedir2 verifSaveName(anova.effectNames{np}) '/' verifSaveName(anova.effectNames{np}) ' + SPMnoAOV'])
+                    savefig([savedir2 verifSaveName(anova.effectNames{np}) '/FIG/' verifSaveName(anova.effectNames{np}) ' + SPMnoAOV'])
+                    close
+        
+                    plotmeanSPMsub(posthoc{np}.data.continuum,posthoc{np}.tTests.Tcontinuum,posthoc{np}.tTests.Tsignificant,posthoc{np}.data.names,posthoc{np}.differences.names,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anova.Fsignificant(np),anova.effectNames(np),ratioSPM,spmPos,aovColor)
+                    print('-dtiff',imageResolution,[savedir2 verifSaveName(anova.effectNames{np}) '/' verifSaveName(anova.effectNames{np}) ' + SPMsub'])
+                    savefig([savedir2 verifSaveName(anova.effectNames{np}) '/FIG/' verifSaveName(anova.effectNames{np}) ' + SPMsub'])
+                    close
+        
+                    plotmeanSPMsub(posthoc{np}.data.continuum,posthoc{np}.tTests.Tcontinuum,posthoc{np}.tTests.Tsignificant,posthoc{np}.data.names,posthoc{np}.differences.names,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos,aovColor)
+                    print('-dtiff',imageResolution,[savedir2 verifSaveName(anova.effectNames{np}) '/' verifSaveName(anova.effectNames{np}) ' + SPMsubNoAOV'])
+                    savefig([savedir2 verifSaveName(anova.effectNames{np}) '/FIG/' verifSaveName(anova.effectNames{np}) ' + SPMsubNoAOV'])
+                    close
+        
+                end
+        
+        %% DOUBLE INTERACTION FOR ANOVA3
+                if numel(posthoc)==7
+        
+                    for effectFixed=1:3
+        
+                        fixedEffect=effectFixed;
+                        mainEffect=1:3;
+                        mainEffect(fixedEffect)=[];
+                        anovaFixedCorr=[3 2 1];
+                        np=3+anovaFixedCorr(fixedEffect);
+        
+                        savedir2=[savedir '/Post hoc/'];
+                        for e=1:2
+                            mkdir([savedir2 verifSaveName([anova.effectNames{mainEffect(1)} ' x ' anova.effectNames{mainEffect(2)}]) '/' verifSaveName(anova.effectNames{mainEffect(e)}) '/FIG'])
+                        end
+        
+                        combi=posthoc{np}.tTests.combi;
+                        [nPlot,whichPlot,whichFixed,whichModal]=findNPlot(combi);
+        
+                        for p=1:nPlot
+        
+                            colorPlot=chooseColor(colorLine,mainEffect(whichFixed(2,p)));
+        
+                            plotmean(posthoc{np}.data.continuum(whichPlot{p}),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
+                            legend(posthoc{np}.data.names(whichPlot{p}),'Location','eastoutside','box','off')
+                            print('-dtiff',imageResolution,[savedir2 verifSaveName([anova.effectNames{mainEffect(1)} ' x ' anova.effectNames{mainEffect(2)}]) '/' verifSaveName(anova.effectNames{mainEffect(whichFixed(2,p))}) '/' verifSaveName(posthoc{mainEffect(whichFixed(1,p))}.data.names{whichModal(p)})])
+                            savefig([savedir2 verifSaveName([anova.effectNames{mainEffect(1)} ' x ' anova.effectNames{mainEffect(2)}]) '/' verifSaveName(anova.effectNames{mainEffect(whichFixed(2,p))}) '/FIG/' verifSaveName(posthoc{mainEffect(whichFixed(1,p))}.data.names{whichModal(p)})])
+                            close
+        
+                            data4empty=posthoc{np}.data.continuum(whichPlot{p});
+                            for i=1:numel(whichPlot{p})
+                                isEmptydata(i)=~isempty(data4empty{i});
+                            end
+        
+                            for nC=1:numel(whichPlot{p})
+                                findT(nC)=posthoc{np}.data.names(whichPlot{p}(nC));
+                                capPos(nC,:)=strfind(findT{nC},' \cap ');
+                            end
+                            if mean(diff(capPos)~=0)>0 % same letter at the end
+                                sameName=findT{1}(capPos(1)+6:end);
+                            else
+                                if findT{1}(1:capPos(1)-1)==findT{2}(1:capPos(1)-1) % start
+                                    sameName=findT{1}(1:capPos(1)-1);
+                                else
+                                    sameName=findT{1}(capPos(1)+6:end); % end
+                                end
+                            end
+                            sizeSname=numel(sameName);
+        
+                            for nC=1:numel(posthoc{np}.differences.names)
+                                nameCompare=[posthoc{np}.differences.names{nC} '___________________________'];
+                                whichCompare(nC)=string([sameName ' '])==string(nameCompare(1:sizeSname+1));
+                            end
+        
+                            nAnova=whichAnova(mainEffect);
+        
+                            plotmeanSPM(posthoc{np}.data.continuum(whichPlot{p}),posthoc{np}.tTests.Tcontinuum(:,whichCompare),posthoc{np}.tTests.Tsignificant(:,whichCompare),posthoc{np}.data.names(whichPlot{p}),posthoc{np}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anova.Fsignificant([mainEffect(whichFixed(2,p)), nAnova]),{anova.effectNames{mainEffect(whichFixed(2,p))},[anova.effectNames{mainEffect(1)} ' x ' anova.effectNames{mainEffect(2)}]},ratioSPM,spmPos,aovColor)
+                            print('-dtiff',imageResolution,[savedir2 verifSaveName([anova.effectNames{mainEffect(1)} ' x ' anova.effectNames{mainEffect(2)}]) '/' verifSaveName(anova.effectNames{mainEffect(whichFixed(2,p))}) '/' verifSaveName(posthoc{mainEffect(whichFixed(1,p))}.data.names{whichModal(p)}) ' + SPM'])
+                            savefig([savedir2 verifSaveName([anova.effectNames{mainEffect(1)} ' x ' anova.effectNames{mainEffect(2)}]) '/' verifSaveName(anova.effectNames{mainEffect(whichFixed(2,p))}) '/FIG/' verifSaveName(posthoc{mainEffect(whichFixed(1,p))}.data.names{whichModal(p)}) ' +SPM'])
+                            close
+        
+                            plotmeanSPM(posthoc{np}.data.continuum(whichPlot{p}),posthoc{np}.tTests.Tcontinuum(:,whichCompare),posthoc{np}.tTests.Tsignificant(:,whichCompare),posthoc{np}.data.names(whichPlot{p}),posthoc{np}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos,aovColor)
+                            print('-dtiff',imageResolution,[savedir2 verifSaveName([anova.effectNames{mainEffect(1)} ' x ' anova.effectNames{mainEffect(2)}]) '/' verifSaveName(anova.effectNames{mainEffect(whichFixed(2,p))}) '/' verifSaveName(posthoc{mainEffect(whichFixed(1,p))}.data.names{whichModal(p)}) ' + SPMnoAOV'])
+                            savefig([savedir2 verifSaveName([anova.effectNames{mainEffect(1)} ' x ' anova.effectNames{mainEffect(2)}]) '/' verifSaveName(anova.effectNames{mainEffect(whichFixed(2,p))}) '/FIG/' verifSaveName(posthoc{mainEffect(whichFixed(1,p))}.data.names{whichModal(p)}) ' +SPMnoAOV'])
+                            close
+        
+                            plotmeanSPMsub(posthoc{np}.data.continuum(whichPlot{p}),posthoc{np}.tTests.Tcontinuum(:,whichCompare),posthoc{np}.tTests.Tsignificant(:,whichCompare),posthoc{np}.data.names(whichPlot{p}),posthoc{np}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anova.Fsignificant([mainEffect(whichFixed(2,p)), nAnova]),{anova.effectNames{mainEffect(whichFixed(2,p))},[anova.effectNames{mainEffect(1)} ' x ' anova.effectNames{mainEffect(2)}]},ratioSPM,spmPos,aovColor)
+                            print('-dtiff',imageResolution,[savedir2 verifSaveName([anova.effectNames{mainEffect(1)} ' x ' anova.effectNames{mainEffect(2)}]) '/' verifSaveName(anova.effectNames{mainEffect(whichFixed(2,p))}) '/' verifSaveName(posthoc{mainEffect(whichFixed(1,p))}.data.names{whichModal(p)}) ' + SPMsub'])
+                            savefig([savedir2 verifSaveName([anova.effectNames{mainEffect(1)} ' x ' anova.effectNames{mainEffect(2)}]) '/' verifSaveName(anova.effectNames{mainEffect(whichFixed(2,p))}) '/FIG/' verifSaveName(posthoc{mainEffect(whichFixed(1,p))}.data.names{whichModal(p)}) ' +SPMsub'])
+                            close
+        
+                            plotmeanSPMsub(posthoc{np}.data.continuum(whichPlot{p}),posthoc{np}.tTests.Tcontinuum(:,whichCompare),posthoc{np}.tTests.Tsignificant(:,whichCompare),posthoc{np}.data.names(whichPlot{p}),posthoc{np}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos,aovColor)
+                            print('-dtiff',imageResolution,[savedir2 verifSaveName([anova.effectNames{mainEffect(1)} ' x ' anova.effectNames{mainEffect(2)}]) '/' verifSaveName(anova.effectNames{mainEffect(whichFixed(2,p))}) '/' verifSaveName(posthoc{mainEffect(whichFixed(1,p))}.data.names{whichModal(p)}) ' + SPMsubNoAOV'])
+                            savefig([savedir2 verifSaveName([anova.effectNames{mainEffect(1)} ' x ' anova.effectNames{mainEffect(2)}]) '/' verifSaveName(anova.effectNames{mainEffect(whichFixed(2,p))}) '/FIG/' verifSaveName(posthoc{mainEffect(whichFixed(1,p))}.data.names{whichModal(p)}) ' +SPMsubNoAOV'])
+                            close
+        
+                            clear isEmptydata findT capPos whichCompare
+        
+                        end
+                    end
+                end
+        
+        %% DOULE INTERACTION FOR ANOVA2 or TRIPLE INTERACTIONS FOR ANOVA3
+        
+        if numel(posthoc)==3
+            pos=3;
+            isInteraction=max(anova.Fsignificant{pos});
+            savedir2=[verifSaveName([anova.effectNames{1} ' x ' anova.effectNames{2}]) '/'] ;
+            mkdir([savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{1}) '/FIG'])
+            mkdir([savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{2}) '/FIG'])
+        elseif numel(posthoc)==7
+            pos=7;
+            isInteraction=max(anova.Fsignificant{pos});
+            savedir2=[verifSaveName([anova.effectNames{1} ' x ' anova.effectNames{2} ' x ' anova.effectNames{3}]) '/'];
+            mkdir([savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{1}) '/FIG'])
+            mkdir([savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{2}) '/FIG'])
+            mkdir([savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{3}) '/FIG'])
         end
         
+        combi=posthoc{pos}.tTests.combi;
+        [nPlot,whichPlot,whichFixed,whichModal]=findNPlot(combi);
+        
+                if numel(posthoc)==3
+                    for p=1:nPlot
+                        colorPlot=chooseColor(colorLine,whichFixed(2,p));
+                        plotmean(posthoc{pos}.data.continuum(whichPlot{p}),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
+                        data4empty=posthoc{pos}.data.continuum(whichPlot{p});
+                        for i=1:numel(whichPlot{p})
+                            isEmptydata(i)=~isempty(data4empty{i});
+                        end
+                        legend(posthoc{pos}.data.names(whichPlot{p}(isEmptydata)),'Location','eastoutside','box','off')
+                        print('-dtiff',imageResolution,[savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(2,p)}) '/' verifSaveName(posthoc{whichFixed(1,p)}.data.names{whichModal(1,p)})])
+                        savefig([savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(2,p)}) '/FIG/' verifSaveName(posthoc{whichFixed(1,p)}.data.names{whichModal(1,p)})])
+                        close
+                        clear isEmptydata
+                    end
+                elseif numel(posthoc)==7
+                    for p=1:nPlot
+                        colorPlot=chooseColor(colorLine,whichFixed(1,p));
+                        plotmean(posthoc{pos}.data.continuum(whichPlot{p}),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits)
+                        data4empty=posthoc{pos}.data.continuum(whichPlot{p});
+                        for i=1:numel(whichPlot{p})
+                            isEmptydata(i)=~isempty(data4empty{i});
+                        end
+                        legend(posthoc{pos}.data.names(whichPlot{p}(isEmptydata)),'Location','eastoutside','box','off')
+                        print('-dtiff',imageResolution,[savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(1,p)}) '/' verifSaveName([posthoc{whichFixed(2,p)}.data.names{whichModal(1,p)} ' x ' posthoc{whichFixed(3,p)}.data.names{whichModal(2,p)}])])
+                        savefig([savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(1,p)}) '/FIG/' verifSaveName([posthoc{whichFixed(2,p)}.data.names{whichModal(1,p)} ' x ' posthoc{whichFixed(3,p)}.data.names{whichModal(2,p)}])])
+                        close
+                        clear isEmptydata
+                    end
+                end
+        
+        for p=1:nPlot
+            
+            data4empty=posthoc{pos}.data.continuum(whichPlot{p});
+            for i=1:numel(whichPlot{p})
+                isEmptydata(i)=~isempty(data4empty{i});
+            end
+            
+            for nC=1:numel(whichPlot{p})
+                findT(nC)=posthoc{pos}.data.names(whichPlot{p}(nC));
+                capPos(nC,:)=strfind(findT{nC},' \cap ');
+            end
+            
+            if size(capPos,2)==1 % ANOVA 2
+                if mean(diff(capPos)~=0)>0 % same letter at the end
+                    sameName=findT{1}(capPos(1)+6:end);
+                else
+                    if findT{1}(1:capPos(1)-1)==findT{2}(1:capPos(1)-1) % start
+                        sameName=findT{1}(1:capPos(1)-1);
+                    else
+                        sameName=findT{1}(capPos(1)+6:end); % end
+                    end
+                end
+                
+                sameName=strrep(sameName,'\cap','x');
+                
+            else % ANOVA 3
+                
+                for i=1:numel(findT)
+                    iFirst{i}=findT{i}(1:capPos(i,1)-1);
+                    iSecond{i}=findT{i}(capPos(i,1)+6:capPos(i,2)-1);
+                    iThird{i}=findT{i}(capPos(i,2)+6:end);
+                end
+                
+                if ~strcmp(iFirst{1},iFirst{2}) % start
+                    sameName=[iSecond{1} ' x ' iThird{1}];
+                elseif ~strcmp(iSecond{1},iSecond{2})
+                    sameName=[iFirst{1} ' x ' iThird{1}];
+                else
+                    sameName=[iFirst{1} ' x ' iSecond{1}];
+                end
+                
+            end
+            
+            sizeSname=numel(sameName);
+            for nC=1:numel(posthoc{pos}.differences.names)
+                nameCompare=[posthoc{pos}.differences.names{nC} '___________________________'];
+                whichCompare(nC)=string([sameName ' '])==string(nameCompare(1:sizeSname+1));
+            end
+            
+            if numel(posthoc)==3
+                colorPlot=chooseColor(colorLine,whichFixed(2,p));
+            else
+                colorPlot=chooseColor(colorLine,whichFixed(1,p));
+            end
+            
+            if numel(posthoc)==3
+                plotmeanSPM(posthoc{pos}.data.continuum(whichPlot{p}),posthoc{pos}.tTests.Tcontinuum(:,whichCompare),posthoc{pos}.tTests.Tsignificant(:,whichCompare),posthoc{pos}.data.names  (whichPlot{p}(isEmptydata)),posthoc{pos}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anova.Fsignificant([whichFixed(2,p) 3]),{anova.effectNames{whichFixed(2,p)},[anova.effectNames{1} ' x ' anova.effectNames{2}]},ratioSPM,spmPos,aovColor)
+                print('-dtiff',imageResolution,[savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(2,p)}) '/' verifSaveName(posthoc{whichFixed(1,p)}.data.names{whichModal(1,p)}) ' + SPM'])
+                savefig([savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(2,p)}) '/FIG/' verifSaveName(posthoc{whichFixed(1,p)}.data.names{whichModal(1,p)}) ' + SPM'])
+                close
+                
+                plotmeanSPM(posthoc{pos}.data.continuum(whichPlot{p}),posthoc{pos}.tTests.Tcontinuum(:,whichCompare),posthoc{pos}.tTests.Tsignificant(:,whichCompare),posthoc{pos}.data.names  (whichPlot{p}(isEmptydata)),posthoc{pos}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos,aovColor)
+                print('-dtiff',imageResolution,[savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(2,p)}) '/' verifSaveName(posthoc{whichFixed(1,p)}.data.names{whichModal(1,p)}) ' + SPMnoAOV'])
+                savefig([savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(2,p)}) '/FIG/' verifSaveName(posthoc{whichFixed(1,p)}.data.names{whichModal(1,p)}) ' + SPMnoAOV'])
+                close
+                
+                plotmeanSPMsub(posthoc{pos}.data.continuum(whichPlot{p}),posthoc{pos}.tTests.Tcontinuum(:,whichCompare),posthoc{pos}.tTests.Tsignificant(:,whichCompare),posthoc{pos}.data.names  (whichPlot{p}(isEmptydata)),posthoc{pos}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,anova.Fsignificant([whichFixed(2,p) 3]),{anova.effectNames{whichFixed(2,p)},[anova.effectNames{1} ' x ' anova.effectNames{2}]},ratioSPM,spmPos,aovColor)
+                print('-dtiff',imageResolution,[savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(2,p)}) '/' verifSaveName(posthoc{whichFixed(1,p)}.data.names{whichModal(1,p)}) ' + SPMsub'])
+                savefig([savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(2,p)}) '/FIG/' verifSaveName(posthoc{whichFixed(1,p)}.data.names{whichModal(1,p)}) ' + SPMsub'])
+                close
+                
+                plotmeanSPMsub(posthoc{pos}.data.continuum(whichPlot{p}),posthoc{pos}.tTests.Tcontinuum(:,whichCompare),posthoc{pos}.tTests.Tsignificant(:,whichCompare),posthoc{pos}.data.names  (whichPlot{p}(isEmptydata)),posthoc{pos}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos,aovColor)
+                print('-dtiff',imageResolution,[savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(2,p)}) '/' verifSaveName(posthoc{whichFixed(1,p)}.data.names{whichModal(1,p)}) ' + SPMsubNoAOV'])
+                savefig([savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(2,p)}) '/FIG/' verifSaveName(posthoc{whichFixed(1,p)}.data.names{whichModal(1,p)}) ' + SPMsubNoAOV'])
+                close
+            else
+                [nAnovaInt,nNames]=whichAnovaInt(whichFixed(1,p));
+                
+                plotmeanSPM(posthoc{pos}.data.continuum(whichPlot{p}),posthoc{pos}.tTests.Tcontinuum(:,whichCompare),posthoc{pos}.tTests.Tsignificant(:,whichCompare),posthoc{pos}.data.names  (whichPlot{p}(isEmptydata)),posthoc{pos}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,...
+                    anova.Fsignificant([whichFixed(1,p) nAnovaInt 7]),{anova.effectNames{whichFixed(1,p)},[anova.effectNames{nNames(1,1)} ' x ' anova.effectNames{nNames(1,2)}], [anova.effectNames{nNames(2,1)} ' x ' anova.effectNames{nNames(2,2)}],[anova.effectNames{1} ' x ' anova.effectNames{2} ' x ' anova.effectNames{3}]},ratioSPM,spmPos,aovColor)
+                print('-dtiff',imageResolution,[savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(1,p)}) '/' verifSaveName([posthoc{whichFixed(2,p)}.data.names{whichModal(1,p)} ' x ' posthoc{whichFixed(3,p)}.data.names{whichModal(2,p)}]) ' + SPM'])
+                savefig([savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(1,p)}) '/FIG/' verifSaveName([posthoc{whichFixed(2,p)}.data.names{whichModal(1,p)} ' x ' posthoc{whichFixed(3,p)}.data.names{whichModal(2,p)}]) ' + SPM'])
+                close
+                
+                plotmeanSPM(posthoc{pos}.data.continuum(whichPlot{p}),posthoc{pos}.tTests.Tcontinuum(:,whichCompare),posthoc{pos}.tTests.Tsignificant(:,whichCompare),posthoc{pos}.data.names  (whichPlot{p}(isEmptydata)),posthoc{pos}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos,aovColor)
+                print('-dtiff',imageResolution,[savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(1,p)}) '/' verifSaveName([posthoc{whichFixed(2,p)}.data.names{whichModal(1,p)} ' x ' posthoc{whichFixed(3,p)}.data.names{whichModal(2,p)}]) ' + SPMnoAOV'])
+                savefig([savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(1,p)}) '/FIG/' verifSaveName([posthoc{whichFixed(2,p)}.data.names{whichModal(1,p)} ' x ' posthoc{whichFixed(3,p)}.data.names{whichModal(2,p)}]) ' + SPMnoAOV'])
+                close
+                
+                plotmeanSPMsub(posthoc{pos}.data.continuum(whichPlot{p}),posthoc{pos}.tTests.Tcontinuum(:,whichCompare),posthoc{pos}.tTests.Tsignificant(:,whichCompare),posthoc{pos}.data.names  (whichPlot{p}(isEmptydata)),posthoc{pos}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,...
+                    anova.Fsignificant([whichFixed(1,p) nAnovaInt 7]),{anova.effectNames{whichFixed(1,p)},[anova.effectNames{nNames(1,1)} ' x ' anova.effectNames{nNames(1,2)}], [anova.effectNames{nNames(2,1)} ' x ' anova.effectNames{nNames(2,2)}],[anova.effectNames{1} ' x ' anova.effectNames{2} ' x ' anova.effectNames{3}]},ratioSPM,spmPos,aovColor)
+                print('-dtiff',imageResolution,[savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(1,p)}) '/' verifSaveName([posthoc{whichFixed(2,p)}.data.names{whichModal(1,p)} ' x ' posthoc{whichFixed(3,p)}.data.names{whichModal(2,p)}]) ' + SPMsub'])
+                savefig([savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(1,p)}) '/FIG/' verifSaveName([posthoc{whichFixed(2,p)}.data.names{whichModal(1,p)} ' x ' posthoc{whichFixed(3,p)}.data.names{whichModal(2,p)}]) ' + SPMsub'])
+                close
+                
+                plotmeanSPMsub(posthoc{pos}.data.continuum(whichPlot{p}),posthoc{pos}.tTests.Tcontinuum(:,whichCompare),posthoc{pos}.tTests.Tsignificant(:,whichCompare),posthoc{pos}.data.names  (whichPlot{p}(isEmptydata)),posthoc{pos}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,colorPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos,aovColor)
+                print('-dtiff',imageResolution,[savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(1,p)}) '/' verifSaveName([posthoc{whichFixed(2,p)}.data.names{whichModal(1,p)} ' x ' posthoc{whichFixed(3,p)}.data.names{whichModal(2,p)}]) ' + SPMsubNoAOV'])
+                savefig([savedir '/Post hoc/' savedir2 verifSaveName(anova.effectNames{whichFixed(1,p)}) '/FIG/' verifSaveName([posthoc{whichFixed(2,p)}.data.names{whichModal(1,p)} ' x ' posthoc{whichFixed(3,p)}.data.names{whichModal(2,p)}]) ' + SPMsubNoAOV'])
+                close
+            end
+            
+            clear isEmptydata findT capPos whichCompare
+        end
         
     end
 end
@@ -358,7 +600,7 @@ if min(dimensions)>1
     
     for np=1:numel(posthoc)
         
-        savedir2=[savedir '/Post hoc/' posthoc{np}.name '/'];
+        savedir2=[savedir '/Post hoc/' '/Post hoc/' posthoc{np}.name '/'];
         createSavedir2d(savedir2)
         
         for combi=1:numel(posthoc{np}.data.meanContinuum)
