@@ -26,7 +26,7 @@ if ~ignoreAnova
             anova.maxIterations=ANOVA_inf.nPermUnique;
             anova.Fcontinuum=reshape(ANOVA_inf.z,dimensions(1),dimensions(2));
             anova.Fthreshold=ANOVA_inf.zstar;
-            anova.Fsignificant=reshape(ANOVA_inf.z>=anova.Fthreshold,dimensions(1),dimensions(2));
+            anova.Fsignificant{1}=reshape(ANOVA_inf.z>=anova.Fthreshold,dimensions(1),dimensions(2));
             clustersAnova=extractClusterData(ANOVA_inf.clusters);
             if min(dimensions)==1
                 for c=1:numel(clustersAnova)
@@ -35,7 +35,7 @@ if ~ignoreAnova
                 end
             end
             
-            anovaEffects{1}(1,:)=anova.Fsignificant(:); % values saved for the interpretation of post-hoc tests
+            anovaEffects{1}(1,:)=anova.Fsignificant{1}(:); % values saved for the interpretation of post-hoc tests
             
         else % ANOVA2 & % ANOVA3
             
