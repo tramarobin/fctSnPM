@@ -275,7 +275,7 @@ These option are specific to 1D plots.
 * `aovColor` is the color of ANOVA on SPM plot. Default is black. Use 'color' or rgb.  
 
 
-## Otional functions ##
+## Optional functions ##
 in addition of `fctSPM`, this repository contains two similar funtions. 
 *`fctSPMS` performs the same analysis than `fctSPM`, however, the figures are not ploted and saved. The inputs are the same at the exception that there is no savedir and no plot parameters.
 *`saveNplot` permits to save and plot the analysis obtain with `fctSPM` and `fctSPMS`.
