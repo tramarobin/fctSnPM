@@ -11,7 +11,7 @@ spmAnalysis=fctSPM(data, independantEffects, repeatedMeasuresEffects, varargin)
 
 ## Table of contents ##
 - [Warnings](#Warnings)
-- [Why fctSPM](#Why-fctSPM)
+- [Statement of need](#Statement-of-need)
 - [Citing fctSPM](#Citing-fctSPM)
 - [MATLAB Release Compatibility](#MATLAB-Release-Compatibility)
 - [Outputs](#Outputs)
@@ -20,6 +20,8 @@ spmAnalysis=fctSPM(data, independantEffects, repeatedMeasuresEffects, varargin)
 - [Obligatory inputs](#Obligatory-inputs)
 - [Optional inputs](#Optional-inputs)
 - [Optional functions](#Optional-functions)
+- [Community guidelines](#Community-guidelines)
+
 
 ## Warnings ##
 - Unbalanced two- and three-way repeated-measures ANOVA results have not been verified.
@@ -30,17 +32,26 @@ Please interpret results for these designs with caution, and recognize that they
 - Effect sizes and confidence intervals are not validated and are just given as supplementary information.
 - For more information, please visit : https://spm1d.org/Documentation.html
 
+
 ### Caution ###
 - Avoid the same typo (e.g., POST, POST2) for the effect names, it affects the recognition for the multiples comparisons 
 - Avoid underscore (_) or minus (-) sign. Spaces are OK
 - Use '/' when selecting a saving directory (`savedir` option)
 - Once you are ok with the created figure, increase the number of iterations (`multiIT` or `IT` options) to achieve numerical stability. 1000 iterations are a good start but if your hardware allows it, the more is the better
 
-## Why fctSPM ##
+
+## Statement of need ##
+Most of physiological data measured during human movement are continuous and expressed in function of time. 
+However, researchers predominantly analyze extracted scalar values from the continuous measurement, as the mean, the maximum, the amplitude, or the integrated value over the time. 
+Analyzing continuous values (i.e., time series) can provide more information than extracted indicators, as the later discards one dimension of the data among the magnitude and localization in time. 
+In addition, oscillatory signals such as muscle vibrations and electromyograms contain information in the temporal and frequency domains. 
+Once again, scalar analysis reduces the information at only one dimension by discarding two dimensions among the magnitude and the localization in the time and/or frequency domain.
+
 fctSPM allows MATLAB users to create figures of 1D and 2D SPM analysis for ANOVA and post-hoc designs.    
 The statistical analysis is also saved in .mat files.   
 This function synthetises the main and interaction effects to display only the significant post-hoc regarding the results of the ANOVA.   
 For post-hoc for interaction effects, the main effect is also displayed if located elsewhere than the interaction effect.
+
 
 ## Citing fctSPM ##
 - This function : under review in JOSS   
@@ -128,7 +139,6 @@ Subfolders : Contains the pairewise comparison results
 * SPM: Tcontinuum and statistical inferences plots. Bold blue lines are located at the significant differences (corrected with the ANOVA).
 * FIG folder contains the above mentionned folder with the figures in `.fig` format.
 
-
 ##### In two dimensions #####
 Means maps for each condition are represented in one figure each. 
 The global effect of the post hoc precedure is display on a figure with the name of the effect. Mean maps are represented on the diagonal, pairewise differences on the top-right panel, and pairewise spm inferences on the bottom-left panel. 
@@ -187,9 +197,7 @@ Refer to the [MATLAB documentation regarding search paths](https://fr.mathworks.
 spmAnalysis=fctSPM(data, independantEffects, repeatedMeasuresEffects, varargin)
 ```
 
-
 ### Obligatory inputs ###
-
 * `data` is a x by y cell array.  
 x corresponds to a subjects and y corresponds to a repeated measure.     
 Each cell contains a column vector (1D) or a matrix (2D) corresponding to the mean of the subject and condition.
@@ -200,17 +208,14 @@ Each cell contains the name ('char') of each modality for the given subject and 
 1 cell by effect.    
 Each cell contains the name ('char') of each modality for the given condition and must correspond to the number of conditions/columns (y). 
 
-
 ### Optional inputs ###
 Optional inputs are available to personalize the figures.  
 ```matlab
 spmAnalysis=fctSPM(data, independantEffects, repeatedMeasuresEffects, 'Optional Input Name', value)
 ```
 
-
 #### Utilities ####
 These options act on the name of the created folders.
-
 * `savedir` is the path to the save directory. Default is empty and ask you to choose or create a folder. If filled, the existing data might be overwritten @ischar.
 * `effectsNames` are the names of the effects (the independent effects must be named first). Default names the effect {'A','B','C'}. @iscell.
 * `plotSub` is an option (1 to activate) to plot the individual mean for each subject. Default = 0 and don't plot the mean. @isnumeric.
@@ -218,7 +223,6 @@ These options act on the name of the created folders.
 
 #### Statistical parameters ####
 These options act at a statistical level, modifying the alpha error or the number of iterations.
-
 * `alpha` is the alpha error risk for the ANOVA. Default is 0.05. @isnumeric.
 * `alphaT`. Do not modify except for exploratory purposes. `alphaT` is the original alpha used for post hoc tests (Bonferonni correction is applied after as alphaT/number of comparisons. Default is the same as `alpha`. @isnumeric.
 * `multiIT` define the number of permutations as multiIT/alpha. Default is 10, corresponds to 200 iterations for 5% risk.  
@@ -229,10 +233,8 @@ Specified either multiIterations or IT, but not both.
 * `doAllInteractions` By default, all post hoc tested are made even if ANOVA did not revealed interaction. Use 0 to performed only post-hoc when interaction was found. @isnumeric.
 * `ignoreAnova` By default, consider the ANOVA significant location to interpret post-hoc. Use 1 to interpret only post-hoc tests (not recommended). @isnumeric.
 
-
 #### General plot parameters ####
 These options can modify the general aspect of the figures for 1D and 2D.
-
 * `ylabel` are the labels of Y-axis. Default is empty. @ischar.
 * `xlabel` are the labels of X-axis. Default is empty. @ischar.
 * `samplefrequency` changes the xticks to correspond at the specified frequency. Default is 1. @isnumeric.
@@ -247,12 +249,9 @@ Specified either samplefrequency or xlimits, but not both.
 
 #### 2D plot parameters ####
 These option are specific to 2D plots.
-  
 * `colorMap` is the colormap used for means, standard deviations, ANOVA and effect sizes plots. Default is cbrewer('Reds').
 * `colorMapDiff` is the colormap used for differences, relative differences and post-hoc spm plots. Default is cbrewer('RdBu').
-  
 Colormaps can be defined with cbrewer (included in this funtion): Charles (2020). cbrewer : [colorbrewer schemes for Matlab](https://www.mathworks.com/matlabcentral/fileexchange/34087-cbrewer-colorbrewer-schemes-for-matlab), MATLAB Central File Exchange. Retrieved December 11, 2020.
-
 * `colorbarLabel` is the name of the colorbar label. Default is empty. @ischar
 * `limitMeanMaps` defines limit of the colorbar. By default, the maps wont necessary be with the same range but will be automatically scaled at their maximum.
 A value of X will make the colorbar going from 0 to X for all plots (easier to compare). @isnumeric.
@@ -267,7 +266,6 @@ A value of X will make the colorbar going from 0 to X for all plots (easier to c
 
 #### 1D plot parameters ####
 These option are specific to 1D plots.
-
 * `CI` is the confidence interval used instead of standard deviation. By default, standard deviations are displayed. @isnumeric (0.7 to 0.999 to display 70% to 99.9% condidence interval, or 0 to display SEM).
 * `colorLine` is the colorline for plots (default  is "lines"). Use rgb triplet. If in cell, apply each color to each effect (independant effect first).
 * `transparancy1D` is the transparency for the SD, CI or SEM. Default is 0.1. @isnumeric.
@@ -288,3 +286,11 @@ spmAnalysis=fctSPMS(data, independantEffects, repeatedMeasuresEffects, 'Optional
 saveNplot(spmAnalysis,'Optional Input Name', value)
 ```
 It may be useful to use `saveNplot` when a 2D analysis is performed, it may permit to redo quickly figures without the long time of analysis. This function is less relevant in 1D as some of the plot can't be save. Besides, 1D analysis is shorter and there is only a little gain in time.
+
+
+## Community guidelines ## 
+Issues can be created to;
+* Contribute to the software 
+* Report issues or problems with the software 
+* Seek support
+I will try to answer as quickly and accuratly as possible. Thank's for using this function. 
