@@ -294,4 +294,4 @@ Issues can be created to:
 * Report issues or problems with the software 
 * Seek support  
 
-I will try to answer as quickly and accuratly as possible. Thank's for using this function. 
+I will try to answer as quickly and accurately as possible. Thank's for using this function. 
