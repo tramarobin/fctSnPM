@@ -292,5 +292,6 @@ It may be useful to use `saveNplot` when a 2D analysis is performed, it may perm
 Issues can be created to:
 * Contribute to the software 
 * Report issues or problems with the software 
-* Seek support
+* Seek support  
+
 I will try to answer as quickly and accuratly as possible. Thank's for using this function. 
