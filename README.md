@@ -289,7 +289,7 @@ It may be useful to use `saveNplot` when a 2D analysis is performed, it may perm
 
 
 ## Community guidelines ## 
-Issues can be created to;
+Issues can be created to:
 * Contribute to the software 
 * Report issues or problems with the software 
 * Seek support
