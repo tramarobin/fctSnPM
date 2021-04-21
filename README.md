@@ -285,7 +285,7 @@ The general use of these funtion are :
 spmAnalysis=fctSPMS(data, independantEffects, repeatedMeasuresEffects, 'Optional Input Name', value)
 saveNplot(spmAnalysis,'Optional Input Name', value)
 ```
-It may be useful to use `saveNplot` when a 2D analysis is performed, it may permit to redo quickly figures without the long time of analysis. This function is less relevant in 1D as some of the plot can't be save. Besides, 1D analysis is shorter and there is only a little gain in time.
+It may be useful to use `saveNplot` when a 2D analysis is performed, it may permit to redo quickly figures without the long time of analysis.
 
 
 ## Community guidelines ## 
