@@ -219,10 +219,11 @@ if nEffects==2
                     posthoc{mainEffect(1)}.tTests.clusterP{comp}(c)=clustersT{c}.P*nComp;
                 end
                 
-                mainForInteraction{mainEffect}=posthoc{mainEffect(1)}.tTests.Tsignificant;
-                clear Comp combi legendPlot
-                
             end
+            
+            mainForInteraction{mainEffect}=posthoc{mainEffect(1)}.tTests.Tsignificant;
+            clear Comp combi legendPlot
+            
         end
     end
 end
@@ -334,7 +335,6 @@ if nEffects==3
             
             mainForInteraction{mainEffect}=posthoc{mainEffect(1)}.tTests.Tsignificant;
             clear Comp combi legendPlot
-            
         end
     end
 end
@@ -643,10 +643,11 @@ if nEffects>1
             posthoc{pos}.tTests.Tsignificant{1,comp}=realEffect{comp};
             
         end
+        
+        posthoc{pos}.tTests.combi=combi;
+        clear Comp combi legendPlot
+        
     end
-    
-    posthoc{pos}.tTests.combi=combi;
-    clear Comp combi legendPlot
 end
 
 end
