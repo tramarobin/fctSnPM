@@ -46,7 +46,7 @@ Analyzing continuous values (i.e., time series) can provide more information tha
 In addition, oscillatory signals such as muscle vibrations and electromyograms contain information in the temporal and frequency domains. 
 Once again, scalar analysis reduces the information at only one dimension by discarding two dimensions among the magnitude and the localization in the time and/or frequency domain.
 
-fctSPM allows MATLAB users to create figures of 1D and 2D SPM analysis for ANOVA and post-hoc designs.    
+Factorial SPM (fctSPM) allows MATLAB users to create figures of 1D and 2D [SPM](https://spm1d.org/) analysis for ANOVA and post-hoc designs.
 The statistical analysis is also saved in .mat files.   
 This function synthetises the main and interaction effects to display only the significant post-hoc regarding the results of the ANOVA.   
 For post-hoc for interaction effects, the main effect is also displayed if located elsewhere than the interaction effect.
@@ -289,7 +289,7 @@ It may be useful to use `saveNplot` when a 2D analysis is performed, it may perm
 
 
 ## Community guidelines ## 
-Issues can be created to:
+You can create a new issue in the [Issues section of this repository](https://github.com/tramarobin/fctSPM/issues) to:
 * Contribute to the software 
 * Report issues or problems with the software 
 * Seek support  
