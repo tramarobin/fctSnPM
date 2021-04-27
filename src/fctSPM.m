@@ -36,20 +36,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % OUTPUTS
-%`spmAnalaysis.mat` is a structure composed of the results of teh statistical analysis (ANOVA + Post Hoc). 
+%`spmAnalaysis.mat` is a structure composed of the results of teh statistical analysis (ANOVA + Post Hoc).
 
-%`spmAnalysis.anova` is composed of different fields :  
+%`spmAnalysis.anova` is composed of different fields :
 %* `type` is the type of ANOVA performed
 %* `effectNames` is a structure (one cell for each effect) that represent the names of the effects tested (mains and interactions)
-%* `alpha` is the alpha risk choosen for the anova (default is 0.05 (5%)).  
+%* `alpha` is the alpha risk choosen for the anova (default is 0.05 (5%)).
 %* `pCritical` is the alpha risk used for the anova. Warning message is displayed if this value is modified.
 %* `nIterations` is the number of iterations performed for the anova.
 %* `maxIterations` is the number of maximal iterations possible for the anova.
 %* `Fcontinuum` is a structure that represent the F-value for each node
 %* `Fthreshold` is a structure that represent the statistical threshold for the F-values (statistical inference)
-%* `Fsignificant` is a structure that contains the logical for the significance (Fcontinuum > Fthreshold) of each effect of the ANOVA (1 if significant, 0 if not).  
+%* `Fsignificant` is a structure that contains the logical for the significance (Fcontinuum > Fthreshold) of each effect of the ANOVA (1 if significant, 0 if not).
 %* `clusterLocation` is a structure (one for each significant cluster) that contains the location (start and end as indexes) of each significant cluster.
-%* `clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster. 
+%* `clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster.
 
 %`clusterLocation` and `clusterP` are created only in one dimension
 
@@ -81,7 +81,7 @@
 %`clusterLocation` and `clusterP` are created only in one dimension and are not corrected with the result of the ANOVA.
 
 %* `tTests.contourSignificant` represents a modified T-value continuum to display smoother contour plots.
-%`tTests.contourSignificant is created only in two dimensions.  
+%`tTests.contourSignificant is created only in two dimensions.
 
 
 
@@ -89,21 +89,21 @@
 %Two folders composed of figures in `.TIF` and `.fig` are created
 
 %#### ANOVA ####
-%Each effect is also display on a specific figure in `.TIF` format named after `effectNames`, a floder named FIG is also created and contains the figures in `.fig` format.   
+%Each effect is also display on a specific figure in `.TIF` format named after `effectNames`, a floder named FIG is also created and contains the figures in `.fig` format.
 %For 1D:  The curve represents the `Fcontinuum`, the horizontal line is the `Fthreshold`, the highlighted parts of the curve in blue represents the significant cluster(s), and the vertical lines are the start and end indexes.
 %For 2D: The map represents the `Fcontinuum`, with a colorbar maximum at `Fthreshold`, the white clusters represent the significant clusters.
 
 %#### Post Hoc ####
-%This folder contains additional folders (0 (for anova1), 3 (for anova2) or 7 (for anova3)) that contain figures and metrics representing the different post-hoc tests.  
+%This folder contains additional folders (0 (for anova1), 3 (for anova2) or 7 (for anova3)) that contain figures and metrics representing the different post-hoc tests.
 
 %Interaction folders (AxB or AxBxC) contain 2 or 3 folders in which one effect is investigated.
 
 %##### In one dimension #####
-%A total of 5 figures with the name of the effect represent the means and standard deviations between subject for each condition (grouped in fuction of the effect investigated).  
-%Under this plot, a second graph display the result of the ANOVA (or ANOVAs for interaction) and the significant post-hoc tests for pairewise comparisons.  
+%A total of 5 figures with the name of the effect represent the means and standard deviations between subject for each condition (grouped in fuction of the effect investigated).
+%Under this plot, a second graph display the result of the ANOVA (or ANOVAs for interaction) and the significant post-hoc tests for pairewise comparisons.
 %The differences between the 5 figures are the representation of the ANOVA and the disposition of the statistical analysis (subplot or same plot, see optional inputs)
 
-%Subfolders : Contains the pairewise comparison results 
+%Subfolders : Contains the pairewise comparison results
 %* DIFF: Differences plots. Filenames with '%' at the end are the relative differences
 %* ES: Effect size plots. Bold blue lines are located at the significant differences (corrected with the ANOVA).
 %* SPM: Tcontinuum and statistical inferences plots. Bold blue lines are located at the significant differences (corrected with the ANOVA).
@@ -111,8 +111,8 @@
 
 
 %##### In two dimensions #####
-%Means maps for each condition are represented in one figure each. 
-%The global effect of the post hoc precedure is display on a figure with the name of the effect. Mean maps are represented on the diagonal, pairewise differences on the top-right panel, and pairewise spm inferences on the bottom-left panel. 
+%Means maps for each condition are represented in one figure each.
+%The global effect of the post hoc precedure is display on a figure with the name of the effect. Mean maps are represented on the diagonal, pairewise differences on the top-right panel, and pairewise spm inferences on the bottom-left panel.
 
 %Subfolders : Contains the pairewise comparison results (In one folder for ANOVA1, in 2 or 3 folders for ANOVA2 and ANOVA3)
 %* SD : standard deviation of the maps for each condition.
@@ -164,7 +164,7 @@ addParameter(p,'nameSub',[],@iscell) % names of the different subjects
 
 % statistical parameters
 addParameter(p,'alpha',0.05,@isnumeric); % alpha used for the ANOVA
-addParameter(p,'alphaT',[],@isnumeric); % Do not modify except for exploratory purposes. Original alpha used for post hoc tests (Bonferonni correction is applied afetr as alphaT/ number of comparisons). By default, this value is the same than the alpha used for the ANOVA. 
+addParameter(p,'alphaT',[],@isnumeric); % Do not modify except for exploratory purposes. Original alpha used for post hoc tests (Bonferonni correction is applied afetr as alphaT/ number of comparisons). By default, this value is the same than the alpha used for the ANOVA.
 addParameter(p,'multiIT',10,@isnumeric); % the number of permutations is multiIT/alpha. Must be increased for better reproductibility
 addParameter(p,'IT',[],@isnumeric); % fixed number of iterations (override the multiIterations - not recommanded)
 % specified either multiIterations or IT, but not both
@@ -257,7 +257,7 @@ savedir=chooseSavedir(savedir);
 
 %% Plot each condition (column) for each subject (row)
 if plotSub==1
-    PlotmeanSub(mapsAll,nameSub,effectsRm,effectNames,savedir,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,imageFontSize,imageSize,colorLine,colorMap,colorbarLabel,limitMeanMaps)
+    PlotmeanSub(mapsAll,nameSub,effectsRm,effectNames,savedir,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,imageFontSize,imageSize,colorLine,colorMap,colorbarLabel,limitMeanMaps,transparancy1D)
 end
 
 %% Converting data for spm analysis
