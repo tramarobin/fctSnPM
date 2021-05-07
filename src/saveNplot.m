@@ -93,7 +93,7 @@ addParameter(p,'diffRatio',0.33,@isnumeric) % the differences map will be scale 
 addParameter(p,'relativeRatio',[],@isnumeric) % the relative differences maps will be scale at +-relativeRatio
 
 % 1d plot parameters
-addParameter(p,'CI',[],@isnumeric); % confidence interval is used instead of standard deviation (0.7-->0.999), 0 to display SEM
+addParameter(p,'CI',[],@isnumeric); % confidence interval is used instead of standard deviation (0.7-->0.999), 0 to display SEM, , or negative value to not dispaly dispersion
 addParameter(p,'colorLine',[]); % colorline for plots (default  is "lines") // rgb triplet, if in cell, apply each color to each effect (independant effect first)
 addParameter(p,'transparancy1D',0.10); % transparancy of SD for 1D plot
 addParameter(p,'yLimitES',[]); % y-axis limits for ES representation
