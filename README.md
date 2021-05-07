@@ -246,6 +246,7 @@ Specified either samplefrequency or xlimits, but not both.
 * `imageResolution` is the resolution in ppp of the tiff images. Default is 96ppp. @isnumeric.
 * `imageSize` is the size of the image in cm. @isnumeric (e.g., X creates X by X cm images, [X Y] creates X by Y cm images. The default image size is 720*480 pixels.
 * `imageFontSize` is the font size of images. Default is 12. @isnumeric.
+* `linestyle` In 1D : lineStyle for plots (default  is continuous) // Specify linestyle for each modality in cell, apply each style to each modality (independant effect first) // In 2D :linestyle of the contour plot
 
 #### 2D plot parameters ####
 These option are specific to 2D plots.
@@ -257,7 +258,6 @@ Colormaps can be defined with cbrewer (included in this funtion): Charles (2020)
 A value of X will make the colorbar going from 0 to X for all plots (easier to compare). @isnumeric.
 * `displaycontour` displays contour map on differences and size effect maps. 0 to not display (not recommended). @isnumeric.
 * `contourcolor` is the color of the line for the contour plot. Default is white. RGB or 'color' is accepted.
-* `linestyle` is the linestyle of the contour plot. Default is continuous line '-'.
 * `dashedColor` is the color of the non-significant zones of the contour plot (default is black). Use RGB triplet [0 0 0].
 * `transparancy` is the transparency of the non-significant zones. Default is 50. 0=transparent, 255=opaque. @isnumeric.
 * `lineWidth` is the linewidth of the contour plot. Default is 2.5. @isnumeric.
