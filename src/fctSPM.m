@@ -184,6 +184,7 @@ addParameter(p,'imageResolution',96,@isnumeric); % resolution in ppp of the tiff
 addParameter(p,'imageSize',[],@isnumeric) % size of the image in cm. X --> X*X images, [X Y] X*Y imgages. By default the unit is pixels [0 0 720 480].
 addParameter(p,'imageFontSize',12,@isnumeric) % font size of images
 addParameter(p,'ylimits',[],@isnumeric); % change yticks to correspond to the specified range
+addParameter(p,'linestyle','-') % In 1D : lineStyle for plots (default  is continuous) // Specify linestyle for each modality in cell, apply each style to each modality (independant effect first) // In 2D :linestyle of the contour plot
 
 % 2d plot parameters
 addParameter(p,'colorMap',cbrewer('seq','Reds', 64)) % colormap used for means and ANOVA and ES plots (0 to positive)
@@ -192,7 +193,6 @@ addParameter(p,'colorbarLabel','',@ischar); % name of the colorbar label
 addParameter(p,'limitMeanMaps',[],@isnumeric); % limit of the colorbar. the value of X will make the colorbar going from 0 to X for all plots (easier to compare). If not specified, the maps wont necessery be with the same range but will be automatically scaled
 addParameter(p,'displaycontour',1,@isnumeric); % display contour map on differences and size effect maps (0 to not display)
 addParameter(p,'contourcolor','w'); % color of the line for the contour plot
-addParameter(p,'linestyle','-') % linestyle of the contour plot
 addParameter(p,'dashedColor',[0 0 0],@isnumeric) % color of the dashed zone of the contour plot (default is white)
 addParameter(p,'transparancy',50,@isnumeric) % transparancy of the dashed zone (0=transparant, 255=opaque)
 addParameter(p,'lineWidth',2.5,@isnumeric) % linewidth of the contour plot
@@ -268,7 +268,7 @@ end
 
 %% Choose and perform post-hocs
 if min(dimensions)==1 %1D
-    posthoc=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,alpha,transparancy1D,ratioSPM,yLimitES,spmPos,aovColor);
+    posthoc=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,alpha,transparancy1D,ratioSPM,yLimitES,spmPos,aovColor,linestyle);
 else %2D
     posthoc=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,contourColor,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalIT,doAllInteractions,dashedColor,transparancy,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,alpha,linestyle);
 end

@@ -1,4 +1,4 @@
-function []=plotmean(Data,IC,xlab,ylab,Fs,xlimits,nx,ny,colorLine,imageFontSize,imageSize,transparancy1D,ylimits)
+function []=plotmean(Data,IC,xlab,ylab,Fs,xlimits,nx,ny,clPlot,imageFontSize,imageSize,transparancy1D,ylimits)
 
 if isempty(imageSize)
     figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
@@ -17,15 +17,38 @@ if ~isempty(IC)
         z=coeff(find(IC==indices));
     elseif IC==0
         z=1;
+    elseif IC<0
+        z=0;
     else
-        error('Chose CI between 0.7 and 0.999, or 0 to display SEM')
+        error('Chose CI between 0.7 and 0.999, 0 to display SEM, or negative to not display the SD')
     end
 end
 
-if ~isempty(colorLine)
-    colors=colorLine;
+if ~isempty(clPlot)
+    colorLine=clPlot.color;
+    lineStyle=clPlot.line;
+    
+    if ~isempty(colorLine)
+        colors=colorLine;
+    else
+        colors=lines(size(Data,2));
+    end
+    
+    if size(Data,2)~=size(lineStyle,2)
+        clear lineStyle
+        for i=1:size(Data,2)
+            lineStyle{1,i}='-';
+            lineStyle{2,i}='--';
+        end
+    end
+    
 else
+    
     colors=lines(size(Data,2));
+    for i=1:size(Data,2)
+        lineStyle{1,i}='-';
+        lineStyle{2,i}='--';
+    end
 end
 
 for i=1:size(Data,2)
@@ -40,30 +63,30 @@ for i=1:size(Data,2)
         noNan=~isnan(SDsup{i});
         if isempty(IC)
             fill([time(noNan),fliplr(time(noNan))], [SDsup{i}(noNan),fliplr(SDinf{i}(noNan))],colors(i,:),'EdgeColor','none','facealpha',transparancy1D,'handlevisibility','off'); hold on
-        else
+        elseif IC>0
             fill([time(noNan),fliplr(time(noNan))], [MData{i}(noNan)+std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),fliplr(MData{i}(noNan)-std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)))],colors(i,:),'EdgeColor','none','facealpha',transparancy1D,'handlevisibility','off'); hold on
         end
     end
 end
 for i=1:size(Data,2)
     if min(size(Data{i}))>1
-        plot(time(noNan),MData{i}(noNan),'color',colors(i,:),'LineWidth',1.5); hold on
+        plot(time(noNan),MData{i}(noNan),'color',colors(i,:),'linestyle',lineStyle{1,i},'LineWidth',1.5); hold on
         if isempty(IC)
-            plot(time(noNan),SDsup{i}(noNan),'--','color',colors(i,:),'handlevisibility','off')
-            plot(time(noNan),SDinf{i}(noNan),'--','color',colors(i,:),'handlevisibility','off')
+            plot(time(noNan),SDsup{i}(noNan),'linestyle',lineStyle{2,i},'color',colors(i,:),'handlevisibility','off')
+            plot(time(noNan),SDinf{i}(noNan),'linestyle',lineStyle{2,i},'color',colors(i,:),'handlevisibility','off')
             title('Means \pm standard deviation')
-        else
-            plot(time(noNan),MData{i}(noNan)+std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'--','color',colors(i,:),'handlevisibility','off')
-            plot(time(noNan),MData{i}(noNan)-std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'--','color',colors(i,:),'handlevisibility','off')
+        elseif IC>0
+            plot(time(noNan),MData{i}(noNan)+std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'linestyle',lineStyle{2,i},'color',colors(i,:),'handlevisibility','off')
+            plot(time(noNan),MData{i}(noNan)-std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'linestyle',lineStyle{2,i},'color',colors(i,:),'handlevisibility','off')
             if IC==0
                 title('Means \pm SEM')
-            else
+            elseif IC>0
                 title(['Means \pm IC' num2str(100*IC) '%'])
             end
         end
     elseif ~isempty(Data{i})
         noNan=~isnan(Data{i});
-        plot(time(noNan),Data{i}(noNan),'color',colors(i,:),'LineWidth',1.5); hold on
+        plot(time(noNan),Data{i}(noNan),'color',colors(i,:),'linestyle',lineStyle{1,i},'LineWidth',1.5); hold on
     end
 end
 
@@ -97,8 +120,8 @@ if ~isempty(ylimits)
 end
 
 y=get(gca,'ylim');
-if ~isempty(ny) 
-yticks(linspace(y(1),y(2),ny))
+if ~isempty(ny)
+    yticks(linspace(y(1),y(2),ny))
 end
 
 

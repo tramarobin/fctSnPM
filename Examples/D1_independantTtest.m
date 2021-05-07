@@ -12,6 +12,7 @@ DATA=ExampleDatas.Ratios(:,1);
 
 % function parameters
 effectNames={'Sex'};
+linestyle{1}={'--' ':'};
 independantEffects{1}={'M','M','M','F','M','F','F','M','F','M','M','F','F','M','F','F','M','F','F','M'}; % same number than participants
 repeatedMeasuresEffects=[]; % empty
 
@@ -27,7 +28,7 @@ nTicksX=7;
 % SPM
 tic
 spmAnalysis=fctSPM(DATA,independantEffects,repeatedMeasuresEffects,...
-    'savedir',savedir,...
+    'savedir',savedir,'linestyle',linestyle,...
     'effectsNames',effectNames,...
     'xlabel',xlab,'ylabel',ylab,'nTicksX',nTicksX,...
     'xlimits',xlimits,'ylimits',ylimits);
