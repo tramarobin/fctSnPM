@@ -6,7 +6,6 @@ end
 if isempty(ny)
     ny=4;
 end
-set(0, 'DefaultFigureVisible', 'off');
 savedir=[savedir '/Post hoc/'];
 
 %% define alpha risk

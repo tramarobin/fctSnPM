@@ -1,6 +1,6 @@
 function posthoc=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,IC,ylimits,nx,ny,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,alphaAOV,transparancy1D,ratioSPM,yLimitES,spmPos,aovColor,lineStyle)
 close all
-set(0, 'DefaultFigureVisible', 'off');
+
 savedir=[savedir '/Post hoc/'];
 
 %% define alpha risk

@@ -252,6 +252,10 @@ spmPos=p.Results.spmPos;
 aovColor=p.Results.aovColor;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% Activate warnings and disable figure display 
+warning('on')
+set(0, 'DefaultFigureVisible', 'off');
+
 %% choose save directory if not specified
 savedir=chooseSavedir(savedir);
 
@@ -277,5 +281,9 @@ end
 spmAnalysis.anova=anova;
 spmAnalysis.posthoc=posthoc;
 save([savedir '/spmAnalysis'], 'spmAnalysis')
+
+%% Activate figure display
+set(0, 'DefaultFigureVisible', 'on');
+
 
 end
