@@ -63,7 +63,7 @@ for i=1:size(Data,2)
         noNan=~isnan(SDsup{i});
         if isempty(IC)
             fill([time(noNan),fliplr(time(noNan))], [SDsup{i}(noNan),fliplr(SDinf{i}(noNan))],colors(i,:),'EdgeColor','none','facealpha',transparancy1D,'handlevisibility','off'); hold on
-        elseif IC>0
+        elseif IC>=0
             fill([time(noNan),fliplr(time(noNan))], [MData{i}(noNan)+std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),fliplr(MData{i}(noNan)-std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)))],colors(i,:),'EdgeColor','none','facealpha',transparancy1D,'handlevisibility','off'); hold on
         end
     end
@@ -75,7 +75,7 @@ for i=1:size(Data,2)
             plot(time(noNan),SDsup{i}(noNan),'linestyle',lineStyle{2,i},'color',colors(i,:),'handlevisibility','off')
             plot(time(noNan),SDinf{i}(noNan),'linestyle',lineStyle{2,i},'color',colors(i,:),'handlevisibility','off')
             title('Means \pm standard deviation')
-        elseif IC>0
+        elseif IC>=0
             plot(time(noNan),MData{i}(noNan)+std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'linestyle',lineStyle{2,i},'color',colors(i,:),'handlevisibility','off')
             plot(time(noNan),MData{i}(noNan)-std(Data{i}(:,noNan))*z/sqrt(size(Data{i},1)),'linestyle',lineStyle{2,i},'color',colors(i,:),'handlevisibility','off')
             if IC==0
