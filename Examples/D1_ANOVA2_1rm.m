@@ -23,8 +23,8 @@ lineStyle{1}={'-' '-.'; '--' '--'}; % first row is for the means, second row for
 repeatedMeasuresEffects{1}={'Right','Left'};
 colorLine{2}=[rgb('green'); rgb('red')];
 
-savedir='C:\Users\LIBM_yb\Documents\DATA_MATLAB\spmTest';
-savedir2=[];
+savedir='D1_ANOVA2_1rm_results';
+savedir2='D1_ANOVA2_1rm_results2';
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];

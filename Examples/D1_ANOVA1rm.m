@@ -19,8 +19,8 @@ colorLine{1}=[rgb('green'); rgb('blue'); rgb('red'); rgb('black')];
 independantEffects=[];
 % There are 20 subjects
 
-savedir=[];
-savedir2=[];
+savedir='./D1_ANOVA1rm_results';
+savedir2='./D1_ANOVA1rm_results';
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];

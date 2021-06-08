@@ -19,8 +19,8 @@ effectNames={'Shoes'};
 % Data(:,1) correspond to Shoes=C1
 % Data(:,2) correspond to Shoes=C2
 
-savedir=[];
-savedir2=[];
+savedir='./D2_pairedTtest_results';
+savedir2='./D2_pairedTtest_results2';
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=400;

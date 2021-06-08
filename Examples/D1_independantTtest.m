@@ -16,8 +16,8 @@ linestyle{1}={'--' ':'};
 independantEffects{1}={'M','M','M','F','M','F','F','M','F','M','M','F','F','M','F','F','M','F','F','M'}; % same number than participants
 repeatedMeasuresEffects=[]; % empty
 
-savedir=[];
-savedir2=[];
+savedir='D1_independantTtest_results';
+savedir2='D1_independantTtest_results2';
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];

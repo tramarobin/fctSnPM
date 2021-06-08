@@ -18,8 +18,8 @@ independantEffects=[]; % empty
 repeatedMeasuresEffects{1}={'Right','Left'}; % Side
 
 
-savedir=[];
-savedir2=[];
+savedir='D1_pairedTtest_results';
+savedir2='D1_pairedTtest_results';
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];

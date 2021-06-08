@@ -24,8 +24,8 @@ repeatedMeasuresEffects{1}={'Intoed','Normal','Outtoed'};
 colorLine{2}=[rgb('green'); rgb('red'); rgb('cyan')];
 
 
-savedir=[];
-savedir2=[];
+savedir='D1_ANOVA2_1rm_3x3modal_results';
+savedir2='D1_ANOVA2_1rm_3x3modal_results2';
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];

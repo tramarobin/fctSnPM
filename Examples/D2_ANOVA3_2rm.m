@@ -23,8 +23,8 @@ effectNames={'Group','Device','Activation'};
 % Data(:,3) correspond to Device=US and Activation=Contracted
 % Data(:,4) correspond to Device=US and Activation=Relaxed
 
-savedir='C:\Users\LIBM_yb\Documents\DATA_MATLAB\spmTest\1';
-savedir2='C:\Users\LIBM_yb\Documents\DATA_MATLAB\spmTest\2';
+savedir='D2_ANOVA3_2rm_results';
+savedir2='D2_ANOVA3_2rm_results2';
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=500;
