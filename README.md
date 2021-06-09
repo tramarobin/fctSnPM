@@ -223,7 +223,7 @@ These options act at a statistical level, modifying the alpha error or the numbe
 Specified either multiPerm or Perm, but not both.
 * `maximalPerm` is the limit of the number of maximal permutations in case of too many multiple comparisons. By default this value is set to 10000 to not take too many computation time (@isnumeric).
 * `doAllInteractions` By default, all post hoc tested are made even if ANOVA did not revealed interaction. Use 0 to performed only post-hoc when interaction was found (@isnumeric).
-* `ignoreAnova` By default, consider the ANOVA significant location to interpret post-hoc. Use 1 to interpret only post-hoc tests (not recommended) (@isnumeric).
+* `ignoreAnova` By default, consider the ANOVA significant location to interpret post-hoc. Use 1 to interpret only post-hoc tests but it is not recommended (@isnumeric).
 
 #### General plot parameters ####
 These options can modify the general aspect of the figures for 1D and 2D.
