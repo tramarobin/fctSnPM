@@ -109,7 +109,7 @@ if nEffects==1
             posthoc{1}.tTests.pBonferroni=pBonferroni;
             posthoc{1}.tTests.pCritical{comp}=alpha;
             posthoc{1}.tTests.nPermutations{comp}=permutations;
-            Ttest_inf=Ttest.inference(alpha,'permutations',permutations,'force_iterations',logical(1),'two_tailed',logical(1));
+            Ttest_inf=Ttest.inference(alpha,'iterations',permutations,'force_iterations',logical(1),'two_tailed',logical(1));
             posthoc{1}.tTests.maxPermutations{comp}=Ttest_inf.nPermUnique;
             posthoc{1}.tTests.Tthreshold{comp}=Ttest_inf.zstar;
             posthoc{1}.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
@@ -290,7 +290,7 @@ if nEffects==2
                 posthoc{mainEffect(1)}.tTests.pBonferroni=pBonferroni;
                 posthoc{mainEffect(1)}.tTests.pCritical{comp}=alpha;
                 posthoc{mainEffect(1)}.tTests.nPermutations{comp}=permutations;
-                Ttest_inf=Ttest.inference(alpha,'permutations',permutations,'force_iterations',logical(1),'two_tailed',logical(1));
+                Ttest_inf=Ttest.inference(alpha,'iterations',permutations,'force_iterations',logical(1),'two_tailed',logical(1));
                 posthoc{mainEffect(1)}.tTests.maxPermutations{comp}=Ttest_inf.nPermUnique;
                 posthoc{mainEffect(1)}.tTests.Tthreshold{comp}=Ttest_inf.zstar;
                 posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
@@ -458,7 +458,7 @@ if nEffects==3
                 posthoc{mainEffect(1)}.tTests.pBonferroni=pBonferroni;
                 posthoc{mainEffect(1)}.tTests.pCritical{comp}=alpha;
                 posthoc{mainEffect(1)}.tTests.nPermutations{comp}=permutations;
-                Ttest_inf=Ttest.inference(alpha,'permutations',permutations,'force_iterations',logical(1),'two_tailed',logical(1));
+                Ttest_inf=Ttest.inference(alpha,'iterations',permutations,'force_iterations',logical(1),'two_tailed',logical(1));
                 posthoc{mainEffect(1)}.tTests.maxPermutations{comp}=Ttest_inf.nPermUnique;
                 posthoc{mainEffect(1)}.tTests.Tthreshold{comp}=Ttest_inf.zstar;
                 posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
@@ -639,7 +639,7 @@ if nEffects==3
                 posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.pBonferroni=pBonferroni;
                 posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.pCritical{comp}=alpha;
                 posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.nPermutations{comp}=permutations;
-                Ttest_inf=Ttest.inference(alpha,'permutations',permutations,'force_iterations',logical(1),'two_tailed',logical(1));
+                Ttest_inf=Ttest.inference(alpha,'iterations',permutations,'force_iterations',logical(1),'two_tailed',logical(1));
                 posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.maxPermutations{comp}=Ttest_inf.nPermUnique;
                 posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp}=Ttest_inf.zstar;
                 posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
@@ -921,7 +921,7 @@ if nEffects>1
             posthoc{pos}.tTests.pBonferroni=pBonferroni;
             posthoc{pos}.tTests.pCritical{comp}=alpha;
             posthoc{pos}.tTests.nPermutations{comp}=permutations;
-            Ttest_inf=Ttest.inference(alpha,'permutations',permutations,'force_iterations',logical(1),'two_tailed',logical(1));
+            Ttest_inf=Ttest.inference(alpha,'iterations',permutations,'force_iterations',logical(1),'two_tailed',logical(1));
             posthoc{pos}.tTests.maxPermutations{comp}=Ttest_inf.nPermUnique;
             posthoc{pos}.tTests.Tthreshold{comp}=Ttest_inf.zstar;
             posthoc{pos}.tTests.Tcontinuum{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));

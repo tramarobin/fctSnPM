@@ -21,7 +21,7 @@ if ~ignoreAnova
         anova.nPermutations=permutations;
         
         % Statistical Inference
-        ANOVA_inf=ANOVA.inference(alpha,'permutations',permutations,'force_iterations',logical(1));
+        ANOVA_inf=ANOVA.inference(alpha,'iterations',permutations,'force_iterations',logical(1));
         
         %% Plot of effects
         
