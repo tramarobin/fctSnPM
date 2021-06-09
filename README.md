@@ -46,7 +46,7 @@ Analyzing continuous values (i.e., time series) can provide more information tha
 In addition, oscillatory signals such as muscle vibrations and electromyograms contain information in the temporal and frequency domains. 
 Once again, scalar analysis reduces the information at only one dimension by discarding two dimensions among the magnitude and the localization in the time and/or frequency domain.
 
-Factorial SPM (fctSPM) allows MATLAB users to create figures of 1D and 2D [SPM](https://spm1d.org/) analysis for ANOVA and post-hoc designs.
+Factorial SPM (fctSPM) allows MATLAB users to create figures of 1D and [2D SPM](https://spm1d.org/doc/Stats2D/ex2d_matlab.html) analysis for ANOVA and post-hoc designs.
 The statistical analysis is also saved in `.mat` files.   
 This function synthetizes the main and interaction effects to display only the significant post-hoc regarding the results of the ANOVA.   
 For post-hoc for interaction effects, the main effect is also displayed if located elsewhere than the interaction effect.
@@ -54,8 +54,8 @@ For post-hoc for interaction effects, the main effect is also displayed if locat
 
 ## Citing fctSPM ##
 * This function: under review in JOSS   
-* for spm1d: Pataky TC (2010). Generalized n-dimensional biomechanical field analysis using statistical parametric mapping. Journal of Biomechanics 43, 1976-1982.   
-* for permutation tests: Nichols TE, Holmes AP (2002). Nonparametric permutation tests for functional neuroimaging: a primer with examples. Human Brain Mapping 15(1), 1–25.   
+* For spm1d: Pataky TC (2010). Generalized n-dimensional biomechanical field analysis using statistical parametric mapping. Journal of Biomechanics 43, 1976-1982.   
+* For permutation tests: Nichols TE, Holmes AP (2002). Nonparametric permutation tests for functional neuroimaging: a primer with examples. Human Brain Mapping 15(1), 1–25.   
 * spm1d package for matlab can be downloaded at: https://github.com/0todd0000/spm1dmatlab   
 
 
@@ -196,15 +196,9 @@ spmAnalysis=fctSPM(data, independantEffects, repeatedMeasuresEffects, varargin)
 ```
 
 ### Obligatory inputs ###
-* `data` is a x by y cell array.  
-x corresponds to a subjects and y corresponds to a repeated measure.     
-Each cell contains a column vector (1D) or a matrix (2D) corresponding to the mean of the subject and condition.
-* `independantEffects` is a cell array defining the independent effects.  
-1 cell by effect.  
-Each cell contains the name ('char') of each modality for the given subject and must correspond to the number of subjects/rows (x).
-* `repeatedMeasuresEffects` is a cell array defining the repeated measure effects.  
-1 cell by effect.    
-Each cell contains the name ('char') of each modality for the given condition and must correspond to the number of conditions/columns (y). 
+* `data` is a x by y cell array, with x corresponding to subjects and y corresponding to repeated measures. Each cell contains a column vector (1D) or a matrix (2D) corresponding to the mean of the subject and condition.
+* `independantEffects` is a cell array defining the independent effects. There must be 1 cell by effect. Each cell contains the name ('char') of each modality for the given subject and must correspond to the number of subjects/rows (x). For instance `independantEffects{1}={'Male' 'Male' 'Female' 'Female'}` if the two first subjects are `Male` and the two last are `Female`.
+* `repeatedMeasuresEffects` is a cell array defining the repeated measure effects. There must be 1 cell by effect. Each cell contains the name ('char') of each modality for the given condition and must correspond to the number of conditions/columns (y). For instance `repeatedMeasuresEffects{1}={'PRETEST' 'POSTTEST' 'RETEST'}` if there was 3 times of measurement.
 
 ### Optional inputs ###
 Optional inputs are available to personalize the figures.  
@@ -214,63 +208,62 @@ spmAnalysis=fctSPM(data, independantEffects, repeatedMeasuresEffects, 'Optional 
 
 #### Utilities ####
 These options act on the name of the created folders.
-* `savedir` is the path to the save directory. Default is empty and ask you to choose or create a folder. If filled, the existing data might be overwritten @ischar.
-* `effectsNames` are the names of the effects (the independent effects must be named first). Default names the effect {'A','B','C'}. @iscell.
-* `plotSub` is an option (1 to activate) to plot the individual mean for each subject. Default = 0 and don't plot the mean. @isnumeric.
-* `nameSub` is an option to name the different subjects. Default names the subject '1', '2',... @iscell.
+* `savedir` is the path to the save directory. Default is empty and ask you to choose or create a folder. If filled, the existing data might be overwritten (@ischar).
+* `effectsNames` are the names of the effects (the independent effects must be named first). Default names the effect {'A','B','C'} (@iscell).
+* `plotSub` is an option (1 to activate) to plot the individual mean for each subject. Default = 0 and don't plot the mean (@isnumeric).
+* `nameSub` is an option to name the different subjects. Default names the subject are '1', '2', etc... (@iscell).
 
 #### Statistical parameters ####
 These options act at a statistical level, modifying the alpha error or the number of permutations.
-* `alpha` is the alpha error risk for the ANOVA. Default is 0.05. @isnumeric.
-* `alphaT`. Do not modify except for exploratory purposes. `alphaT` is the original alpha used for post hoc tests (Bonferonni correction is applied after as alphaT/number of comparisons. Default is the same as `alpha`. @isnumeric.
-* `multiPerm` define the number of permutations as multiPerm/alpha. Default is 10, corresponds to 200 permutations for 5% risk.  
+* `alpha` is the alpha error risk for the ANOVA. Default is 0.05 (@isnumeric).
+* `alphaT`. Do not modify except for exploratory purposes. `alphaT` is the original alpha used for post hoc tests (Bonferonni correction is applied after as alphaT/number of comparisons. Default is the same as `alpha` (@isnumeric).
+* `multiPerm` define the number of permutations as multiPerm/alpha. Default is 10 and corresponds to 200 permutations for 5% risk (@isnumeric).  
 **Must be increased for better reproductibility.**
-* `Perm` is a fixed number of permutations (override the multiPerm - not recommended).    
+* `Perm` is a fixed number of permutations. This input overrides the multiPerm ans is not recommended (@isnumeric).    
 Specified either multiPerm or Perm, but not both.
-* `maximalPerm` is the limit of the number of maximal permutations in case of too many multiple comparisons. Default is 10000. @isnumeric.
-* `doAllInteractions` By default, all post hoc tested are made even if ANOVA did not revealed interaction. Use 0 to performed only post-hoc when interaction was found. @isnumeric.
-* `ignoreAnova` By default, consider the ANOVA significant location to interpret post-hoc. Use 1 to interpret only post-hoc tests (not recommended). @isnumeric.
+* `maximalPerm` is the limit of the number of maximal permutations in case of too many multiple comparisons. By default this value is set to 10000 to not take too many computation time (@isnumeric).
+* `doAllInteractions` By default, all post hoc tested are made even if ANOVA did not revealed interaction. Use 0 to performed only post-hoc when interaction was found (@isnumeric).
+* `ignoreAnova` By default, consider the ANOVA significant location to interpret post-hoc. Use 1 to interpret only post-hoc tests (not recommended) (@isnumeric).
 
 #### General plot parameters ####
 These options can modify the general aspect of the figures for 1D and 2D.
-* `ylabel` are the labels of Y-axis. Default is empty. @ischar.
-* `xlabel` are the labels of X-axis. Default is empty. @ischar.
-* `samplefrequency` changes the xticks to correspond at the specified frequency. Default is 1. @isnumeric.
-* `xlimits` changes the xticks to correspond to the specified range (can be negative). @isnumeric (e.g., [0 100]).   
+* `ylabel` are the labels of Y-axis. No name is display by default (@ischar).
+* `xlabel` are the labels of X-axis. No name is display by default (@ischar).
+* `samplefrequency` changes the xticks to correspond at the specified frequency. The default value is 1 (@isnumeric).
+* `xlimits` changes the xticks to correspond to the specified range (it can be negative). The format is, for instance `[0 100]` (@isnumeric).   
 Specified either samplefrequency or xlimits, but not both.
-* `ylimits` changes the yticks to correspond to the specified range (can be negative). @isnumeric (e.g., [0 100]). 
-* `nTicksX` is the number of xticks displayed. @isnumeric.
-* `nTicksY` is the number of yticks displayed. @isnumeric.
-* `imageResolution` is the resolution in ppp of the tiff images. Default is 96ppp. @isnumeric.
-* `imageSize` is the size of the image in cm. @isnumeric (e.g., X creates X by X cm images, [X Y] creates X by Y cm images. The default image size is 720*480 pixels.
-* `imageFontSize` is the font size of images. Default is 12. @isnumeric.
-* `linestyle` In 1D: lineStyle for plots (default  is continuous) // Specify linestyle for each modality in cell, apply each style to each modality (independant effect first) // In 2D:linestyle of the contour plot
+* `ylimits` changes the yticks to correspond to the specified range (it can be negative). The format is, for instance `[0 100]` (@isnumeric).   
+* `nTicksX` is the number of xticks displayed. By default it depends on the size of the figure in 1D, and corresonds to 5 in 2D (@isnumeric).
+* `nTicksY` is the number of yticks displayed. By default it depends on the size of the figure in 1D, and corresonds to 4 in 2D (@isnumeric).
+* `imageResolution` is the resolution in ppp of the tiff images. The default value is 96ppp (@isnumeric).
+* `imageSize` is the size of the image in cm. For instance, `[X]` or [X X] creates X by X cm images, `[X Y]` creates X by Y cm images. The default image size is 720*480 pixels (@isnumeric).
+* `imageFontSize` is the font size of images. By default it is a size 12 fontsize (@isnumeric).
+* `linestyle` In 1D: lineStyle for plots (default  is solid) // Specify linestyle for each modality in cell, apply each style to each modality (independant effect first). `lineStyle{1}={':' '-' '--';':' '-' '--'};` to have a dotted line, a solid line, and a dashed line for the first effect (first row is for the means, second row for the sd) // In 2D:linestyle of the contour plot
 
 #### 2D plot parameters ####
 These option are specific to 2D plots.
-* `colorMap` is the colormap used for means, standard deviations, ANOVA and effect sizes plots. Default is cbrewer('Reds').
-* `colorMapDiff` is the colormap used for differences, relative differences and post-hoc spm plots. Default is cbrewer('RdBu').
-Colormaps can be defined with cbrewer (included in this funtion): Charles (2020). cbrewer: [colorbrewer schemes for Matlab](https://www.mathworks.com/matlabcentral/fileexchange/34087-cbrewer-colorbrewer-schemes-for-matlab), MATLAB Central File Exchange. Retrieved December 11, 2020.
-* `colorbarLabel` is the name of the colorbar label. Default is empty. @ischar
-* `limitMeanMaps` defines limit of the colorbar. By default, the maps wont necessary be with the same range but will be automatically scaled at their maximum.
-A value of X will make the colorbar going from 0 to X for all plots (easier to compare). @isnumeric.
-* `displaycontour` displays contour map on differences and size effect maps. 0 to not display (not recommended). @isnumeric.
-* `contourcolor` is the color of the line for the contour plot. Default is white. RGB or 'color' is accepted.
-* `dashedColor` is the color of the non-significant zones of the contour plot (default is black). Use RGB triplet [0 0 0].
-* `transparancy` is the transparency of the non-significant zones. Default is 50. 0=transparent, 255=opaque. @isnumeric.
-* `lineWidth` is the linewidth of the contour plot. Default is 2.5. @isnumeric.
-* `diffRatio` scales the difference maps at limitMeanMaps*diffRatio. Default is 0.33. @isnumeric.
-* `relativeRatio` scales the relative differences maps at +-relativeRatio. By default, the maps wont necessary be with the same range but will be automatically scaled at their maximum.
+* `colorMap` is the colormap used for means, standard deviations, ANOVA and effect sizes plots. The default colomap is cbrewer('Reds').
+* `colorMapDiff` is the colormap used for differences, relative differences and post-hoc spm plots. The default colomap is cbrewer('RdBu').
+Colormaps can be defined with cbrewer (distributed in this funtion): Charles (2020). cbrewer: [colorbrewer schemes for Matlab](https://www.mathworks.com/matlabcentral/fileexchange/34087-cbrewer-colorbrewer-schemes-for-matlab), MATLAB Central File Exchange. Retrieved December 11, 2020.
+* `colorbarLabel` is the name of the colorbar label. No name is display by default (@ischar).
+* `limitMeanMaps` defines limit of the colorbar. By default, the maps wont necessary be with the same range but will be automatically scaled at their maximum. A value of X will make the colorbar going from 0 to X for all plots to make them easier to compare (@isnumeric).
+* `displaycontour` displays contour map on differences and size effect maps. Use 0 to not display the statistical analysis but it is not recommended (@isnumeric).
+* `contourcolor` is the color of the line for the contour plot. The default color is white. RGB or 'color' is accepted.
+* `dashedColor` is the color of the non-significant zones of the contour plot. The default color is white black. Use RGB triplet [0 0 0].
+* `transparancy` is the transparency of the non-significant zones. The default value is 50 and can range from 0 (transparent) to 255 (opaque) (@isnumeric).
+* `lineWidth` is the linewidth of the contour plot. The default value is 2.5 (@isnumeric).
+* `diffRatio` scales the difference maps at limitMeanMaps*diffRatio. The default value is 0.33 (@isnumeric).
+* `relativeRatio` scales the relative differences maps at +-relativeRatio. By default, the maps wont necessary be with the same range but will be automatically scaled at their maximum (@isnumeric).
 
 #### 1D plot parameters ####
 These option are specific to 1D plots.
-* `CI` is the confidence interval used instead of standard deviation. By default, standard deviations are displayed. @isnumeric (0.7 to 0.999 to display 70% to 99.9% condidence interval, or 0 to display SEM, or negative value to not dispaly dispersion).
-* `colorLine` is the colorline for plots (default  is "lines"). Use rgb triplet. If in cell, apply each color to each effect (independant effect first).
-* `transparancy1D` is the transparency for the SD, CI or SEM. Default is 0.1. @isnumeric.
-* `ratioSPM` is the ratio of SPM subplot relative to total figure (default if 1/3 of the figure). @isnumeric (e.g., [1 3]).
+* `CI` is the confidence interval used instead of standard deviation. By default, standard deviations are displayed. Use 0.7 to 0.999 to display 70% to 99.9% confidence interval, 0 to display SEM, or negative value to not dispaly dispersion (@isnumeric).
+* `colorLine` is the colorline for plots (default  is "lines"). Use rgb triplet. If in cell, apply each color to each effect (independant effect first). `colorLine{1}=[rgb('blue'); rgb('magenta'); rgb('black')]` to have blue, magenta and black lines for the first effect.
+* `transparancy1D` is the transparency for the SD, CI or SEM. The default value is is 0.1 (@isnumeric).
+* `ratioSPM` is the ratio of SPM subplot relative to total figure. The default value is 1/3 of the figure. Must be indicated as [1 3] to have a 1/3 ratio (@isnumeric).
 * `yLimitES` is the y-axis limits for ES representation. By default, the maps wont necessary be with the same range but will be automatically scaled at their maximum.
 * `spmPos` is the position of SPM plot, default SPM analysis is displayed at the bottom of the figure. Any value will set the position to up.
-* `aovColor` is the color of ANOVA on SPM plot. Default is black. Use 'color' or rgb.  
+* `aovColor` is the color of ANOVA on SPM plot. The default color is black. Use 'color' or rgb triplet.  
 
 
 ## Optional functions ##
