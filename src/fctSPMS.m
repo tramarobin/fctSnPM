@@ -7,7 +7,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% ¨Please read README.md on https://github.com/tramarobin/fctSPM for all informations
+%% Please read README.md on https://github.com/tramarobin/fctSPM for all information
 
 % Using spm1d package (v.0.4.3), compute anova and post-hoc tests from anova1 to anova3rm, with a non-parametric approach (permutation tests)
 % The type of anova (if required) and post-hoc are choosen regarding the independant or repeated measure effect given in parameters.
@@ -98,14 +98,14 @@
 % see the description at begining of the function (inputParser)
 % see .\fctSPM\Examples for help
 
-%% Informations
+%% Information
 % All the dataset must be balanced for ANOVA 2 and 3
 % Post-hoc tests with Bonferonni correction are only approximate
-% See spm1d.org for the spm1d package informations used with this functions.
+% See spm1d.org for the spm1d package information used with this functions.
 % works with spm1d v.0.4.3 and non-parametric (permutation test) approach
 % don't forget to cite :
 % Pataky TC (2010). Generalized n-dimensional biomechanical field analysis using statistical parametric mapping. Journal of Biomechanics 43, 1976-1982.
-% Nichols TE, Holmes AP (2002). Nonparametric permutation tests for functional neuroimaging: a primer with examples. Human Brain Mapping 15(1), 1–25.
+% Nichols TE, Holmes AP (2002). Nonparametric permutation tests for functional neuroimaging: a primer with examples. Human Brain Mapping 15(1), 1-25.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
