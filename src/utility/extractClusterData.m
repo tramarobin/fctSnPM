@@ -6,7 +6,7 @@ if ~isempty(clusters)
     cluster=clusters{i};
     
     dataCluster{i}.metric_value=cluster.metric_value;
-    dataCluster{i}.iterations=cluster.iterations;
+    dataCluster{i}.permutations=cluster.permutations;
     dataCluster{i}.nPerm=cluster.nPerm;
     dataCluster{i}.nPermUnique=cluster.nPermUnique;
     dataCluster{i}.endpoints=cluster.endpoints;

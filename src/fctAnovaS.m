@@ -1,4 +1,4 @@
-function [anovaEffects,anova]=fctAnovaS(maps1d,dimensions,indicesEffects,sujets,nEffects,nRm,eNames,alphaOriginal,multiIterations,IT,maximalIT,ignoreAnova)
+function [anovaEffects,anova]=fctAnovaS(maps1d,dimensions,indicesEffects,sujets,nEffects,nRm,eNames,alphaOriginal,multiPerm,Perm,maximalPerm,ignoreAnova)
 %% SETUP
 if ~ignoreAnova
     
@@ -9,21 +9,21 @@ if ~ignoreAnova
         anovaEffects{1}=logical(ones(dimensions(1),dimensions(2)));
     else
         
-        % Verify the number of iterations
-        [nWarning,iterations,alpha]=fctWarningIterationsAOV(ANOVA,alphaOriginal,multiIterations,maximalIT,IT);
+        % Verify the number of permutations
+        [nWarning,permutations,alpha]=fctWarningPermutationsAOV(ANOVA,alphaOriginal,multiPerm,maximalPerm,Perm);
         anova.alpha=alphaOriginal;
         anova.pCritical=alpha;
-        anova.nIterations=iterations;
+        anova.nPermutations=permutations;
         
         % Statistical Inference
-        ANOVA_inf=ANOVA.inference(alpha,'iterations',iterations,'force_iterations',logical(1));
+        ANOVA_inf=ANOVA.inference(alpha,'permutations',permutations,'force_iterations',logical(1));
         
         %% Plot of effects
         
         if nEffects==1 % ANOVA1
             
             % Values given by the inference
-            anova.maxIterations=ANOVA_inf.nPermUnique;
+            anova.maxPermutations=ANOVA_inf.nPermUnique;
             anova.Fcontinuum=reshape(ANOVA_inf.z,dimensions(1),dimensions(2));
             anova.Fthreshold=ANOVA_inf.zstar;
             anova.Fsignificant{1}=reshape(ANOVA_inf.z>=anova.Fthreshold,dimensions(1),dimensions(2));
@@ -39,7 +39,7 @@ if ~ignoreAnova
             
         else % ANOVA2 & % ANOVA3
             
-            anova.maxIterations=ANOVA_inf.nPermUnique;
+            anova.maxPermutations=ANOVA_inf.nPermUnique;
             for k=1:size(ANOVA_inf.SPMs,2) % for each effect or interactions
                 
                 % Values given by the inference

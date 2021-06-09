@@ -1,4 +1,4 @@
-function posthoc=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,IC,ylimits,nx,ny,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,alphaAOV,transparancy1D,ratioSPM,yLimitES,spmPos,aovColor,lineStyle)
+function posthoc=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,savedir,multiPerm,Perm,xlab,ylab,Fs,imageResolution,IC,ylimits,nx,ny,xlimits,anovaEffects,maximalPerm,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,alphaAOV,transparancy1D,ratioSPM,yLimitES,spmPos,aovColor,lineStyle)
 close all
 
 savedir=[savedir '/Post hoc/'];
@@ -101,16 +101,16 @@ if nEffects==1
             
             % inference
             posthoc{1}.tTests.names=posthoc{1}.differences.names;
-            [posthoc{1}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,pBonferroni,multiIterations,maximalIT,IT);
+            [posthoc{1}.tTests.nWarning{comp},permutations,alpha]=fctWarningPermutations(Ttest,pBonferroni,multiPerm,maximalPerm,Perm);
             posthoc{1}.tTests.alpha=alphaT;
             if warnT==1
                 posthoc{1}.tTests.warning="alpha is not valid";
             end
             posthoc{1}.tTests.pBonferroni=pBonferroni;
             posthoc{1}.tTests.pCritical{comp}=alpha;
-            posthoc{1}.tTests.nIterations{comp}=iterations;
-            Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
-            posthoc{1}.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
+            posthoc{1}.tTests.nPermutations{comp}=permutations;
+            Ttest_inf=Ttest.inference(alpha,'permutations',permutations,'force_iterations',logical(1),'two_tailed',logical(1));
+            posthoc{1}.tTests.maxPermutations{comp}=Ttest_inf.nPermUnique;
             posthoc{1}.tTests.Tthreshold{comp}=Ttest_inf.zstar;
             posthoc{1}.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
             posthoc{1}.tTests.Tcontinuum{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
@@ -282,16 +282,16 @@ if nEffects==2
                 
                 % inference
                 posthoc{mainEffect(1)}.tTests.names=posthoc{mainEffect(1)}.differences.names;
-                [posthoc{mainEffect(1)}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,pBonferroni,multiIterations,maximalIT,IT);
+                [posthoc{mainEffect(1)}.tTests.nWarning{comp},permutations,alpha]=fctWarningPermutations(Ttest,pBonferroni,multiPerm,maximalPerm,Perm);
                 posthoc{mainEffect(1)}.tTests.alpha=alphaT;
                 if warnT==1
                     posthoc{mainEffect(1)}.tTests.warning="alpha is not valid";
                 end
                 posthoc{mainEffect(1)}.tTests.pBonferroni=pBonferroni;
                 posthoc{mainEffect(1)}.tTests.pCritical{comp}=alpha;
-                posthoc{mainEffect(1)}.tTests.nIterations{comp}=iterations;
-                Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
-                posthoc{mainEffect(1)}.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
+                posthoc{mainEffect(1)}.tTests.nPermutations{comp}=permutations;
+                Ttest_inf=Ttest.inference(alpha,'permutations',permutations,'force_iterations',logical(1),'two_tailed',logical(1));
+                posthoc{mainEffect(1)}.tTests.maxPermutations{comp}=Ttest_inf.nPermUnique;
                 posthoc{mainEffect(1)}.tTests.Tthreshold{comp}=Ttest_inf.zstar;
                 posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
                 posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
@@ -450,16 +450,16 @@ if nEffects==3
                 
                 % inference
                 posthoc{mainEffect(1)}.tTests.names=posthoc{mainEffect(1)}.differences.names;
-                [posthoc{mainEffect(1)}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,pBonferroni,multiIterations,maximalIT,IT);
+                [posthoc{mainEffect(1)}.tTests.nWarning{comp},permutations,alpha]=fctWarningPermutations(Ttest,pBonferroni,multiPerm,maximalPerm,Perm);
                 posthoc{mainEffect(1)}.tTests.alpha=alphaT;
                 if warnT==1
                     posthoc{mainEffect(1)}.tTests.warning="alpha is not valid";
                 end
                 posthoc{mainEffect(1)}.tTests.pBonferroni=pBonferroni;
                 posthoc{mainEffect(1)}.tTests.pCritical{comp}=alpha;
-                posthoc{mainEffect(1)}.tTests.nIterations{comp}=iterations;
-                Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
-                posthoc{mainEffect(1)}.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
+                posthoc{mainEffect(1)}.tTests.nPermutations{comp}=permutations;
+                Ttest_inf=Ttest.inference(alpha,'permutations',permutations,'force_iterations',logical(1),'two_tailed',logical(1));
+                posthoc{mainEffect(1)}.tTests.maxPermutations{comp}=Ttest_inf.nPermUnique;
                 posthoc{mainEffect(1)}.tTests.Tthreshold{comp}=Ttest_inf.zstar;
                 posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
                 posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
@@ -631,16 +631,16 @@ if nEffects==3
                 
                 % inference
                 posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.names=posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names;
-                [posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,pBonferroni,multiIterations,maximalIT,IT);
+                [posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.nWarning{comp},permutations,alpha]=fctWarningPermutations(Ttest,pBonferroni,multiPerm,maximalPerm,Perm);
                 posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.alpha=alphaT;
                 if warnT==1
                     posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.warning="alpha is not valid";
                 end
                 posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.pBonferroni=pBonferroni;
                 posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.pCritical{comp}=alpha;
-                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.nIterations{comp}=iterations;
-                Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
-                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
+                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.nPermutations{comp}=permutations;
+                Ttest_inf=Ttest.inference(alpha,'permutations',permutations,'force_iterations',logical(1),'two_tailed',logical(1));
+                posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.maxPermutations{comp}=Ttest_inf.nPermUnique;
                 posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp}=Ttest_inf.zstar;
                 posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));
                 posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tcontinuum{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
@@ -913,16 +913,16 @@ if nEffects>1
             
             % inference
             posthoc{pos}.tTests.names=posthoc{pos}.differences.names;
-            [posthoc{pos}.tTests.nWarning{comp},iterations,alpha]=fctWarningIterations(Ttest,pBonferroni,multiIterations,maximalIT,IT);
+            [posthoc{pos}.tTests.nWarning{comp},permutations,alpha]=fctWarningPermutations(Ttest,pBonferroni,multiPerm,maximalPerm,Perm);
             posthoc{pos}.tTests.alpha=alphaT;
             if warnT==1
                 posthoc{pos}.tTests.warning="alpha is not valid";
             end
             posthoc{pos}.tTests.pBonferroni=pBonferroni;
             posthoc{pos}.tTests.pCritical{comp}=alpha;
-            posthoc{pos}.tTests.nIterations{comp}=iterations;
-            Ttest_inf=Ttest.inference(alpha,'iterations',iterations,'force_iterations',logical(1),'two_tailed',logical(1));
-            posthoc{pos}.tTests.maxIterations{comp}=Ttest_inf.nPermUnique;
+            posthoc{pos}.tTests.nPermutations{comp}=permutations;
+            Ttest_inf=Ttest.inference(alpha,'permutations',permutations,'force_iterations',logical(1),'two_tailed',logical(1));
+            posthoc{pos}.tTests.maxPermutations{comp}=Ttest_inf.nPermUnique;
             posthoc{pos}.tTests.Tthreshold{comp}=Ttest_inf.zstar;
             posthoc{pos}.tTests.Tcontinuum{1,comp}=reshape(Ttest_inf.z,dimensions(1),dimensions(2));
             posthoc{pos}.tTests.Tsignificant{1,comp}=zeros(dimensions(1),dimensions(2));

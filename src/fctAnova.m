@@ -1,4 +1,4 @@
-function [anovaEffects,anova]=fctAnova(maps1d,dimensions,indicesEffects,sujets,nEffects,nRm,eNames,alphaOriginal,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nx,ny,imageResolution,xlimits,maximalIT,ignoreAnova,displayContour,contourColor,dashedColor,transparency,lineWidth,linestyle,colorMap,imageSize,imageFontSize)
+function [anovaEffects,anova]=fctAnova(maps1d,dimensions,indicesEffects,sujets,nEffects,nRm,eNames,alphaOriginal,savedir,multiPerm,Perm,xlab,ylab,Fs,ylimits,nx,ny,imageResolution,xlimits,maximalPerm,ignoreAnova,displayContour,contourColor,dashedColor,transparency,lineWidth,linestyle,colorMap,imageSize,imageFontSize)
 %% SETUP
 close all
 
@@ -14,21 +14,21 @@ if ~ignoreAnova
         warning('off', 'MATLAB:MKDIR:DirectoryExists');
         mkdir([savedir '/ANOVA/FIG/'])
         
-        % Verify the number of iterations
-        [nWarning,iterations,alpha]=fctWarningIterationsAOV(ANOVA,alphaOriginal,multiIterations,maximalIT,IT);
+        % Verify the number of permutations
+        [nWarning,permutations,alpha]=fctWarningPermutationsAOV(ANOVA,alphaOriginal,multiPerm,maximalPerm,Perm);
         anova.alpha=alphaOriginal;
         anova.pCritical=alpha;
-        anova.nIterations=iterations;
+        anova.nPermutations=permutations;
         
         % Statistical Inference
-        ANOVA_inf=ANOVA.inference(alpha,'iterations',iterations,'force_iterations',logical(1));
+        ANOVA_inf=ANOVA.inference(alpha,'permutations',permutations,'force_iterations',logical(1));
         
         %% Plot of effects
         
         if nEffects==1 % ANOVA1
             
             % Values given by the inference
-            anova.maxIterations=ANOVA_inf.nPermUnique;
+            anova.maxPermutations=ANOVA_inf.nPermUnique;
             anova.Fcontinuum=reshape(ANOVA_inf.z,dimensions(1),dimensions(2));
             anova.Fthreshold=ANOVA_inf.zstar;
             anova.Fsignificant{1}=reshape(ANOVA_inf.z>=anova.Fthreshold,dimensions(1),dimensions(2));
@@ -54,7 +54,7 @@ if ~ignoreAnova
             
         else % ANOVA2 & % ANOVA3
             
-            anova.maxIterations=ANOVA_inf.nPermUnique;
+            anova.maxPermutations=ANOVA_inf.nPermUnique;
             for k=1:size(ANOVA_inf.SPMs,2) % for each effect or interactions
                 
                 % Values given by the inference

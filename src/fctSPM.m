@@ -43,8 +43,8 @@
 %* `effectNames` is a structure (one cell for each effect) that represent the names of the effects tested (mains and interactions)
 %* `alpha` is the alpha risk choosen for the anova (default is 0.05 (5%)).
 %* `pCritical` is the alpha risk used for the anova. Warning message is displayed if this value is modified.
-%* `nIterations` is the number of iterations performed for the anova.
-%* `maxIterations` is the number of maximal iterations possible for the anova.
+%* `nPermutations` is the number of permutations performed for the anova.
+%* `maxPermutations` is the number of maximal permutations possible for the anova.
 %* `Fcontinuum` is a structure that represent the F-value for each node
 %* `Fthreshold` is a structure that represent the statistical threshold for the F-values (statistical inference)
 %* `Fsignificant` is a structure that contains the logical for the significance (Fcontinuum > Fthreshold) of each effect of the ANOVA (1 if significant, 0 if not).
@@ -65,13 +65,13 @@
 %* `differences.ESsd` is the standard deviation of the effect size.
 %* `tTests.type` is the type of t-test performed (independant or paired)
 %* `tTests.names` is the name of the conditions (the first minus the second) used in the differences and t-tests.
-%* `tTests.nWarning` represents the number of warnings displayed during the analysis : 0 is OK, 1 means the number of iterations was reduced but `pCritical` = `pBonferroni`, 2 means that the number of iterations was reduced and `pCritical` > `pBonferroni`. In this case, more subjects are required to performed the analysis. %* `tTests.alpha` is the alpha risk choosen for the post hoc tests  before Bonferroni correction (default is the same as the ANOVA).
+%* `tTests.nWarning` represents the number of warnings displayed during the analysis : 0 is OK, 1 means the number of permutations was reduced but `pCritical` = `pBonferroni`, 2 means that the number of permutations was reduced and `pCritical` > `pBonferroni`. In this case, more subjects are required to performed the analysis. %* `tTests.alpha` is the alpha risk choosen for the post hoc tests  before Bonferroni correction (default is the same as the ANOVA).
 %* `tTests.alpha` is the alpha risk choosen for the post hoc tests  before Bonferroni correction (default is the same as the ANOVA).
 %* `tTests.warning` : only if alpha is modified with `alphaT` input.
 %* `tTests.pBonferroni` is the alpha risk choosen for the post hoc tests after  Bonferroni correction.
 %* `tTests.pCritical` is the alpha risk used for the post hoc tests. Warning message is displayed if this value does not meet pBonferroni.
-%* `tTests.nIterations` is the number of iterations performed for the t-test.
-%* `tTests.maxIterations` is the number of maximal iterations possible for the t-test.
+%* `tTests.nPermutations` is the number of permutations performed for the t-test.
+%* `tTests.maxPermutations` is the number of maximal permutations possible for the t-test.
 %* `tTests.Tcontinuum` represents the T-value for each node
 %* `tTests.Tthreshold` represents the statistical threshold for the T-values (statistical inference)
 %* `tTests.Tsignificant` contains the logical for the significance (Tcontinuum > Tthreshold) (1 if significant, 0 if not). This value is corrected with the result of the corresponding ANOVA and previous t-tests.
@@ -165,10 +165,10 @@ addParameter(p,'nameSub',[],@iscell) % names of the different subjects
 % statistical parameters
 addParameter(p,'alpha',0.05,@isnumeric); % alpha used for the ANOVA
 addParameter(p,'alphaT',[],@isnumeric); % Do not modify except for exploratory purposes. Original alpha used for post hoc tests (Bonferonni correction is applied afetr as alphaT/ number of comparisons). By default, this value is the same than the alpha used for the ANOVA.
-addParameter(p,'multiIT',10,@isnumeric); % the number of permutations is multiIT/alpha. Must be increased for better reproductibility
-addParameter(p,'IT',[],@isnumeric); % fixed number of iterations (override the multiIterations - not recommanded)
-% specified either multiIterations or IT, but not both
-addParameter(p,'maximalIT',10000,@isnumeric); % limits the number of maximal permutations in case of too many multiple comparisons.
+addParameter(p,'multiPerm',10,@isnumeric); % the number of permutations is multiPerm/alpha. Must be increased for better reproductibility
+addParameter(p,'Perm',[],@isnumeric); % fixed number of permutations (override the multiPerm - not recommanded)
+% specified either multiPerm or Perm, but not both
+addParameter(p,'maximalPerm',10000,@isnumeric); % limits the number of maximal permutations in case of too many multiple comparisons.
 addParameter(p,'doAllInteractions',1,@isnumeric); % by default, all post hoc tested are made even if anova did not revealed interaction. 0 to performed only posthoc were interaction was found.
 addParameter(p,'ignoreAnova',0,@isnumeric); % by default, consider the ANOVA signifant location to interpert post-hoc. 1 to interpret only post-hoc tests.
 
@@ -218,8 +218,8 @@ xlab=p.Results.xlabel;
 Fs=p.Results.samplefrequency;
 savedir=p.Results.savedir;
 effectNames=p.Results.effectsNames;
-multiIterations=p.Results.multiIT;
-IT=p.Results.IT;
+multiPerm=p.Results.multiPerm;
+Perm=p.Results.Perm;
 ylimits=p.Results.ylimits;
 xlimits=p.Results.xlimits;
 nTicksX=p.Results.nTicksX;
@@ -229,7 +229,7 @@ imageResolution=['-r' num2str(p.Results.imageResolution)];
 colorbarLabel=p.Results.colorbarLabel;
 limitMeanMaps=p.Results.limitMeanMaps;
 CI=p.Results.CI;
-maximalIT=p.Results.maximalIT;
+maximalPerm=p.Results.maximalPerm;
 colorLine=p.Results.colorLine;
 doAllInteractions=p.Results.doAllInteractions;
 dashedColor=p.Results.dashedColor;
@@ -268,13 +268,13 @@ end
 [maps1d,dimensions,sujets,nRm,nEffects,typeEffectsAll,modalitiesAll,indicesEffects]=findModalities(mapsAll,effectsRm,effectsInd);
 
 %% Choose and perform ANOVA
-[anovaEffects,anova]=fctAnova(maps1d,dimensions,indicesEffects,sujets,nEffects,nRm,effectNames,alpha,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,imageResolution,xlimits,maximalIT,ignoreAnova,displayContour,contourColor,dashedColor,transparancy,lineWidth,linestyle,colorMap,imageSize,imageFontSize);
+[anovaEffects,anova]=fctAnova(maps1d,dimensions,indicesEffects,sujets,nEffects,nRm,effectNames,alpha,savedir,multiPerm,Perm,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,imageResolution,xlimits,maximalPerm,ignoreAnova,displayContour,contourColor,dashedColor,transparancy,lineWidth,linestyle,colorMap,imageSize,imageFontSize);
 
 %% Choose and perform post-hocs
 if min(dimensions)==1 %1D
-    posthoc=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiIterations,IT,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalIT,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,alpha,transparancy1D,ratioSPM,yLimitES,spmPos,aovColor,linestyle);
+    posthoc=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiPerm,Perm,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalPerm,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,alpha,transparancy1D,ratioSPM,yLimitES,spmPos,aovColor,linestyle);
 else %2D
-    posthoc=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,contourColor,savedir,multiIterations,IT,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalIT,doAllInteractions,dashedColor,transparancy,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,alpha,linestyle);
+    posthoc=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,contourColor,savedir,multiPerm,Perm,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalPerm,doAllInteractions,dashedColor,transparancy,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,alpha,linestyle);
 end
 
 %% Save analysis
