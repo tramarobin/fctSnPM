@@ -66,7 +66,7 @@ Compatible from Matlab R2017b
 ## Outputs ##
 
 ### spmAnalysis ###
-`spmAnalaysis.mat` is a structure composed of the results of teh statistical analysis (ANOVA + Post Hoc). 
+`spmAnalaysis.mat` is a structure composed of the results of the statistical analysis (ANOVA + Post Hoc). 
 
 `spmAnalysis.anova` is composed of different fields:  
 * `type` is the type of ANOVA performed
@@ -153,8 +153,7 @@ Subfolders: Contains the pairwise comparison results (In one folder for ANOVA1, 
 
 ## Examples ##
 ### In one dimension ### 
-Here are the outcomes for a 2way ANOVA with 1 repeated measure in 1 dimension  
-.\fctSPM\Examples\D1_ANOVA2_1rm.m  
+The output of `D1_ANOVA2_1rm.m` for a 2way ANOVA with 1 repeated measure in 1 dimension in the Examples folder is as follows 
 The curves represent the ratio between Quadriceps and Hamstrings during isokinetic tests for two sides (Left and Right) and for two sexes (M and F).  
 
 ANOVA results: There is a "Side" effect, with a F-value above the significant threshold of 7.14 between 30 and 85°.
@@ -168,8 +167,7 @@ The ANOVA results are also displayed if wanted.
 
 
 ### In two dimensions ###
-Here are the outcomes for a 2way ANOVA with 2 repeated measures in 2 dimensions  
-.\fctSPM\Examples\D2_ANOVA2_2rm.m   
+The output of `D2_ANOVA2_2rm.m` for a 2way ANOVA with 2 repeated measures in 2 dimensions is as follows
 The maps represent the time-frequency analysis of vibratory signal quantified with two devices (ACC and US), and for two muscle activations (Relaxed and Contracted).
 
 ANOVA results: Red clusters circled in white are the zone of significant effects. There are mains and interaction effects.
