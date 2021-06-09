@@ -238,7 +238,7 @@ Specified either samplefrequency or xlimits, but not both.
 * `imageResolution` is the resolution in ppp of the tiff images. The default value is 96ppp (@isnumeric).
 * `imageSize` is the size of the image in cm. For instance, `[X]` or [X X] creates X by X cm images, `[X Y]` creates X by Y cm images. The default image size is 720*480 pixels (@isnumeric).
 * `imageFontSize` is the font size of images. By default it is a size 12 fontsize (@isnumeric).
-* `linestyle` In 1D: lineStyle for plots (default  is solid) // Specify linestyle for each modality in cell, apply each style to each modality (independant effect first). `lineStyle{1}={':' '-' '--';':' '-' '--'};` to have a dotted line, a solid line, and a dashed line for the first effect (first row is for the means, second row for the sd) // In 2D:linestyle of the contour plot
+* `linestyle` In 1D: lineStyle for plots (default  is a solid line for the mean, a dashed line for the SD). Specify linestyle for each modality in cell, apply each style to each modality (independant effect first). `lineStyle{1}={':' '-' '--';':' '-' '--'};` to have a dotted line, a solid line, and a dashed line for the first effect (first row is for the means, second row for the sd) // In 2D: linestyle of the contour plot
 
 #### 2D plot parameters ####
 These option are specific to 2D plots.
