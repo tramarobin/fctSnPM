@@ -12,7 +12,7 @@
 % Using spm1d package (v.0.4.3), compute anova and post-hoc tests from anova1 to anova3rm, with a non-parametric approach (permutation tests)
 % The type of anova (if required) and post-hoc are choosen regarding the independant or repeated measure effect given in parameters.
 % The function automatically adapts to 1D and 2D data
-% Examples are in ...\fctSPM\Examples
+% You can find different scripts creating output for 1D and 2D data in ...\fctSPM\Examples
 % 1D examples are torque ratios
 % 2D examples are maps obtained with continuous wavelet transforms
 
@@ -20,7 +20,7 @@
 % spm1d package for matlab is published elswhere : https://github.com/0todd0000/spm1dmatlab
 
 % please cite for spm1d : Pataky TC (2010). Generalized n-dimensional biomechanical field analysis using statistical parametric mapping. Journal of Biomechanics 43, 1976-1982.
-% please cite for permutation tests : Nichols TE, Holmes AP (2002). Nonparametric permutation tests for functional neuroimaging: a primer with examples. Human Brain Mapping 15(1), 1–25.
+% please cite for permutation tests : Nichols TE, Holmes AP (2002). Nonparametric permutation tests for functional neuroimaging: a primer with examples. Human Brain Mapping 15(1), 1-25.
 
 % WARNINGS:
 
@@ -95,7 +95,7 @@
 % also avoid underscore (_) or minus (-) sign. Spaces are OK
 
 % OPTIONAL
-% see the description at begining of the function (inputParser)
+% see the description at begining of the function (inputParser) or on GitHub (https://github.com/tramarobin/fctSPM#optional-inputs)
 % see .\fctSPM\Examples for help
 
 %% Information

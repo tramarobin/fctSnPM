@@ -51,7 +51,7 @@
 % spmAnalysis obtained with `fctSPM` or `fctSPMS`.
 
 % OPTIONAL
-% see the description at begining of the function (inputParser)
+% see the description at begining of the function (inputParser) or on GitHub (https://github.com/tramarobin/fctSPM#optional-inputs)
 % see .\fctSPM\Examples for help
 
 
