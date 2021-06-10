@@ -9,7 +9,7 @@ clc
 % This funtion will automatically create multiple files in a save directory located at the savedir
 % adress
 
-savedir=''; % is the adress where the output of fctSnPM is saved 
+savedir=''; % is the adress where the output of fctSPM is saved 
 savedir2=savedir; % is the adress where the output of saveNplot is saved 
 
 % data
