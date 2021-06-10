@@ -1,10 +1,16 @@
 % This function takes ~10 seconds on i5 processor and files takes 6 Mo of
 % storage
-% don't forget to add the source code path
 
 clear
 close all
 clc
+
+% Don't forget to add the source code path
+% This funtion will automatically create multiple files in a save directory located at the savedir
+% adress
+
+savedir=''; % is the adress where the output of fctSnPM is saved 
+savedir2=savedir; % is the adress where the output of saveNplot is saved 
 
 
 % data
@@ -19,8 +25,7 @@ effectNames={'Shoes'};
 % Data(:,1) correspond to Shoes=C1
 % Data(:,2) correspond to Shoes=C2
 
-savedir=[];
-savedir2=[];
+
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=400;

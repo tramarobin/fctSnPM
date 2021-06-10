@@ -1,11 +1,16 @@
 % This function takes ~40 seconds on i5 processor and files takes 12 Mo of
 % storage
-% don't forget to add the source code path
-
 
 clear
 close all
 clc
+
+% Don't forget to add the source code path
+% This funtion will automatically create multiple files in a save directory located at the savedir
+% adress
+
+savedir=''; % is the adress where the output of fctSnPM is saved 
+savedir2=savedir; % is the adress where the output of saveNplot is saved 
 
 
 % data
@@ -21,8 +26,6 @@ effectNames={'Group'};
 % ANOVA1 accepts unbalanced data
 
 
-savedir=[];
-savedir2=[];
 xlab='Time (s)';
 ylab='Frequency (Hz)';
 Fs=500;

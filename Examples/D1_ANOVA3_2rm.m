@@ -1,9 +1,16 @@
-% This function takes ~360 seconds on i5 processor and files takes 175 Mo of space
-% don't forget to add the source code path
+% This function takes ~360 seconds on i5 processor and files takes 175 Mo
+% of storage
 
 clear
 close all
 clc
+
+% Don't forget to add the source code path
+% This funtion will automatically create multiple files in a save directory located at the savedir
+% adress
+
+savedir=''; % is the adress where the output of fctSnPM is saved 
+savedir2=savedir; % is the adress where the output of saveNplot is saved 
 
 % data
 load ExampleDatas
@@ -24,8 +31,7 @@ colorLine{3}=[rgb('gray'); rgb('darkgray')];
 % There are 20 subjects
 % ANOVA3 does not accept unbalanced data (10 males, 10 females)
 
-savedir=[];
-savedir2=[];
+
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];

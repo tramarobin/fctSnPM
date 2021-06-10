@@ -1,10 +1,16 @@
 % This function takes ~70 seconds on i5 processor and files takes 10 Mo of
 % storage
-% don't forget to add the source code path
 
 clear
 close all
 clc
+
+% Don't forget to add the source code path
+% This funtion will automatically create multiple files in a save directory located at the savedir
+% adress
+
+savedir=''; % is the adress where the output of fctSnPM is saved 
+savedir2=savedir; % is the adress where the output of saveNplot is saved 
 
 % data
 load ExampleDatas
@@ -23,8 +29,7 @@ lineStyle{1}={'-' '-.'; '--' '--'}; % first row is for the means, second row for
 repeatedMeasuresEffects{1}={'Right','Left'};
 colorLine{2}=[rgb('green'); rgb('red')];
 
-savedir='C:\Users\LIBM_yb\Documents\DATA_MATLAB\spmTest';
-savedir2=[];
+
 xlab='Angle (°)';
 ylab='Ratio';
 xlimits=[30 90];
