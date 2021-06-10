@@ -278,7 +278,7 @@ spmAnalysis=fctSPMS(data, independantEffects, repeatedMeasuresEffects, 'Optional
 onlyPlot(spmAnalysis,'Optional Input Name', value)
 saveNplot(spmAnalysis,'Optional Input Name', value)
 ```
-You can use `onlyPlot` to have an insight on the figures that will be saved to adjust the plot parameters.
+You can use `onlyPlot` to have an insight on the figures before saving to adjust the plot parameters.  
 It may be useful to use `saveNplot` when a 2D analysis is performed, it may permit to redo quickly figures without the long time of analysis.
 
 
