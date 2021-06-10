@@ -269,13 +269,16 @@ These option are specific to 1D plots.
 ## Optional functions ##
 in addition of `fctSPM`, this repository contains two similar funtions. 
 *`fctSPMS` performs the same analysis than `fctSPM`, however, the figures are not ploted and saved. The inputs are the same at the exception that there is no savedir and no plot parameters.
-*`saveNplot` permits to save and plot the analysis obtain with `fctSPM` and `fctSPMS`.
+*`onlyPlot` permits to plot a part of the analysis obtain with `fctSPM` and `fctSPMS`. In 1D, the ANOVA and the means with SPM analysis are displayed. In 2D, the ANOVA and the post-hoc tests are displayed.
+*`saveNplot` permits to save and plot the entire analysis obtain with `fctSPM` and `fctSPMS`.
 
 The general use of these funtion are:
 ```matlab
 spmAnalysis=fctSPMS(data, independantEffects, repeatedMeasuresEffects, 'Optional Input Name', value)
+onlyPlot(spmAnalysis,'Optional Input Name', value)
 saveNplot(spmAnalysis,'Optional Input Name', value)
 ```
+You can use `onlyPlot` to have an insight on the figures that will be saved to adjust the plot parameters.
 It may be useful to use `saveNplot` when a 2D analysis is performed, it may permit to redo quickly figures without the long time of analysis.
 
 

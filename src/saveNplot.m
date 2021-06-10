@@ -146,8 +146,6 @@ savedir=chooseSavedir(savedir);
 mkdir(savedir)
 save([savedir '/spmAnalysis'], 'spmAnalysis')
 
-%% PLOT SUB
-
 
 %% ANOVA
 if spmAnalysis.anova.type~="no ANOVA"
@@ -178,7 +176,7 @@ if spmAnalysis.anova.type~="no ANOVA"
             % Plot of the full anova results
             displayAnova(anova.Fcontinuum{k},anova.Fthreshold{k},anova.Fsignificant{k},Fs,xlab,ylab,ylimits,dimensions,nTicksX,nTicksY,xlimits,colorMap,imageSize,imageFontSize)
             if displayContour & size(anova.Fcontinuum{k},2)>1
-                dispContour(anova.Fcontinuum{k},anova.Fthreshold{k},contourColor,dashedColor,transparancy,lineWidth,linestyle)
+                dispContour(anova.Fcontinuum{k},anova.Fthreshold{k},contourColor,dashedColor,transparancy,lineWidth,lineStyle)
             end
             title(anova.effectNames{k})
             print('-dtiff',imageResolution,[savedir '/ANOVA/' verifSaveName(anova.effectNames{k})])
@@ -616,7 +614,7 @@ if min(dimensions)>1
             % differences
             displayDiffMaps(posthoc{np}.differences.continuum{comp},Fs,xlab,ylab,ylimits,nTicksX,nTicksY,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMapDiff,diffRatio)
             if displayContour
-                dispContour(abs(posthoc{np}.tTests.contourSignificant{comp}),posthoc{np}.tTests.Tthreshold{comp},contourColor,dashedColor,transparancy,lineWidth,linestyle)
+                dispContour(abs(posthoc{np}.tTests.contourSignificant{comp}),posthoc{np}.tTests.Tthreshold{comp},contourColor,dashedColor,transparancy,lineWidth,lineStyle)
             end
             title(posthoc{np}.differences.names{comp})
             print('-dtiff',imageResolution,[savedir2 '/DIFF/' verifSaveName(posthoc{np}.differences.names{comp})])
@@ -626,7 +624,7 @@ if min(dimensions)>1
             % relative differences
             displayRelativeDiffMaps(posthoc{np}.differences.continuumRelative{comp},Fs,xlab,ylab,ylimits,nTicksX,nTicksY,xlimits,imageFontSize,imageSize,colorMapDiff,relativeRatio)
             if displayContour
-                dispContour(abs(posthoc{np}.tTests.contourSignificant{comp}),posthoc{np}.tTests.Tthreshold{comp},contourColor,dashedColor,transparancy,lineWidth,linestyle)
+                dispContour(abs(posthoc{np}.tTests.contourSignificant{comp}),posthoc{np}.tTests.Tthreshold{comp},contourColor,dashedColor,transparancy,lineWidth,lineStyle)
             end
             title(posthoc{np}.differences.names{comp})
             print('-dtiff',imageResolution,[savedir2 '/DIFF/' verifSaveName(posthoc{np}.differences.names{comp}) ' %'])
@@ -636,7 +634,7 @@ if min(dimensions)>1
             % spm analysis
             displayTtest(posthoc{np}.tTests.Tcontinuum{comp},posthoc{np}.tTests.Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nTicksX,nTicksY,xlimits,imageFontSize,imageSize,colorMapDiff)
             if displayContour
-                dispContour(abs(posthoc{np}.tTests.Tcontinuum{comp}),posthoc{np}.tTests.Tthreshold{comp},contourColor,dashedColor,transparancy,lineWidth,linestyle)
+                dispContour(abs(posthoc{np}.tTests.Tcontinuum{comp}),posthoc{np}.tTests.Tthreshold{comp},contourColor,dashedColor,transparancy,lineWidth,lineStyle)
             end
             title(posthoc{np}.differences.names{comp})
             print('-dtiff',imageResolution,[savedir2 '/SPM/' verifSaveName(posthoc{np}.differences.names{comp})])
@@ -647,7 +645,7 @@ if min(dimensions)>1
             displayMapsES(posthoc{np}.differences.ES{comp},Fs,xlab,ylab,ylimits,nTicksX,nTicksY,xlimits,imageFontSize,imageSize,colorMap)
             title(posthoc{np}.differences.names{comp})
             if displayContour
-                dispContour(abs(posthoc{np}.tTests.contourSignificant{comp}),posthoc{np}.tTests.Tthreshold{comp},contourColor,dashedColor,transparancy,lineWidth,linestyle)
+                dispContour(abs(posthoc{np}.tTests.contourSignificant{comp}),posthoc{np}.tTests.Tthreshold{comp},contourColor,dashedColor,transparancy,lineWidth,lineStyle)
             end
             print('-dtiff',imageResolution,[savedir2 '/ES/' verifSaveName(posthoc{np}.differences.names{comp})])
             savefig([savedir2 '/FIG/ES/' verifSaveName(posthoc{np}.differences.names{comp})])
