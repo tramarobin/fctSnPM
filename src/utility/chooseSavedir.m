@@ -1,7 +1,7 @@
 function savedir=chooseSavedir(savedir)
 
 % target a save directory
-if isempty(savedir)
+if isempty(savedir) 
     savedir=uigetdir('','Choose or create the directory to save the outputs');
     
     files=dir(savedir);
