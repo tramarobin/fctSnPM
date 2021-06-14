@@ -1,6 +1,6 @@
 # fctSnPM [![status](https://joss.theoj.org/papers/ea923a728497b806dbb59a0c4c0b76cc/status.svg)](https://joss.theoj.org/papers/ea923a728497b806dbb59a0c4c0b76cc) [![View fctSnPM on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/77945-fctSnPM)
 Using spm1d package (v.0.4.3), computes ANOVA and post-hoc tests from anova1 to anova3rm, with a non-parametric approach (permutation tests).
-The type of ANOVA (if required) and post-hoc are chosen regarding the independent or repeated measure effects given in parameters.
+The type of ANOVA (if required) and post-hoc tests are chosen regarding the independent or repeated measure effects given in parameters.
 The function automatically adapts to 1D and 2D data.
 
 The general usage is:
@@ -24,9 +24,7 @@ snpmAnalysis=fctSnPM(data, independantEffects, repeatedMeasuresEffects, varargin
 
 
 ## Warnings ##
-* Unbalanced two- and three-way repeated-measures ANOVA results have not been verified.
-Example: more subjects in Group 1 than in Group 2.
-Please interpret results for these designs with caution, and recognize that they might not be valid.
+* Unbalanced two- and three-way repeated-measures ANOVA results have not been verified. Please refer to the [spm1d documentation about unbalanced design](https://spm1d.org/DocumentationMatlab.html#label-documentationmatlab)
 * Post-hoc tests with Bonferonni correction are only approximate and conservative. Refer to the [spm1d documentation about post hoc tests](https://spm1d.org/doc/PostHoc/anova.html) for more information.
 * Some warnings are displayed if the number of permutations is automatically modified or not sufficient to perform the analysis with the defined alpha risk.
 * Effect sizes and confidence intervals are not validated and are just given as supplementary information.
@@ -272,7 +270,7 @@ in addition of `fctSnPM`, this repository contains two similar funtions.
 * `onlyPlot` permits to plot a part of the analysis obtain with `fctSnPM` and `fctSnPMS`. In 1D, the ANOVA and the means with SnPM analysis are displayed. In 2D, the ANOVA and the post-hoc tests are displayed.  
 * `saveNplot` permits to save and plot the entire analysis obtain with `fctSnPM` and `fctSnPMS`.  
 
-The general use of these funtion are:
+The general use of these funtions are:
 ```matlab
 snpmAnalysis=fctSnPMS(data, independantEffects, repeatedMeasuresEffects, 'Optional Input Name', value)
 onlyPlot(snpmAnalysis,'Optional Input Name', value)
