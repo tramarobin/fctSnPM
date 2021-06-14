@@ -2,17 +2,17 @@
 % trama.robin@gmail.com
 
 % available at :
-% - https://github.com/tramarobin/fctSPM
-% - https://www.mathworks.com/matlabcentral/fileexchange/77945-fctspm
+% - https://github.com/tramarobin/fctSnPM
+% - https://www.mathworks.com/matlabcentral/fileexchange/77945-fctSnPM
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Please read README.md on https://github.com/tramarobin/fctSPM for all information
+%% Please read README.md on https://github.com/tramarobin/fctSnPM for all information
 
 % Using spm1d package (v.0.4.3), compute anova and post-hoc tests from anova1 to anova3rm, with a non-parametric approach (permutation tests)
 % The type of anova (if required) and post-hoc are choosen regarding the independant or repeated measure effect given in parameters.
 % The function automatically adapts to 1D and 2D data
-% You can find different scripts creating output for 1D and 2D data in ...\fctSPM\Examples
+% You can find different scripts creating output for 1D and 2D data in ...\fctSnPM\Examples
 % 1D examples are torque ratios
 % 2D examples are maps obtained with continuous wavelet transforms
 
@@ -35,9 +35,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % OUTPUTS
-%`spmAnalaysis.mat` is a structure composed of the results of teh statistical analysis (ANOVA + Post Hoc). 
+%`snpmAnalysis.mat` is a structure composed of the results of teh statistical analysis (ANOVA + Post Hoc). 
 
-%`spmAnalysis.anova` is composed of different fields :  
+%`snpmAnalysis.anova` is composed of different fields :  
 %* `type` is the type of ANOVA performed
 %* `effectNames` is a structure (one cell for each effect) that represent the names of the effects tested (mains and interactions)
 %* `alpha` is the alpha risk choosen for the anova (default is 0.05 (5%)).  
@@ -52,7 +52,7 @@
 
 %`clusterLocation` and `clusterP` are created only in one dimension
 
-%`spmAnalysis.posthoc` is a strucure of cells (one for each effect of the ANOVA) composed of different fields :
+%`snpmAnalysis.posthoc` is a strucure of cells (one for each effect of the ANOVA) composed of different fields :
 %* `data.names` is a structure that contains the name of the conditions used in the analysis (\cap is the union of different conditions for interactions).
 %* `data.continuum` is a structure that contains the data used in the analysis.
 
@@ -95,8 +95,8 @@
 % also avoid underscore (_) or minus (-) sign. Spaces are OK
 
 % OPTIONAL
-% see the description at begining of the function (inputParser) or on GitHub (https://github.com/tramarobin/fctSPM#optional-inputs)
-% see ./fctSPM/Examples for help
+% see the description at begining of the function (inputParser) or on GitHub (https://github.com/tramarobin/fctSnPM#optional-inputs)
+% see ./fctSnPM/Examples for help
 
 %% Information
 % All the dataset must be balanced for ANOVA 2 and 3
@@ -109,7 +109,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function spmAnalysis=fctSPMS(mapsAll,effectsInd,effectsRm,varargin)
+function snpmAnalysis=fctSnPMS(mapsAll,effectsInd,effectsRm,varargin)
 
 %% Optional inputs
 p = inputParser;
@@ -141,7 +141,7 @@ ignoreAnova=p.Results.ignoreAnova;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Converting data for spm analysis
+%% Converting data for SnPM analysis
 [maps1d,dimensions,sujets,nRm,nEffects,typeEffectsAll,modalitiesAll,indicesEffects]=findModalities(mapsAll,effectsRm,effectsInd);
 
 %% Choose and perform ANOVA
@@ -154,7 +154,7 @@ else %2D
     posthoc=fctPostHoc2dS(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,multiPerm,Perm,anovaEffects,maximalPerm,doAllInteractions,alphaT,alpha);
 end
 
-spmAnalysis.anova=anova;
-spmAnalysis.posthoc=posthoc;
+snpmAnalysis.anova=anova;
+snpmAnalysis.posthoc=posthoc;
 
 end

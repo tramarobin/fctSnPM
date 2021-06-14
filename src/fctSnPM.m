@@ -2,18 +2,18 @@
 % trama.robin@gmail.com
 
 % available at :
-% - https://github.com/tramarobin/fctSPM
-% - https://www.mathworks.com/matlabcentral/fileexchange/77945-fctspm
+% - https://github.com/tramarobin/fctSnPM
+% - https://www.mathworks.com/matlabcentral/fileexchange/77945-fctSnPM
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Please read README.md on https://github.com/tramarobin/fctSPM for all information
+%% Please read README.md on https://github.com/tramarobin/fctSnPM for all information
 
 % Using spm1d package (v.0.4.3), compute anova and post-hoc tests from anova1 to anova3rm, with a non-parametric approach (permutation tests)
 % The type of anova (if required) and post-hoc are choosen regarding the independant or repeated measure effect given in parameters.
 % The function automatically adapts to 1D and 2D data
 % Analysis and figures of the analysis are saved
-% You can find different scripts creating output for 1D and 2D data in ...\fctSPM\Examples
+% You can find different scripts creating output for 1D and 2D data in ...\fctSnPM\Examples
 % 1D examples are torque ratios
 % 2D examples are maps obtained with continuous wavelet transforms
 
@@ -36,9 +36,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % OUTPUTS
-%`spmAnalaysis.mat` is a structure composed of the results of teh statistical analysis (ANOVA + Post Hoc).
+%`snpmAnalysis.mat` is a structure composed of the results of teh statistical analysis (ANOVA + Post Hoc).
 
-%`spmAnalysis.anova` is composed of different fields :
+%`snpmAnalysis.anova` is composed of different fields :
 %* `type` is the type of ANOVA performed
 %* `effectNames` is a structure (one cell for each effect) that represent the names of the effects tested (mains and interactions)
 %* `alpha` is the alpha risk choosen for the anova (default is 0.05 (5%)).
@@ -53,7 +53,7 @@
 
 %`clusterLocation` and `clusterP` are created only in one dimension
 
-%`spmAnalysis.posthoc` is a strucure of cells (one for each effect of the ANOVA) composed of different fields :
+%`snpmAnalysis.posthoc` is a strucure of cells (one for each effect of the ANOVA) composed of different fields :
 %* `data.names` is a structure that contains the name of the conditions used in the analysis (\cap is the union of different conditions for interactions).
 %* `data.continuum` is a structure that contains the data used in the analysis.
 
@@ -106,19 +106,19 @@
 %Subfolders : Contains the pairewise comparison results
 %* DIFF: Differences plots. Filenames with '%' at the end are the relative differences
 %* ES: Effect size plots. Bold blue lines are located at the significant differences (corrected with the ANOVA).
-%* SPM: Tcontinuum and statistical inferences plots. Bold blue lines are located at the significant differences (corrected with the ANOVA).
+%* SnPM: Tcontinuum and statistical inferences plots. Bold blue lines are located at the significant differences (corrected with the ANOVA).
 %* FIG folder contains the above mentionned folder with the figures in `.fig` format.
 
 
 %##### In two dimensions #####
 %Means maps for each condition are represented in one figure each.
-%The global effect of the post hoc precedure is display on a figure with the name of the effect. Mean maps are represented on the diagonal, pairewise differences on the top-right panel, and pairewise spm inferences on the bottom-left panel.
+%The global effect of the post hoc precedure is display on a figure with the name of the effect. Mean maps are represented on the diagonal, pairewise differences on the top-right panel, and pairewise SnPM inferences on the bottom-left panel.
 
 %Subfolders : Contains the pairewise comparison results (In one folder for ANOVA1, in 2 or 3 folders for ANOVA2 and ANOVA3)
 %* SD : standard deviation of the maps for each condition.
 %* DIFF: Differences plots. Filenames with '%' at the end are the relative differences. White clusters represent the significant effect (corrected with ANOVA)
 %* ES: Effect size plots. Whites clusters represent the significant effect (corrected with ANOVA)
-%* SPM: Tcontinuum and statistical inferences plots. Whites clusters represent the significant effect (no correction with the ANOVA)
+%* SnPM: Tcontinuum and statistical inferences plots. Whites clusters represent the significant effect (no correction with the ANOVA)
 %* FIG folder contains the above mentionned folder with the figures in `.fig` format.
 
 
@@ -136,8 +136,8 @@
 % also avoid underscore (_) or minus (-) sign. Spaces are OK
 
 % OPTIONAL
-% see the description at begining of the function (inputParser) or on GitHub (https://github.com/tramarobin/fctSPM#optional-inputs)
-% see ./fctSPM/Examples for help
+% see the description at begining of the function (inputParser) or on GitHub (https://github.com/tramarobin/fctSnPM#optional-inputs)
+% see ./fctSnPM/Examples for help
 
 %% Information
 % All the dataset must be balanced for ANOVA 2 and 3
@@ -150,7 +150,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function spmAnalysis=fctSPM(mapsAll,effectsInd,effectsRm,varargin)
+function snpmAnalysis=fctSnPM(mapsAll,effectsInd,effectsRm,varargin)
 
 %% Optional inputs
 p = inputParser;
@@ -188,7 +188,7 @@ addParameter(p,'linestyle','-') % In 1D : lineStyle for plots (default  is conti
 
 % 2d plot parameters
 addParameter(p,'colorMap',cbrewer('seq','Reds', 64)) % colormap used for means and ANOVA and ES plots (0 to positive)
-addParameter(p,'colorMapDiff',flipud(cbrewer('div','RdBu', 64))) % colormap used for differences and SPM plot (0 centered)
+addParameter(p,'colorMapDiff',flipud(cbrewer('div','RdBu', 64))) % colormap used for differences and SnPM plot (0 centered)
 addParameter(p,'colorbarLabel','',@ischar); % name of the colorbar label
 addParameter(p,'limitMeanMaps',[],@isnumeric); % limit of the colorbar. the value of X will make the colorbar going from 0 to X for all plots (easier to compare). If not specified, the maps wont necessery be with the same range but will be automatically scaled
 addParameter(p,'displaycontour',1,@isnumeric); % display contour map on differences and size effect maps (0 to not display)
@@ -203,10 +203,10 @@ addParameter(p,'relativeRatio',[],@isnumeric) % the relative differences maps wi
 addParameter(p,'CI',[],@isnumeric); % confidence interval is used instead of standard deviation (0.7-->0.999), 0 to display SEM, , or negative value to not dispaly dispersion
 addParameter(p,'colorLine',[]); % colorline for plots (default  is "lines") // rgb triplet, if in cell, apply each color to each effect (independant effect first)
 addParameter(p,'transparancy1D',0.10); % transparancy of SD for 1D plot
-addParameter(p,'ratioSPM',[1 3]); % ratio of SPM subplot relative to total figure (default if 1/3 of the figure)
+addParameter(p,'ratioSnPM',[1 3]); % ratio of SnPM subplot relative to total figure (default if 1/3 of the figure)
 addParameter(p,'yLimitES',[]); % y-axis limits for ES representation
-addParameter(p,'spmPos',[]); % postion of spm plot, default is bottom, any value will set the position to up
-addParameter(p,'aovColor','k'); % color of anova on SPM plot (color or rgb)
+addParameter(p,'SnPMPos',[]); % postion of SnPM plot, default is bottom, any value will set the position to up
+addParameter(p,'aovColor','k'); % color of anova on SnPM plot (color or rgb)
 
 parse(p,varargin{:});
 
@@ -246,9 +246,9 @@ linestyle=p.Results.linestyle;
 plotSub=p.Results.plotSub;
 nameSub=p.Results.nameSub;
 transparancy1D=p.Results.transparancy1D;
-ratioSPM=p.Results.ratioSPM;
+ratioSnPM=p.Results.ratioSnPM;
 yLimitES=p.Results.yLimitES;
-spmPos=p.Results.spmPos;
+SnPMPos=p.Results.SnPMPos;
 aovColor=p.Results.aovColor;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -264,7 +264,7 @@ if plotSub==1
     PlotmeanSub(mapsAll,nameSub,effectsRm,effectNames,savedir,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,imageFontSize,imageSize,colorLine,colorMap,colorbarLabel,limitMeanMaps,transparancy1D)
 end
 
-%% Converting data for spm analysis
+%% Converting data for SnPM analysis
 [maps1d,dimensions,sujets,nRm,nEffects,typeEffectsAll,modalitiesAll,indicesEffects]=findModalities(mapsAll,effectsRm,effectsInd);
 
 %% Choose and perform ANOVA
@@ -272,15 +272,15 @@ end
 
 %% Choose and perform post-hocs
 if min(dimensions)==1 %1D
-    posthoc=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiPerm,Perm,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalPerm,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,alpha,transparancy1D,ratioSPM,yLimitES,spmPos,aovColor,linestyle);
+    posthoc=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiPerm,Perm,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalPerm,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,alpha,transparancy1D,ratioSnPM,yLimitES,SnPMPos,aovColor,linestyle);
 else %2D
     posthoc=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,contourColor,savedir,multiPerm,Perm,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalPerm,doAllInteractions,dashedColor,transparancy,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,alpha,linestyle);
 end
 
 %% Save analysis
-spmAnalysis.anova=anova;
-spmAnalysis.posthoc=posthoc;
-save([savedir '/spmAnalysis'], 'spmAnalysis')
+snpmAnalysis.anova=anova;
+snpmAnalysis.posthoc=posthoc;
+save([savedir '/snpmAnalysis'], 'snpmAnalysis')
 
 %% Activate figure display
 set(0, 'DefaultFigureVisible', 'on');

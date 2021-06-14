@@ -37,7 +37,7 @@ for s=1:size(mapsAll,1)
     end
 end
 
-% numerisation of effects for SPM
+% numerisation of effects for SnPM
 effectsModalities=[E_ind,E_rm];
 typeEffectsAll=[zeros(1,nInd),ones(1,nRm)];
 modalitiesAll=[modalitiesInd,modalitiesRm];

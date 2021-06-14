@@ -2,28 +2,28 @@
 % trama.robin@gmail.com
 
 % available at :
-% - https://github.com/tramarobin/fctSPM
-% - https://www.mathworks.com/matlabcentral/fileexchange/77945-fctspm
+% - https://github.com/tramarobin/fctSnPM
+% - https://www.mathworks.com/matlabcentral/fileexchange/77945-fctSnPM
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% plot a part of the analysis obtain with `fctSPM` and `fctSPMS`.
+% plot a part of the analysis obtain with `fctSnPM` and `fctSnPMS`.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 %% INPUTS
 % OBLIGATORY
-% spmAnalysis obtained with `fctSPM` or `fctSPMS`.
+% snpmAnalysis obtained with `fctSnPM` or `fctSnPMS`.
 
 % OPTIONAL
-% see the description at begining of the function (inputParser) or on GitHub (https://github.com/tramarobin/fctSPM#optional-inputs)
-% see ./fctSPM/Examples for help
+% see the description at begining of the function (inputParser) or on GitHub (https://github.com/tramarobin/fctSnPM#optional-inputs)
+% see ./fctSnPM/Examples for help
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function onlyPlot(spmAnalysis,varargin)
+function onlyPlot(snpmAnalysis,varargin)
 
 %% Optional inputs
 p = inputParser;
@@ -43,7 +43,7 @@ addParameter(p,'linestyle','-') % In 1D : lineStyle for plots (default  is conti
 
 % 2d plot parameters
 addParameter(p,'colorMap',cbrewer('seq','Reds', 64)) % colormap used for means and ANOVA and ES plots (0 to positive)
-addParameter(p,'colorMapDiff',flipud(cbrewer('div','RdBu', 64))) % colormap used for differences and SPM plot (0 centered)
+addParameter(p,'colorMapDiff',flipud(cbrewer('div','RdBu', 64))) % colormap used for differences and SnPM plot (0 centered)
 addParameter(p,'colorbarLabel','',@ischar); % name of the colorbar label
 addParameter(p,'limitMeanMaps',[],@isnumeric); % limit of the colorbar. the value of X will make the colorbar going from 0 to X for all plots (easier to compare). If not specified, the maps wont necessery be with the same range but will be automatically scaled
 addParameter(p,'displaycontour',1,@isnumeric); % display contour map on differences and size effect maps (0 to not display)
@@ -56,9 +56,9 @@ addParameter(p,'lineWidth',2.5,@isnumeric) % linewidth of the contour plot
 addParameter(p,'CI',[],@isnumeric); % confidence interval is used instead of standard deviation (0.7-->0.999), 0 to display SEM, , or negative value to not dispaly dispersion
 addParameter(p,'colorLine',[]); % colorline for plots (default  is "lines") // rgb triplet, if in cell, apply each color to each effect (independant effect first)
 addParameter(p,'transparancy1D',0.10); % transparancy of SD for 1D plot
-addParameter(p,'ratioSPM',[1 3]); % ratio of SPM subplot relative to total figure (default if 1/3 of the figure)
-addParameter(p,'spmPos',[]); % postion of spm plot, default is bottom, any value will set the position to up
-addParameter(p,'aovColor','k'); % color of anova on SPM plot (color or rgb)
+addParameter(p,'ratioSnPM',[1 3]); % ratio of SnPM subplot relative to total figure (default if 1/3 of the figure)
+addParameter(p,'SnPMPos',[]); % postion of SnPM plot, default is bottom, any value will set the position to up
+addParameter(p,'aovColor','k'); % color of anova on SnPM plot (color or rgb)
 
 parse(p,varargin{:});
 
@@ -83,8 +83,8 @@ colorMap=p.Results.colorMap;
 colorMapDiff=p.Results.colorMapDiff;
 lineStyle=p.Results.linestyle;
 transparancy1D=p.Results.transparancy1D;
-ratioSPM=p.Results.ratioSPM;
-spmPos=p.Results.spmPos;
+ratioSnPM=p.Results.ratioSnPM;
+SnPMPos=p.Results.SnPMPos;
 aovColor=p.Results.aovColor;
 colorLine=p.Results.colorLine;
 
@@ -95,8 +95,8 @@ warning('off', 'MATLAB:MKDIR:DirectoryExists');
 
 
 %% ANOVA
-if spmAnalysis.anova.type~="no ANOVA"
-    anova=spmAnalysis.anova;
+if snpmAnalysis.anova.type~="no ANOVA"
+    anova=snpmAnalysis.anova;
     if iscell(anova.Fcontinuum)
         dimensions=size(anova.Fcontinuum{1});
     else
@@ -129,22 +129,22 @@ if spmAnalysis.anova.type~="no ANOVA"
 end
 
 %% POST HOC 1D
-posthoc=spmAnalysis.posthoc;
-dimensions=size(spmAnalysis.posthoc{1}.tTests.Tcontinuum{1});
+posthoc=snpmAnalysis.posthoc;
+dimensions=size(snpmAnalysis.posthoc{1}.tTests.Tcontinuum{1});
 if min(dimensions)==1
     
     
-    %% Means + SPM plots
+    %% Means + SnPM plots
     
     % T-TESTS and ANOVA1
     if numel(posthoc)==1
         
         clPlot=chooseCL(colorLine,lineStyle,1);
         
-        if spmAnalysis.anova.type~="no ANOVA" % plot with aov
-            plotmeanSPMon(posthoc{1}.data.continuum,posthoc{1}.tTests.Tcontinuum,posthoc{1}.tTests.Tsignificant,posthoc{1}.data.names,posthoc{1}.differences.names,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,anova.Fsignificant,{posthoc{1}.name},ratioSPM,spmPos,aovColor)
+        if snpmAnalysis.anova.type~="no ANOVA" % plot with aov
+            plotmeanSnPMon(posthoc{1}.data.continuum,posthoc{1}.tTests.Tcontinuum,posthoc{1}.tTests.Tsignificant,posthoc{1}.data.names,posthoc{1}.differences.names,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,anova.Fsignificant,{posthoc{1}.name},ratioSnPM,SnPMPos,aovColor)
         else
-            plotmeanSPMon(posthoc{1}.data.continuum,posthoc{1}.tTests.Tcontinuum,posthoc{1}.tTests.Tsignificant,posthoc{1}.data.names,posthoc{1}.differences.names,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSPM,spmPos,aovColor)
+            plotmeanSnPMon(posthoc{1}.data.continuum,posthoc{1}.tTests.Tcontinuum,posthoc{1}.tTests.Tsignificant,posthoc{1}.data.names,posthoc{1}.differences.names,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,[],[],ratioSnPM,SnPMPos,aovColor)
         end
         
         % MAIN EFFECT FOR ANOVA 2 and 3
@@ -160,7 +160,7 @@ if min(dimensions)==1
             
             clPlot=chooseCL(colorLine,lineStyle,np);
             
-            plotmeanSPMon(posthoc{np}.data.continuum,posthoc{np}.tTests.Tcontinuum,posthoc{np}.tTests.Tsignificant,posthoc{np}.data.names,posthoc{np}.differences.names,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,anova.Fsignificant(np),anova.effectNames(np),ratioSPM,spmPos,aovColor)
+            plotmeanSnPMon(posthoc{np}.data.continuum,posthoc{np}.tTests.Tcontinuum,posthoc{np}.tTests.Tsignificant,posthoc{np}.data.names,posthoc{np}.differences.names,CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,anova.Fsignificant(np),anova.effectNames(np),ratioSnPM,SnPMPos,aovColor)
             
         end
         
@@ -210,7 +210,7 @@ if min(dimensions)==1
                     
                     nAnova=whichAnova(mainEffect);
                     
-                    plotmeanSPMon(posthoc{np}.data.continuum(whichPlot{p}),posthoc{np}.tTests.Tcontinuum(:,whichCompare),posthoc{np}.tTests.Tsignificant(:,whichCompare),posthoc{np}.data.names(whichPlot{p}),posthoc{np}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,anova.Fsignificant([mainEffect(whichFixed(2,p)), nAnova]),{anova.effectNames{mainEffect(whichFixed(2,p))},[anova.effectNames{mainEffect(1)} ' x ' anova.effectNames{mainEffect(2)}]},ratioSPM,spmPos,aovColor)
+                    plotmeanSnPMon(posthoc{np}.data.continuum(whichPlot{p}),posthoc{np}.tTests.Tcontinuum(:,whichCompare),posthoc{np}.tTests.Tsignificant(:,whichCompare),posthoc{np}.data.names(whichPlot{p}),posthoc{np}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,anova.Fsignificant([mainEffect(whichFixed(2,p)), nAnova]),{anova.effectNames{mainEffect(whichFixed(2,p))},[anova.effectNames{mainEffect(1)} ' x ' anova.effectNames{mainEffect(2)}]},ratioSnPM,SnPMPos,aovColor)
                     
                     clear isEmptydata findT capPos whichCompare
                     
@@ -281,13 +281,13 @@ if min(dimensions)==1
             end
             
             if numel(posthoc)==3
-                plotmeanSPMon(posthoc{pos}.data.continuum(whichPlot{p}),posthoc{pos}.tTests.Tcontinuum(:,whichCompare),posthoc{pos}.tTests.Tsignificant(:,whichCompare),posthoc{pos}.data.names  (whichPlot{p}(isEmptydata)),posthoc{pos}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,anova.Fsignificant([whichFixed(2,p) 3]),{anova.effectNames{whichFixed(2,p)},[anova.effectNames{1} ' x ' anova.effectNames{2}]},ratioSPM,spmPos,aovColor)
+                plotmeanSnPMon(posthoc{pos}.data.continuum(whichPlot{p}),posthoc{pos}.tTests.Tcontinuum(:,whichCompare),posthoc{pos}.tTests.Tsignificant(:,whichCompare),posthoc{pos}.data.names  (whichPlot{p}(isEmptydata)),posthoc{pos}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,anova.Fsignificant([whichFixed(2,p) 3]),{anova.effectNames{whichFixed(2,p)},[anova.effectNames{1} ' x ' anova.effectNames{2}]},ratioSnPM,SnPMPos,aovColor)
                 
             else
                 [nAnovaInt,nNames]=whichAnovaInt(whichFixed(1,p));
                 
-                plotmeanSPMon(posthoc{pos}.data.continuum(whichPlot{p}),posthoc{pos}.tTests.Tcontinuum(:,whichCompare),posthoc{pos}.tTests.Tsignificant(:,whichCompare),posthoc{pos}.data.names  (whichPlot{p}(isEmptydata)),posthoc{pos}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,...
-                    anova.Fsignificant([whichFixed(1,p) nAnovaInt 7]),{anova.effectNames{whichFixed(1,p)},[anova.effectNames{nNames(1,1)} ' x ' anova.effectNames{nNames(1,2)}], [anova.effectNames{nNames(2,1)} ' x ' anova.effectNames{nNames(2,2)}],[anova.effectNames{1} ' x ' anova.effectNames{2} ' x ' anova.effectNames{3}]},ratioSPM,spmPos,aovColor)
+                plotmeanSnPMon(posthoc{pos}.data.continuum(whichPlot{p}),posthoc{pos}.tTests.Tcontinuum(:,whichCompare),posthoc{pos}.tTests.Tsignificant(:,whichCompare),posthoc{pos}.data.names  (whichPlot{p}(isEmptydata)),posthoc{pos}.differences.names(whichCompare),CI,xlab,ylab,Fs,xlimits,nTicksX,nTicksY,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,...
+                    anova.Fsignificant([whichFixed(1,p) nAnovaInt 7]),{anova.effectNames{whichFixed(1,p)},[anova.effectNames{nNames(1,1)} ' x ' anova.effectNames{nNames(1,2)}], [anova.effectNames{nNames(2,1)} ' x ' anova.effectNames{nNames(2,2)}],[anova.effectNames{1} ' x ' anova.effectNames{2} ' x ' anova.effectNames{3}]},ratioSnPM,SnPMPos,aovColor)
             end
             
             clear isEmptydata findT capPos whichCompare
@@ -320,7 +320,7 @@ if min(dimensions)>1
         
         for comp=1:numel(posthoc{np}.differences.names)
             
-            % spm analysis
+            % SnPM analysis
             displayTtestOn(posthoc{np}.tTests.Tcontinuum{comp},posthoc{np}.tTests.Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nTicksX,nTicksY,xlimits,imageFontSize,imageSize,colorMapDiff)
             if displayContour
                 dispContour(abs(posthoc{np}.tTests.Tcontinuum{comp}),posthoc{np}.tTests.Tthreshold{comp},contourColor,dashedColor,transparancy,lineWidth,lineStyle)

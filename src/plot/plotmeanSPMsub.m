@@ -1,4 +1,4 @@
-function []=plotmeanSPMsub(Data,tTest1,tTest2,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,ny,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects,eNames,ratioSPM,spmPos,aovColor)
+function []=plotmeanSnPMsub(Data,tTest1,tTest2,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,ny,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects,eNames,ratioSnPM,SnPMPos,aovColor)
 
 if isempty(imageSize)
     figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
@@ -57,10 +57,10 @@ for i=1:size(Data,2)
     SDinf{i}=MData{i}-std(Data{i});
 end
 
-if isempty(spmPos)
-    subplot(ratioSPM(2),1,1:(ratioSPM(2)-ratioSPM(1)))
+if isempty(SnPMPos)
+    subplot(ratioSnPM(2),1,1:(ratioSnPM(2)-ratioSnPM(1)))
 else
-    subplot(ratioSPM(2),1,ratioSPM(1)+1:ratioSPM(2))
+    subplot(ratioSnPM(2),1,ratioSnPM(1)+1:ratioSnPM(2))
 end
 
 for i=1:size(Data,2)
@@ -113,7 +113,7 @@ for i=1:nx
 end
 xticklabels(xlabs)
 xl = xlim;
-if ~isempty(spmPos)
+if ~isempty(SnPMPos)
     xlabel(xlab)
 else
     if isempty(IC)
@@ -139,7 +139,7 @@ end
 
 set(gca,'FontSize',imageFontSize)
 
-%% add SPM subplot
+%% add SnPM subplot
 valTtest=tTest1;
 tTest=tTest2;
 
@@ -164,12 +164,12 @@ whichSignificant=find(isSignificant);
 allSignificant=totalSignificant+totalSignificantAnova;
 
 if allSignificant>0
-    if isempty(spmPos)
-        subplot(ratioSPM(2),1,(ratioSPM(2)-ratioSPM(1)+1):ratioSPM(2))
+    if isempty(SnPMPos)
+        subplot(ratioSnPM(2),1,(ratioSnPM(2)-ratioSnPM(1)+1):ratioSnPM(2))
     else
-        subplot(ratioSPM(2),1,1:ratioSPM(1))
+        subplot(ratioSnPM(2),1,1:ratioSnPM(1))
     end
-    ylimitsSPM=1:allSignificant;
+    ylimitsSnPM=1:allSignificant;
     
     loop=allSignificant+1;
     for c=whichSignificantAnova
@@ -183,8 +183,8 @@ if allSignificant>0
             mapCluster=anovaEffects{c}(clusters(t)+1:clusters(t+1));
             goPlot=mean(anovaEffects{c}(clusters(t)+1:clusters(t+1)));
             if goPlot==1
-                vertShadeSPM([timeCluster(1),timeCluster(end)],...
-                    'color',aovColor,'vLimits',[ylimitsSPM(loop)-0.33 ylimitsSPM(loop)+0.33],'transparency',1);
+                vertShadeSnPM([timeCluster(1),timeCluster(end)],...
+                    'color',aovColor,'vLimits',[ylimitsSnPM(loop)-0.33 ylimitsSnPM(loop)+0.33],'transparency',1);
             end
         end
     end
@@ -220,15 +220,15 @@ if allSignificant>0
             if goPlot==1
                 
                 if mean(valTtest{c}(clusters(t)+1:clusters(t+1)))>0
-                    vertShadeSPM([timeCluster(1),timeCluster(end)],...
-                        'color',colors(indices4diff{c}(1),:),'vLimits',[ylimitsSPM(loop) ylimitsSPM(loop)+0.33],'transparency',1);
-                    vertShadeSPM([timeCluster(1),timeCluster(end)],...
-                        'color',colors(indices4diff{c}(2),:),'vLimits',[ylimitsSPM(loop)-0.33 ylimitsSPM(loop)],'transparency',1);
+                    vertShadeSnPM([timeCluster(1),timeCluster(end)],...
+                        'color',colors(indices4diff{c}(1),:),'vLimits',[ylimitsSnPM(loop) ylimitsSnPM(loop)+0.33],'transparency',1);
+                    vertShadeSnPM([timeCluster(1),timeCluster(end)],...
+                        'color',colors(indices4diff{c}(2),:),'vLimits',[ylimitsSnPM(loop)-0.33 ylimitsSnPM(loop)],'transparency',1);
                 else
-                    vertShadeSPM([timeCluster(1),timeCluster(end)],...
-                        'color',colors(indices4diff{c}(2),:),'vLimits',[ylimitsSPM(loop) ylimitsSPM(loop)+0.33],'transparency',1);
-                    vertShadeSPM([timeCluster(1),timeCluster(end)],...
-                        'color',colors(indices4diff{c}(1),:),'vLimits',[ylimitsSPM(loop)-0.33 ylimitsSPM(loop)],'transparency',1);
+                    vertShadeSnPM([timeCluster(1),timeCluster(end)],...
+                        'color',colors(indices4diff{c}(2),:),'vLimits',[ylimitsSnPM(loop) ylimitsSnPM(loop)+0.33],'transparency',1);
+                    vertShadeSnPM([timeCluster(1),timeCluster(end)],...
+                        'color',colors(indices4diff{c}(1),:),'vLimits',[ylimitsSnPM(loop)-0.33 ylimitsSnPM(loop)],'transparency',1);
                     
                 end
                 
@@ -242,7 +242,7 @@ if allSignificant>0
     
     xlim(xl)
     box off
-    if isempty(spmPos)
+    if isempty(SnPMPos)
         xlabel(xlab)
     else
         if isempty(IC)

@@ -43,7 +43,7 @@ if dimensions(1)==1 | dimensions(2)==1 %1D
     end
     
     xlabel(xlab)
-    ylabel('SPM (t)')
+    ylabel('SnPM (t)')
     if ~isempty(xlimits)
         xlabels=linspace(xlimits(1),xlimits(end),nx);
     else
@@ -83,7 +83,7 @@ else % 2D
     xlabel(xlab);
     colormap(colorMap)
     Co=colorbar('EastOutside');
-    Co.Label.String=('SPM (t)');
+    Co.Label.String=('SnPM (t)');
     Co.FontSize=imageFontSize;
     
     

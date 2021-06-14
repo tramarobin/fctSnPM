@@ -55,13 +55,13 @@ if ~ignoreAnova
         else % ANOVA2 & % ANOVA3
             
             anova.maxPermutations=ANOVA_inf.nPermUnique;
-            for k=1:size(ANOVA_inf.SPMs,2) % for each effect or interactions
+            for k=1:size(ANOVA_inf.SnPMs,2) % for each effect or interactions
                 
                 % Values given by the inference
-                anova.Fcontinuum{k}=reshape(ANOVA_inf.SPMs{k}.z,dimensions(1),dimensions(2));
-                anova.Fthreshold{k}=ANOVA_inf.SPMs{k}.zstar;
-                anova.Fsignificant{k}=reshape(ANOVA_inf.SPMs{k}.z>=anova.Fthreshold{k},dimensions(1),dimensions(2));
-                clustersAnova=extractClusterData(ANOVA_inf.SPMs{k}.clusters);
+                anova.Fcontinuum{k}=reshape(ANOVA_inf.SnPMs{k}.z,dimensions(1),dimensions(2));
+                anova.Fthreshold{k}=ANOVA_inf.SnPMs{k}.zstar;
+                anova.Fsignificant{k}=reshape(ANOVA_inf.SnPMs{k}.z>=anova.Fthreshold{k},dimensions(1),dimensions(2));
+                clustersAnova=extractClusterData(ANOVA_inf.SnPMs{k}.clusters);
                 if min(dimensions)==1
                     for c=1:numel(clustersAnova)
                         anova.clusterLocation{k}{c}=clustersAnova{c}.endpoints;

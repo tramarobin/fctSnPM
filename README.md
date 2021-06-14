@@ -1,22 +1,22 @@
-# fctSPM [![status](https://joss.theoj.org/papers/ea923a728497b806dbb59a0c4c0b76cc/status.svg)](https://joss.theoj.org/papers/ea923a728497b806dbb59a0c4c0b76cc) [![View fctSPM on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/77945-fctspm)
+# fctSnPM [![status](https://joss.theoj.org/papers/ea923a728497b806dbb59a0c4c0b76cc/status.svg)](https://joss.theoj.org/papers/ea923a728497b806dbb59a0c4c0b76cc) [![View fctSnPM on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/77945-fctSnPM)
 Using spm1d package (v.0.4.3), computes ANOVA and post-hoc tests from anova1 to anova3rm, with a non-parametric approach (permutation tests).
 The type of ANOVA (if required) and post-hoc are chosen regarding the independent or repeated measure effects given in parameters.
 The function automatically adapts to 1D and 2D data.
 
 The general usage is:
 ```matlab
-spmAnalysis=fctSPM(data, independantEffects, repeatedMeasuresEffects, varargin)
+snpmAnalysis=fctSnPM(data, independantEffects, repeatedMeasuresEffects, varargin)
 ```
 
 
 ## Table of contents ##
 - [Warnings](#Warnings)
 - [Statement of need](#Statement-of-need)
-- [Citing fctSPM](#Citing-fctSPM)
+- [Citing fctSnPM](#Citing-fctSnPM)
 - [MATLAB Release Compatibility](#MATLAB-Release-Compatibility)
 - [Outputs](#Outputs)
 - [Examples](#Examples)
-- [Using fctSPM](#Using-fctSPM)
+- [Using fctSnPM](#Using-fctSnPM)
 - [Obligatory inputs](#Obligatory-inputs)
 - [Optional inputs](#Optional-inputs)
 - [Optional functions](#Optional-functions)
@@ -46,13 +46,13 @@ Analyzing continuous values (i.e., time series) can provide more information tha
 In addition, oscillatory signals such as muscle vibrations and electromyograms contain information in the temporal and frequency domains. 
 Once again, scalar analysis reduces the information at only one dimension by discarding two dimensions among the magnitude and the localization in the time and/or frequency domain.
 
-Factorial SPM (fctSPM) allows MATLAB users to create figures of 1D and [2D SPM](https://spm1d.org/doc/Stats2D/ex2d_matlab.html) analysis for ANOVA and post-hoc designs.
+Factorial SnPM (fctSnPM) allows MATLAB users to create figures of 1D and [2D SnPM](https://spm1d.org/doc/Stats2D/ex2d_matlab.html) analysis for ANOVA and post-hoc designs.
 The statistical analysis is also saved in `.mat` files.   
 This function synthetizes the main and interaction effects to display only the significant post-hoc regarding the results of the ANOVA.   
 For post-hoc for interaction effects, the main effect is also displayed if located elsewhere than the interaction effect.
 
 
-## Citing fctSPM ##
+## Citing fctSnPM ##
 * This function: under review in JOSS   
 * For spm1d: Pataky TC (2010). Generalized n-dimensional biomechanical field analysis using statistical parametric mapping. Journal of Biomechanics 43, 1976-1982.   
 * For permutation tests: Nichols TE, Holmes AP (2002). Nonparametric permutation tests for functional neuroimaging: a primer with examples. Human Brain Mapping 15(1), 1–25.   
@@ -65,10 +65,10 @@ Compatible from Matlab R2017b
 
 ## Outputs ##
 
-### spmAnalysis ###
-`spmAnalaysis.mat` is a structure composed of the results of the statistical analysis (ANOVA + Post Hoc). 
+### snpmAnalysis ###
+`snpmAnalysis.mat` is a structure composed of the results of the statistical analysis (ANOVA + Post Hoc). 
 
-`spmAnalysis.anova` is composed of different fields:  
+`snpmAnalysis.anova` is composed of different fields:  
 * `type` is the type of ANOVA performed
 * `effectNames` is a structure (one cell for each effect) that represent the names of the effects tested (mains and interactions)
 * `alpha` is the alpha risk choosen for the anova (default is 0.05 (5%)).  
@@ -83,7 +83,7 @@ Compatible from Matlab R2017b
 
 `clusterLocation` and `clusterP` are created only in one dimension
 
-`spmAnalysis.posthoc` is a strucure of cells (one for each effect of the ANOVA) composed of different fields:
+`snpmAnalysis.posthoc` is a strucure of cells (one for each effect of the ANOVA) composed of different fields:
 * `data.names` is a structure that contains the name of the conditions used in the analysis (\cap is the union of different conditions for interactions).
 * `data.continuum` is a structure that contains the data used in the analysis.
 
@@ -136,18 +136,18 @@ The differences between the 5 figures are the representation of the ANOVA and th
 Subfolders: Contains the pairwise comparison results 
 * DIFF: Differences plots. Filenames with '%' at the end are the relative differences
 * ES: Effect size plots. Bold blue lines are located at the significant differences (corrected with the ANOVA).
-* SPM: Tcontinuum and statistical inferences plots. Bold blue lines are located at the significant differences (corrected with the ANOVA).
+* SnPM: Tcontinuum and statistical inferences plots. Bold blue lines are located at the significant differences (corrected with the ANOVA).
 * FIG folder contains the above mentioned folder with the figures in `.fig` format.
 
 ##### In two dimensions #####
 Means maps for each condition are represented in one figure each. 
-The global effect of the post hoc procedure is display on a figure with the name of the effect. Mean maps are represented on the diagonal, pairwise differences on the top-right panel, and pairwise SPM inferences on the bottom-left panel. 
+The global effect of the post hoc procedure is display on a figure with the name of the effect. Mean maps are represented on the diagonal, pairwise differences on the top-right panel, and pairwise SnPM inferences on the bottom-left panel. 
 
 Subfolders: Contains the pairwise comparison results (In one folder for ANOVA1, in 2 or 3 folders for ANOVA2 and ANOVA3)
 * SD: standard deviation of the maps for each condition.
 * DIFF: Differences plots. Filenames with '%' at the end are the relative differences. White clusters represent the significant effect (corrected with ANOVA)
 * ES: Effect size plots. Whites clusters represent the significant effect (corrected with ANOVA)
-* SPM: Tcontinuum and statistical inferences plots. Whites clusters represent the significant effect (no correction with the ANOVA)
+* SnPM: Tcontinuum and statistical inferences plots. Whites clusters represent the significant effect (no correction with the ANOVA)
 * FIG folder contains the above mentioned folder with the figures in `.fig` format.
 
 
@@ -157,13 +157,13 @@ The output of `D1_ANOVA2_1rm.m` for a 2way ANOVA with 1 repeated measure in 1 di
 The curves represent the ratio between Quadriceps and Hamstrings during isokinetic tests for two sides (Left and Right) and for two sexes (M and F).  
 
 ANOVA results: There is a "Side" effect, with a F-value above the significant threshold of 7.14 between 30 and 85°.
-![alt text](https://github.com/tramarobin/fctSPM/blob/master/Figures/1D_ANOVA2_1RM.png)
+![alt text](https://github.com/tramarobin/fctSnPM/blob/master/Figures/1D_ANOVA2_1RM.png)
 
 Post-hoc results: The curves represent the means and the standard deviations.
 Right > Left between 30 and 85°.
 The significant differences are displayed below the curves using the curves to display the pairwise comparisons.
 The ANOVA results are also displayed if wanted.
-![alt text](https://github.com/tramarobin/fctSPM/blob/master/Figures/1D_Post-hoc.png)
+![alt text](https://github.com/tramarobin/fctSnPM/blob/master/Figures/1D_Post-hoc.png)
 
 
 ### In two dimensions ###
@@ -171,28 +171,28 @@ The output of `D2_ANOVA2_2rm.m` for a 2way ANOVA with 2 repeated measures in 2 d
 The maps represent the time-frequency analysis of vibratory signal quantified with two devices (ACC and US), and for two muscle activations (Relaxed and Contracted).
 
 ANOVA results: Red clusters circled in white are the zone of significant effects. There are mains and interaction effects.
-![alt text](https://github.com/tramarobin/fctSPM/blob/master/Figures/2D_ANOVA2_2RM.png)
+![alt text](https://github.com/tramarobin/fctSnPM/blob/master/Figures/2D_ANOVA2_2RM.png)
 
 Post-hoc results for main effects: Mean maps for each condition are displayed. 
 Statistical results are shown within each map of differences on the top (Device effect) and at the bottom (Activation effect).
 The significant cluster are circled in white.
-![alt text](https://github.com/tramarobin/fctSPM/blob/master/Figures/2D_Post-hoc_MAIN.png)
+![alt text](https://github.com/tramarobin/fctSnPM/blob/master/Figures/2D_Post-hoc_MAIN.png)
 
 Post-hoc results for interaction effects: Mean maps for each condition are displayed. 
 Statistical results are shown within each map of differences on the right (Activation effect) and at the bottom (Device effect).
 The significant cluster are circled in white. Note that the main effects are also displayed.
-![alt text](https://github.com/tramarobin/fctSPM/blob/master/Figures/2D_Post-hoc_INT.png)
+![alt text](https://github.com/tramarobin/fctSnPM/blob/master/Figures/2D_Post-hoc_INT.png)
 
-## Using fctSPM ##
+## Using fctSnPM ##
 
 ### Installation ###
 Install this package by adding the `src` directory and its subdirectories to the MATLAB path. 
-One way to do this is to call: `addpath(genpath("./fctSPM/src"))`, where `./fctSPM/src` is the full path to the `src` directory. 
+One way to do this is to call: `addpath(genpath("./fctSnPM/src"))`, where `./fctSnPM/src` is the full path to the `src` directory. 
 Refer to the [MATLAB documentation regarding search paths](https://fr.mathworks.com/help/matlab/matlab_env/add-remove-or-reorder-folders-on-the-search-path.html) for alternative ways to set the path for current and future sessions.
 
 ### Usage ###
 ```matlab
-spmAnalysis=fctSPM(data, independantEffects, repeatedMeasuresEffects, varargin)
+snpmAnalysis=fctSnPM(data, independantEffects, repeatedMeasuresEffects, varargin)
 ```
 
 ### Obligatory inputs ###
@@ -203,7 +203,7 @@ spmAnalysis=fctSPM(data, independantEffects, repeatedMeasuresEffects, varargin)
 ### Optional inputs ###
 Optional inputs are available to personalize the figures.  
 ```matlab
-spmAnalysis=fctSPM(data, independantEffects, repeatedMeasuresEffects, 'Optional Input Name', value)
+snpmAnalysis=fctSnPM(data, independantEffects, repeatedMeasuresEffects, 'Optional Input Name', value)
 ```
 
 #### Utilities ####
@@ -243,7 +243,7 @@ Specified either samplefrequency or xlimits, but not both.
 #### 2D plot parameters ####
 These option are specific to 2D plots.
 * `colorMap` is the colormap used for means, standard deviations, ANOVA and effect sizes plots. The default colomap is cbrewer('Reds').
-* `colorMapDiff` is the colormap used for differences, relative differences and post-hoc spm plots. The default colomap is cbrewer('RdBu').
+* `colorMapDiff` is the colormap used for differences, relative differences and post-hoc SnPM plots. The default colomap is cbrewer('RdBu').
 Colormaps can be defined with cbrewer (distributed in this funtion): Charles (2020). cbrewer: [colorbrewer schemes for Matlab](https://www.mathworks.com/matlabcentral/fileexchange/34087-cbrewer-colorbrewer-schemes-for-matlab), MATLAB Central File Exchange. Retrieved December 11, 2020.
 * `colorbarLabel` is the name of the colorbar label. No name is display by default (@ischar).
 * `limitMeanMaps` defines limit of the colorbar. By default, the maps wont necessary be with the same range but will be automatically scaled at their maximum. A value of X will make the colorbar going from 0 to X for all plots to make them easier to compare (@isnumeric).
@@ -260,30 +260,30 @@ These option are specific to 1D plots.
 * `CI` is the confidence interval used instead of standard deviation. By default, standard deviations are displayed. Use 0.7 to 0.999 to display 70% to 99.9% confidence interval, 0 to display SEM, or negative value to not dispaly dispersion (@isnumeric).
 * `colorLine` is the colorline for plots (default  is "lines"). Use rgb triplet. If in cell, apply each color to each effect (independant effect first). `colorLine{1}=[rgb('blue'); rgb('magenta'); rgb('black')]` to have blue, magenta and black lines for the first effect.
 * `transparancy1D` is the transparency for the SD, CI or SEM. The default value is is 0.1 (@isnumeric).
-* `ratioSPM` is the ratio of SPM subplot relative to total figure. The default value is 1/3 of the figure. Must be indicated as [1 3] to have a 1/3 ratio (@isnumeric).
+* `ratioSnPM` is the ratio of SnPM subplot relative to total figure. The default value is 1/3 of the figure. Must be indicated as [1 3] to have a 1/3 ratio (@isnumeric).
 * `yLimitES` is the y-axis limits for ES representation. By default, the maps wont necessary be with the same range but will be automatically scaled at their maximum.
-* `spmPos` is the position of SPM plot, default SPM analysis is displayed at the bottom of the figure. Any value will set the position to up.
-* `aovColor` is the color of ANOVA on SPM plot. The default color is black. Use 'color' or rgb triplet.  
+* `SnPMPos` is the position of SnPM plot, default SnPM analysis is displayed at the bottom of the figure. Any value will set the position to up.
+* `aovColor` is the color of ANOVA on SnPM plot. The default color is black. Use 'color' or rgb triplet.  
 
 
 ## Optional functions ##
-in addition of `fctSPM`, this repository contains two similar funtions.  
-* `fctSPMS` performs the same analysis than `fctSPM`, however, the figures are not ploted and saved. The inputs are the same at the exception that there is no savedir and no plot parameters.  
-* `onlyPlot` permits to plot a part of the analysis obtain with `fctSPM` and `fctSPMS`. In 1D, the ANOVA and the means with SPM analysis are displayed. In 2D, the ANOVA and the post-hoc tests are displayed.  
-* `saveNplot` permits to save and plot the entire analysis obtain with `fctSPM` and `fctSPMS`.  
+in addition of `fctSnPM`, this repository contains two similar funtions.  
+* `fctSnPMS` performs the same analysis than `fctSnPM`, however, the figures are not ploted and saved. The inputs are the same at the exception that there is no savedir and no plot parameters.  
+* `onlyPlot` permits to plot a part of the analysis obtain with `fctSnPM` and `fctSnPMS`. In 1D, the ANOVA and the means with SnPM analysis are displayed. In 2D, the ANOVA and the post-hoc tests are displayed.  
+* `saveNplot` permits to save and plot the entire analysis obtain with `fctSnPM` and `fctSnPMS`.  
 
 The general use of these funtion are:
 ```matlab
-spmAnalysis=fctSPMS(data, independantEffects, repeatedMeasuresEffects, 'Optional Input Name', value)
-onlyPlot(spmAnalysis,'Optional Input Name', value)
-saveNplot(spmAnalysis,'Optional Input Name', value)
+snpmAnalysis=fctSnPMS(data, independantEffects, repeatedMeasuresEffects, 'Optional Input Name', value)
+onlyPlot(snpmAnalysis,'Optional Input Name', value)
+saveNplot(snpmAnalysis,'Optional Input Name', value)
 ```
 You can use `onlyPlot` to have an insight on the figures before saving to adjust the plot parameters.  
 It may be useful to use `saveNplot` when a 2D analysis is performed, it may permit to redo quickly figures without the long time of analysis.
 
 
 ## Community guidelines ## 
-You can create a new issue in the [Issues section of this repository](https://github.com/tramarobin/fctSPM/issues) to:
+You can create a new issue in the [Issues section of this repository](https://github.com/tramarobin/fctSnPM/issues) to:
 * Contribute to the software 
 * Report issues or problems with the software 
 * Seek support  

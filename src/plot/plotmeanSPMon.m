@@ -1,4 +1,4 @@
-function []=plotmeanSPMon(Data,tTest1,tTest2,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,ny,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects,eNames,ratioSPM,spmPos,aovColor)
+function []=plotmeanSnPMon(Data,tTest1,tTest2,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,ny,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects,eNames,ratioSnPM,SnPMPos,aovColor)
 
 if isempty(imageSize)
     figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','on');
@@ -130,7 +130,7 @@ end
 
 set(gca,'FontSize',imageFontSize)
 
-%% add SPM
+%% add SnPM
 valTtest=tTest1;
 tTest=tTest2;
 
@@ -157,21 +157,21 @@ allSignificant=totalSignificant+totalSignificantAnova;
 loop=allSignificant;
 rangeFig=diff(y);
 for c=1:allSignificant
-    if ~isempty(spmPos)
+    if ~isempty(SnPMPos)
         startShade=y(2)+0.95*loop*0.05*rangeFig;
         endShade=y(2)+0.95*loop*0.05*rangeFig+0.04*rangeFig;
     else
         startShade=y(1)-0.95*loop*0.05*rangeFig;
         endShade=y(1)-0.95*loop*0.05*rangeFig-0.04*rangeFig;
     end
-    ylimitsSPM(c,:)=[startShade endShade];
+    ylimitsSnPM(c,:)=[startShade endShade];
     loop=loop-1;
 end
-if ~isempty(spmPos) & allSignificant>0
-    ylimitsSPM=flipud(ylimitsSPM);
+if ~isempty(SnPMPos) & allSignificant>0
+    ylimitsSnPM=flipud(ylimitsSnPM);
 end
 if allSignificant>0
-    yMean=mean(ylimitsSPM,2);
+    yMean=mean(ylimitsSnPM,2);
 end
 
 if allSignificant>0
@@ -188,8 +188,8 @@ if allSignificant>0
             mapCluster=anovaEffects{c}(clusters(t)+1:clusters(t+1));
             goPlot=mean(anovaEffects{c}(clusters(t)+1:clusters(t+1)));
             if goPlot==1
-                vertShadeSPM([timeCluster(1),timeCluster(end)],...
-                    'color',aovColor,'vLimits',[ylimitsSPM(loop,1) ylimitsSPM(loop,2)],'transparency',1);
+                vertShadeSnPM([timeCluster(1),timeCluster(end)],...
+                    'color',aovColor,'vLimits',[ylimitsSnPM(loop,1) ylimitsSnPM(loop,2)],'transparency',1);
             end
         end
     end
@@ -223,14 +223,14 @@ if allSignificant>0
             goPlot=mean(tTest{c}(clusters(t)+1:clusters(t+1)));
             if goPlot==1
                 if mean(valTtest{c}(clusters(t)+1:clusters(t+1)))>0
-                    vertShadeSPM([timeCluster(1),timeCluster(end)],...
+                    vertShadeSnPM([timeCluster(1),timeCluster(end)],...
                         'color',colors(indices4diff{c}(1),:),'vLimits',[yMean(loop) yMean(loop)+0.02*rangeFig],'transparency',1);
-                    vertShadeSPM([timeCluster(1),timeCluster(end)],...
+                    vertShadeSnPM([timeCluster(1),timeCluster(end)],...
                         'color',colors(indices4diff{c}(2),:),'vLimits',[yMean(loop) yMean(loop)-0.02*rangeFig],'transparency',1);
                 else
-                    vertShadeSPM([timeCluster(1),timeCluster(end)],...
+                    vertShadeSnPM([timeCluster(1),timeCluster(end)],...
                         'color',colors(indices4diff{c}(2),:),'vLimits',[yMean(loop) yMean(loop)+0.02*rangeFig],'transparency',1);
-                    vertShadeSPM([timeCluster(1),timeCluster(end)],...
+                    vertShadeSnPM([timeCluster(1),timeCluster(end)],...
                         'color',colors(indices4diff{c}(1),:),'vLimits',[yMean(loop) yMean(loop)-0.02*rangeFig],'transparency',1);
                     
                 end
@@ -244,7 +244,7 @@ if allSignificant>0
     set(gca,'FontSize',imageFontSize)
     
     if allSignificant>0
-        yText=sort(mean(ylimitsSPM,2));
+        yText=sort(mean(ylimitsSnPM,2));
         for i=1:numel(yTlab)
             text(time(end),yText(i),[' ' yTlab{i}],'FontSize',imageFontSize);
         end
@@ -252,10 +252,10 @@ if allSignificant>0
     
     y=get(gca,'ylim');
     if ~isempty(allSignificant)
-        if ~isempty(spmPos)
-            ylim([y(1) max(max(ylimitsSPM))+0.05*rangeFig]);
+        if ~isempty(SnPMPos)
+            ylim([y(1) max(max(ylimitsSnPM))+0.05*rangeFig]);
         else
-            ylim([min(min(ylimitsSPM))-0.05*rangeFig y(2)]);
+            ylim([min(min(ylimitsSnPM))-0.05*rangeFig y(2)]);
         end
     end
     

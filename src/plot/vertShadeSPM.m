@@ -1,4 +1,4 @@
-function vertShadeSPM(xLimits,varargin)
+function vertShadeSnPM(xLimits,varargin)
 % xLimits=[start,end]
 
 p = inputParser;

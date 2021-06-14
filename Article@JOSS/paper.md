@@ -1,9 +1,10 @@
 ---
-title: 'fctSPM: Factorial ANOVA and post-hoc tests for Statistical Parametric Mapping in MATLAB'
+title: 'fctSnPM: Factorial ANOVA and post-hoc tests for Statistical nonParametric Mapping in MATLAB'
 tags: 
   - MATLAB
   - statistical analysis
   - Statistical Parametric Mapping
+  - Statistical nonParametric Mapping
 authors: 
   - name: Robin Trama
     orcid: 0000-0001-6807-0505
@@ -28,9 +29,9 @@ As in "classical" statistics on scalar values (0D), there is a parametric and a 
 # Statement of need
 Most of physiological data measured during human movement are continuous and expressed in function of time. However, researchers predominantly analyze extracted scalar values from the continuous measurement, as the mean, the maximum, the amplitude, or the integrated value over the time. Analyzing continuous values (i.e., time series) can provide more information than extracted indicators, as the later discards one dimension of the data among the magnitude and localization in time. In addition, oscillatory signals such as muscle vibrations and electromyograms contain information in the temporal and frequency domains. However, scalar analysis reduces the information at only one dimension by discarding two dimensions among the magnitude and the localization in the time and/or frequency domain.
 
-To analyze all the dimensions of a signal without losing information, the analysis of curves or maps was proposed, coded, and put online by Pataky. However, the use of the proposed functions does not allow the analysis of 2D data automatically. Moreover, a rather frequent error is to consider only the significance of the last statistical test performed and not the intersection between the post-hoc tests and the ANOVA. Indeed, a difference between two samples can be significant if, and only if the ANOVA is significant in the same areas. This package, redistributed with fctSPM at `./fctSPM/src/spm1d_Pataky` is [published elsewhere](https://github.com/0todd0000/spm1dmatlab), and thus is not part of this JOSS review.
+To analyze all the dimensions of a signal without losing information, the analysis of curves or maps was proposed, coded, and put online by Pataky. However, the use of the proposed functions does not allow the analysis of 2D data automatically. Moreover, a rather frequent error is to consider only the significance of the last statistical test performed and not the intersection between the post-hoc tests and the ANOVA. Indeed, a difference between two samples can be significant if, and only if the ANOVA is significant in the same areas. This package, redistributed with fctSnPM at `./fctSnPM/src/spm1d_Pataky` is [published elsewhere](https://github.com/0todd0000/spm1dmatlab), and thus is not part of this JOSS review.
 
-# fctSPM
+# fctSnPM
 The function we propose meets two objectives. 1/ to allow statistical inferences on curves and maps with a standardized format and 2/ to simplify analyses by comparing means while considering intersections with tests performed upstream (ANOVA and post-hoc of main effects).
 
 The statistical tests are performed taking into account the independent and repeated measure effects provided in the obligatory function inputs. ANOVA, up to three-way ANOVA with three repeated measures, is performed if required, and followed by post-hoc tests as paired or independent Student t-tests. By default, the ANOVA is performed with an alpha risk of 5%, while post-hoc tests alpha risk is adjusted with Bonferronni correction. A number of 10/alpha permutations (200 for a 5% risk) is defined for each test. Statistical parameters are customizable via optional inputs, like `multiPerm` which can be used to increase the number of permutations and achieve numerical stability and reliable analysis [@Nichols:2002]. A Matlab (.mat) file containing the number of permutations, the significant clusters, the statistical thresholds, and the raw data used in the analysis is also generated for each test family.

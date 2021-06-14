@@ -35,7 +35,7 @@ if nEffects==1
     nCombi=size(combi,2);
     
     positionDiffPlot=[];
-    positionSPMPlot=[];
+    positionSnPMPlot=[];
     
     if isempty(imageSize)
         f1=figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
@@ -54,7 +54,7 @@ if nEffects==1
         posthoc{1}.data.meanContinuum{i}=meansData;
         posthoc{1}.data.sdContinuum{i}=stdData;
         positionDiffPlot=[positionDiffPlot,(i-1)*nCombi+i+1:(i-1)*nCombi+i+1+nCombi-i-1];
-        positionSPMPlot=[positionSPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
+        positionSnPMPlot=[positionSnPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
         
         % full plot mean
         displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
@@ -180,19 +180,19 @@ if nEffects==1
             dispContour(abs(posthoc{1}.tTests.contourSignificant{1,comp}),posthoc{1}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
         end
         
-        % full plot of spm analysis
+        % full plot of SnPM analysis
         displayTtest(posthoc{1}.tTests.Tcontinuum{1,comp},posthoc{1}.tTests.Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
         if displayContour
             dispContour(abs(posthoc{1}.tTests.Tcontinuum{1,comp}),posthoc{1}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
         end
         title(posthoc{1}.differences.names{1,comp})
-        print('-dtiff',imageResolution,[savedir '/SPM/' verifSaveName(posthoc{1}.differences.names{1,comp})])
-        savefig([savedir '/FIG/SPM/' verifSaveName(posthoc{1}.differences.names{1,comp})])
+        print('-dtiff',imageResolution,[savedir '/SnPM/' verifSaveName(posthoc{1}.differences.names{1,comp})])
+        savefig([savedir '/FIG/SnPM/' verifSaveName(posthoc{1}.differences.names{1,comp})])
         close
         
-        % subplot of spm analysis
+        % subplot of SnPM analysis
         set(0, 'currentfigure', f1);
-        ax=subplot(nCombi,nCombi,positionSPMPlot(comp));
+        ax=subplot(nCombi,nCombi,positionSnPMPlot(comp));
         displayTtest_sub(posthoc{1}.tTests.Tcontinuum{1,comp},posthoc{1}.tTests.Tthreshold{comp},Fs,colorMapDiff,ax)
         
         %     ES
@@ -237,7 +237,7 @@ if nEffects==2
         nCombi=size(combi,2);
         
         positionDiffPlot=[];
-        positionSPMPlot=[];
+        positionSnPMPlot=[];
         if isempty(imageSize)
             f1=figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
         elseif max(size(imageSize))==1
@@ -253,7 +253,7 @@ if nEffects==2
             posthoc{mainEffect(1)}.data.meanContinuum{i}=meansData;
             posthoc{mainEffect(1)}.data.sdContinuum{i}=stdData;
             positionDiffPlot=[positionDiffPlot,(i-1)*nCombi+i+1:(i-1)*nCombi+i+1+nCombi-i-1];
-            positionSPMPlot=[positionSPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
+            positionSnPMPlot=[positionSnPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
             
             % full plot of mean
             displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
@@ -379,14 +379,14 @@ if nEffects==2
                 dispContour(abs(posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}),posthoc{mainEffect(1)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
             end
             
-            %  full plot of spm analysis
+            %  full plot of SnPM analysis
             displayTtest(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp},posthoc{mainEffect(1)}.tTests.Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
             if displayContour
                 dispContour(abs(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp}),posthoc{mainEffect(1)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             title(posthoc{mainEffect(1)}.differences.names{1,comp})
-            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/SPM/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
-            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/SPM/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
+            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/SnPM/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
+            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/SnPM/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
             close
             
             %     ES
@@ -399,9 +399,9 @@ if nEffects==2
             savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/ES/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
             close
             
-            % subplot of spm analysis
+            % subplot of SnPM analysis
             set(0, 'currentfigure', f1);
-            ax=subplot(nCombi,nCombi,positionSPMPlot(comp));
+            ax=subplot(nCombi,nCombi,positionSnPMPlot(comp));
             displayTtest_sub(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp},posthoc{mainEffect(1)}.tTests.Tthreshold{comp},Fs,colorMapDiff,ax)
             
         end
@@ -439,7 +439,7 @@ if nEffects==3
         nCombi=size(combi,2);
         
         positionDiffPlot=[];
-        positionSPMPlot=[];
+        positionSnPMPlot=[];
         
         if isempty(imageSize)
             f1=figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
@@ -458,7 +458,7 @@ if nEffects==3
             posthoc{mainEffect(1)}.data.meanContinuum{i}=meansData;
             posthoc{mainEffect(1)}.data.sdContinuum{i}=stdData;
             positionDiffPlot=[positionDiffPlot,(i-1)*nCombi+i+1:(i-1)*nCombi+i+1+nCombi-i-1];
-            positionSPMPlot=[positionSPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
+            positionSnPMPlot=[positionSnPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
             
             % full plot of means
             displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
@@ -582,14 +582,14 @@ if nEffects==3
                 dispContour(abs(posthoc{mainEffect(1)}.tTests.contourSignificant{1,comp}),posthoc{mainEffect(1)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
             end
             
-            %  full plot of spm analysis
+            %  full plot of SnPM analysis
             displayTtest(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp},posthoc{mainEffect(1)}.tTests.Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
             if displayContour
                 dispContour(abs(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp}),posthoc{mainEffect(1)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             title(posthoc{mainEffect(1)}.differences.names{1,comp})
-            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/SPM/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
-            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/SPM/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
+            print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/SnPM/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
+            savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/SnPM/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
             close
             
             %     ES
@@ -602,9 +602,9 @@ if nEffects==3
             savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/ES/' verifSaveName(posthoc{mainEffect(1)}.differences.names{1,comp})])
             close
             
-            % subplot of spm analysis
+            % subplot of SnPM analysis
             set(0, 'currentfigure', f1);
-            ax=subplot(nCombi,nCombi,positionSPMPlot(comp));
+            ax=subplot(nCombi,nCombi,positionSnPMPlot(comp));
             displayTtest_sub(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp},posthoc{mainEffect(1)}.tTests.Tthreshold{comp},Fs,colorMapDiff,ax)
             
         end
@@ -650,7 +650,7 @@ if nEffects==3
             nCombi=size(combi,2);
             
             positionDiffPlot=[];
-            positionSPMPlot=[];
+            positionSnPMPlot=[];
             
             
             if isempty(imageSize)
@@ -670,7 +670,7 @@ if nEffects==3
                 posthoc{3+anovaFixedCorr(fixedEffect)}.data.meanContinuum{i}=meansData;
                 posthoc{3+anovaFixedCorr(fixedEffect)}.data.sdContinuum{i}=stdData;
                 positionDiffPlot=[positionDiffPlot,(i-1)*nCombi+i+1:(i-1)*nCombi+i+1+nCombi-i-1];
-                positionSPMPlot=[positionSPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
+                positionSnPMPlot=[positionSnPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
                 
                 % full plot of means
                 displayMeanMaps(meansData,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
@@ -807,14 +807,14 @@ if nEffects==3
                     dispContour(abs(posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.contourSignificant{1,comp}),posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,1,linestyle)
                 end
                 
-                %  full plot of spm analysis
+                %  full plot of SnPM analysis
                 displayTtest(posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tcontinuum{1,comp},posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
                 if displayContour
                     dispContour(abs(posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tcontinuum{1,comp}),posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
                 end
                 title(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp})
-                print('-dtiff',imageResolution,[savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/SPM/' verifSaveName(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp})])
-                savefig([savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/FIG/SPM/' verifSaveName(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp})])
+                print('-dtiff',imageResolution,[savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/SnPM/' verifSaveName(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp})])
+                savefig([savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/FIG/SnPM/' verifSaveName(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp})])
                 close
                 
                 %     ES
@@ -827,9 +827,9 @@ if nEffects==3
                 savefig([savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/FIG/ES/' verifSaveName(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{1,comp})])
                 close
                 
-                % subplot of spm analysis
+                % subplot of SnPM analysis
                 set(0, 'currentfigure', f1);
-                ax=subplot(nCombi,nCombi,positionSPMPlot(isPlot(comp)));
+                ax=subplot(nCombi,nCombi,positionSnPMPlot(isPlot(comp)));
                 displayTtest_sub(posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tcontinuum{1,comp},posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp},Fs,colorMapDiff,ax)
                 
             end
@@ -879,7 +879,7 @@ if nEffects>1
         
         loop=0;
         positionDiffPlot=[];
-        positionSPMPlot=[];
+        positionSnPMPlot=[];
         
         
         if isempty(imageSize)
@@ -916,7 +916,7 @@ if nEffects>1
                     meansData=reshape(maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2),:),dimensions(1),dimensions(2));
                 end
                 positionDiffPlot=[positionDiffPlot,(i-1)*nCombi+i+1:(i-1)*nCombi+i+1+nCombi-i-1];
-                positionSPMPlot=[positionSPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
+                positionSnPMPlot=[positionSnPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
                 
                 posthoc{pos}.data.names{i}=[char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2)))];
                 posthoc{pos}.data.meanContinuum{i}=meansData;
@@ -964,7 +964,7 @@ if nEffects>1
                     meansData=reshape(maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2) & indicesEffects(:,3)==combi{i}(3),:),dimensions(1),dimensions(2));
                 end
                 positionDiffPlot=[positionDiffPlot,(i-1)*nCombi+i+1:(i-1)*nCombi+i+1+nCombi-i-1];
-                positionSPMPlot=[positionSPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
+                positionSnPMPlot=[positionSnPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
                 posthoc{pos}.data.names{i}=[char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2))) ' x '  char(modalitiesAll{3}(combi{i}(3)))];
                 posthoc{pos}.data.meanContinuum{i}=meansData;
                 posthoc{pos}.data.sdContinuum{i}=stdData;
@@ -1096,14 +1096,14 @@ if nEffects>1
             posthoc{pos}.tTests.contourSignificant{1,comp}=zeros(dimensions(1),dimensions(2));
             posthoc{pos}.tTests.contourSignificant{1,comp}(find(posthoc{pos}.tTests.Tsignificant{1,comp}==1))=1.1*posthoc{pos}.tTests.Tthreshold{comp};
             
-            %  full plot of spm analysis
+            %  full plot of SnPM analysis
             displayTtest(posthoc{pos}.tTests.Tcontinuum{1,comp},posthoc{pos}.tTests.Tthreshold{comp},[],Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMapDiff)
             if displayContour
                 dispContour(abs(posthoc{pos}.tTests.Tcontinuum{1,comp}),posthoc{pos}.tTests.Tthreshold{comp},contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             title(posthoc{pos}.differences.names{1,comp})
-            print('-dtiff',imageResolution,[savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/SPM/' verifSaveName(posthoc{pos}.differences.names{1,comp})])
-            savefig([savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/FIG/SPM/' verifSaveName(posthoc{pos}.differences.names{1,comp})])
+            print('-dtiff',imageResolution,[savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/SnPM/' verifSaveName(posthoc{pos}.differences.names{1,comp})])
+            savefig([savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/FIG/SnPM/' verifSaveName(posthoc{pos}.differences.names{1,comp})])
             close
             
             % full plot of differences
@@ -1135,9 +1135,9 @@ if nEffects>1
             savefig([savedir savedir2 '/' verifSaveName(eNames{testedEffect{comp}})  '/FIG/ES/' verifSaveName(posthoc{pos}.differences.names{1,comp})])
             close
             
-            % subplot of spm analysis
+            % subplot of SnPM analysis
             set(0, 'currentfigure', f1);
-            ax=subplot(nCombi,nCombi,positionSPMPlot(isPlot(comp)));
+            ax=subplot(nCombi,nCombi,positionSnPMPlot(isPlot(comp)));
             displayTtest_sub(posthoc{pos}.tTests.Tcontinuum{1,comp},posthoc{pos}.tTests.Tthreshold{comp},Fs,colorMapDiff,ax)
             
             % subplot of differences
