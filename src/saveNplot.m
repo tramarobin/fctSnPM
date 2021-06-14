@@ -162,7 +162,7 @@ if snpmAnalysis.anova.type~="no ANOVA"
         % Plot of Anova Results
         displayAnova(anova.Fcontinuum,anova.Fthreshold,anova.Fsignificant{1},Fs,xlab,ylab,ylimits,dimensions,nTicksX,nTicksY,xlimits,colorMap,imageSize,imageFontSize)
         if displayContour & size(anova.Fcontinuum,2)>1
-            dispContour(anova.Fcontinuum,anova.Fthreshold,contourColor,dashedColor,transparancy,lineWidth,linestyle)
+            dispContour(anova.Fcontinuum,anova.Fthreshold,contourColor,dashedColor,transparancy,lineWidth,lineStyle)
         end
         title(anova.effectNames)
         print('-dtiff',imageResolution,[savedir '/ANOVA/' verifSaveName(anova.effectNames)])
@@ -588,7 +588,7 @@ if min(dimensions)>1
     
     for np=1:numel(posthoc)
         
-        savedir2=[savedir '/Post hoc/' '/Post hoc/' posthoc{np}.name '/'];
+        savedir2=[savedir '/Post hoc/' posthoc{np}.name '/'];
         createSavedir2d(savedir2)
         
         for combi=1:numel(posthoc{np}.data.meanContinuum)
