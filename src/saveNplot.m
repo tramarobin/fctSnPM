@@ -657,3 +657,6 @@ if min(dimensions)>1
 end
 
 end
+
+%% Activate figure display
+set(0, 'DefaultFigureVisible', 'on');
