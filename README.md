@@ -51,7 +51,7 @@ For post-hoc for interaction effects, the main effect is also displayed if locat
 
 
 ## Citing fctSnPM ##
-* This function: under review in JOSS   
+* This function: Trama et al., (2021). fctSnPM: Factorial ANOVA and post-hoc tests for Statistical nonParametric Mapping in MATLAB. Journal of Open Source Software, 6(63), 3159, https://doi.org/10.21105/joss.03159  
 * For spm1d: Pataky TC (2010). Generalized n-dimensional biomechanical field analysis using statistical parametric mapping. Journal of Biomechanics 43, 1976-1982.   
 * For permutation tests: Nichols TE, Holmes AP (2002). Nonparametric permutation tests for functional neuroimaging: a primer with examples. Human Brain Mapping 15(1), 1–25.   
 * spm1d package for matlab can be downloaded at: https://github.com/0todd0000/spm1dmatlab   
