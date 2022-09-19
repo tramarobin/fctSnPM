@@ -17,7 +17,7 @@ classdef ANOVA3tworm < spm1d.stats.anova.designs.ANOVA3rm
             self.term_labels = {'Intercept',  'A','B','C','S',  'AB','AC','BC',   'SB','SC',   'ABC', 'SBC'};
             self.f_terms = {{'A','S'}, {'B','SB'}, {'C','SC'},  {'AB','SB'},{'AC','SC'},{'BC','SBC'},  {'ABC','SBC'}};
             self      = assemble(self);
-            self.check_balanced()
+%             self.check_balanced()
         end
     end
     

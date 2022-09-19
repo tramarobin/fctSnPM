@@ -207,6 +207,10 @@ addParameter(p,'ratioSnPM',[1 3]); % ratio of SnPM subplot relative to total fig
 addParameter(p,'yLimitES',[]); % y-axis limits for ES representation
 addParameter(p,'SnPMPos',[]); % postion of SnPM plot, default is bottom, any value will set the position to up
 addParameter(p,'aovColor','k'); % color of anova on SnPM plot (color or rgb)
+addParameter(p,'yLine',[]); % add vertical lines on mean plots. One line is contained in one cell (several lines can be plot is there are several cells). yLine{1}={50,'k--',2}; will plot a vertical black dotted line at the coordinate 50, with a linewidth of 2.
+addParameter(p,'xLine',[]); % add horizontal lines on mean plots. Specify the coordinate, color, linewith, linestyle. One line is contained in one cell (several lines can be plot is there are several cells). xLine{1}={0,'b-',1}; will plot a horizontal blue full line at the coordinate 0, with a linewidth of 1.
+addParameter(p,'xGrid',0); % 1 to display the horizontal grid on mean plots. Default is 0 (no grid), 1 to plot grid.
+addParameter(p,'yGrid',0); % 1 to display the vertical grid on mean plots. Default is 0 (no grid), 1 to plot grid.
 
 parse(p,varargin{:});
 
@@ -250,6 +254,10 @@ ratioSnPM=p.Results.ratioSnPM;
 yLimitES=p.Results.yLimitES;
 SnPMPos=p.Results.SnPMPos;
 aovColor=p.Results.aovColor;
+xLine=p.Results.xLine;
+yLine=p.Results.yLine;
+xGrid=p.Results.xGrid;
+yGrid=p.Results.yGrid;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Activate warnings and disable figure display 
@@ -272,7 +280,7 @@ end
 
 %% Choose and perform post-hocs
 if min(dimensions)==1 %1D
-    posthoc=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiPerm,Perm,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalPerm,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,alpha,transparancy1D,ratioSnPM,yLimitES,SnPMPos,aovColor,linestyle);
+    posthoc=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiPerm,Perm,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalPerm,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,alpha,transparancy1D,ratioSnPM,yLimitES,SnPMPos,aovColor,linestyle,xLine,yLine,xGrid,yGrid);
 else %2D
     posthoc=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,contourColor,savedir,multiPerm,Perm,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalPerm,doAllInteractions,dashedColor,transparancy,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,alpha,linestyle);
 end

@@ -1,4 +1,4 @@
-function []=plotmeanSnPMsub(Data,tTest1,tTest2,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,ny,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects,eNames,ratioSnPM,SnPMPos,aovColor)
+function []=plotmeanSnPMsub(Data,tTest1,tTest2,legendPlot,diffNames,IC,xlab,ylab,Fs,xlimits,nx,ny,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,anovaEffects,eNames,ratioSnPM,SnPMPos,aovColor,xLine,yLine,xGrid,yGrid)
 
 if isempty(imageSize)
     figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
@@ -15,7 +15,7 @@ if ~isempty(IC)
     indices=0.7:0.001:0.999;
     if IC>=0.7
         z=coeff(find(IC==indices));
-     elseif IC==0
+    elseif IC==0
         z=1;
     elseif IC<0
         z=0;
@@ -27,13 +27,13 @@ end
 if ~isempty(clPlot)
     colorLine=clPlot.color;
     lineStyle=clPlot.line;
-    
+
     if ~isempty(colorLine)
         colors=colorLine;
     else
         colors=lines(size(Data,2));
     end
-    
+
     if size(Data,2)~=size(lineStyle,2)
         clear lineStyle
         for i=1:size(Data,2)
@@ -41,9 +41,9 @@ if ~isempty(clPlot)
             lineStyle{2,i}='--';
         end
     end
-    
+
 else
-    
+
     colors=lines(size(Data,2));
     for i=1:size(Data,2)
         lineStyle{1,i}='-';
@@ -127,7 +127,24 @@ else
     end
 end
 
-legend(legendPlot,'Location','best','box','off')
+if xGrid~=0
+    set(gca,'XGrid','on')
+end
+if yGrid~=0
+    set(gca,'YGrid','on')
+end
+
+if ~isempty(xLine)
+    for i=1:numel(xLine)
+        hline(xLine{i}{1},'linetype',xLine{i}{2},'lineWidth',xLine{i}{3})
+    end
+end
+
+if ~isempty(yLine)
+    for i=1:numel(yLine)
+        vline(yLine{i}{1},'linetype',yLine{i}{2},'lineWidth',yLine{i}{3})
+    end
+end
 
 if ~isempty(ylimits)
     ylim(ylimits)
@@ -138,6 +155,7 @@ if ~isempty(ny)
 end
 
 set(gca,'FontSize',imageFontSize)
+legend(legendPlot,'Location','best','box','off')
 
 %% add SnPM subplot
 valTtest=tTest1;
@@ -170,7 +188,7 @@ if allSignificant>0
         subplot(ratioSnPM(2),1,1:ratioSnPM(1))
     end
     ylimitsSnPM=1:allSignificant;
-    
+
     loop=allSignificant+1;
     for c=whichSignificantAnova
         loop=loop-1;
@@ -188,9 +206,9 @@ if allSignificant>0
             end
         end
     end
-    
+
     indices4diff=findIndices4diff(size(Data,2));
-    
+
     for c=whichSignificant
         loop=loop-1;
         if min(size(diffNames))>1
@@ -209,7 +227,7 @@ if allSignificant>0
             end
             yTlab{loop}=diffName;
         end
-        
+
         clusters=find(abs(diff(tTest{c}'))==1)';
         clusters=transposeColmunIfNot(clusters);
         clusters=[0;clusters;max(size(tTest{c}))];
@@ -218,7 +236,7 @@ if allSignificant>0
             mapCluster=tTest{c}(clusters(t)+1:clusters(t+1));
             goPlot=mean(tTest{c}(clusters(t)+1:clusters(t+1)));
             if goPlot==1
-                
+
                 if mean(valTtest{c}(clusters(t)+1:clusters(t+1)))>0
                     vertShadeSnPM([timeCluster(1),timeCluster(end)],...
                         'color',colors(indices4diff{c}(1),:),'vLimits',[ylimitsSnPM(loop) ylimitsSnPM(loop)+0.33],'transparency',1);
@@ -229,17 +247,17 @@ if allSignificant>0
                         'color',colors(indices4diff{c}(2),:),'vLimits',[ylimitsSnPM(loop) ylimitsSnPM(loop)+0.33],'transparency',1);
                     vertShadeSnPM([timeCluster(1),timeCluster(end)],...
                         'color',colors(indices4diff{c}(1),:),'vLimits',[ylimitsSnPM(loop)-0.33 ylimitsSnPM(loop)],'transparency',1);
-                    
+
                 end
-                
+
             end
         end
     end
-    
+
     yticks(1:allSignificant)
     yticklabels(yTlab);
-    
-    
+
+
     xlim(xl)
     box off
     if isempty(SnPMPos)
@@ -258,10 +276,10 @@ if allSignificant>0
     xticks(linspace(0,(size(Data{1},2)-1)/Fs,nx))
     xticklabels(xlabs)
     set(gca,'FontSize',imageFontSize)
-    
+
     y=get(gca,'ylim');
     rangeFig=diff(y);
     ylim([y(1)-0.1*rangeFig y(2)]);
-    
+
 end
 end

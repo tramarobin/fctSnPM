@@ -262,6 +262,10 @@ These option are specific to 1D plots.
 * `yLimitES` is the y-axis limits for ES representation. By default, the maps wont necessary be with the same range but will be automatically scaled at their maximum.
 * `SnPMPos` is the position of SnPM plot, default SnPM analysis is displayed at the bottom of the figure. Any value will set the position to up.
 * `aovColor` is the color of ANOVA on SnPM plot. The default color is black. Use 'color' or rgb triplet.  
+* `yLine` allows to add vertical lines on mean plots and SPM plots. Specify the coordinate, color, linewith, linestyle. One line is contained in one cell (several lines can be plot is there are several cells). yLine{1}={50,'k--',2}; will plot a vertical black dotted line at the coordinate 50, with a linewidth of 2.
+* `xLine` allows to add vertical lines on mean plots and SPM plots. Specify the coordinate, color, linewith, linestyle. One line is contained in one cell (several lines can be plot is there are several cells). xLine{1}={0,'b-',1}; will plot a horizontal blue full line at the coordinate 0, with a linewidth of 1.
+* `xGrid` is an option to display the horizontal grid on mean plots. Default is 0 (no grid), 1 to plot grid.
+* `yGrid` is an option to display display the vertical grid on mean plots. Default is 0 (no grid), 1 to plot grid.
 
 
 ## Optional functions ##

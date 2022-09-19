@@ -1,4 +1,4 @@
-function []=plotmean(Data,IC,xlab,ylab,Fs,xlimits,nx,ny,clPlot,imageFontSize,imageSize,transparancy1D,ylimits)
+function []=plotmean(Data,IC,xlab,ylab,Fs,xlimits,nx,ny,clPlot,imageFontSize,imageSize,transparancy1D,ylimits,xLine,yLine,xGrid,yGrid)
 
 if isempty(imageSize)
     figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
@@ -27,13 +27,13 @@ end
 if ~isempty(clPlot)
     colorLine=clPlot.color;
     lineStyle=clPlot.line;
-    
+
     if ~isempty(colorLine)
         colors=colorLine;
     else
         colors=lines(size(Data,2));
     end
-    
+
     if size(Data,2)~=size(lineStyle,2)
         clear lineStyle
         for i=1:size(Data,2)
@@ -41,9 +41,9 @@ if ~isempty(clPlot)
             lineStyle{2,i}='--';
         end
     end
-    
+
 else
-    
+
     colors=lines(size(Data,2));
     for i=1:size(Data,2)
         lineStyle{1,i}='-';
@@ -122,6 +122,25 @@ end
 y=get(gca,'ylim');
 if ~isempty(ny)
     yticks(linspace(y(1),y(2),ny))
+end
+
+if xGrid~=0
+    set(gca,'XGrid','on')
+end
+if yGrid~=0
+    set(gca,'YGrid','on')
+end
+
+if ~isempty(xLine)
+    for i=1:numel(xLine)
+        hline(xLine{i}{1},'linetype',xLine{i}{2},'lineWidth',xLine{i}{3})
+    end
+end
+
+if ~isempty(yLine)
+    for i=1:numel(yLine)
+        vline(yLine{i}{1},'linetype',yLine{i}{2},'lineWidth',yLine{i}{3})
+    end
 end
 
 
