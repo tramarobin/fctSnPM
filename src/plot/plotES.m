@@ -13,7 +13,7 @@ if isempty(imageSize)
 elseif max(size(imageSize))==1
     figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize, imageSize],'visible','off');
 else
-    figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize(1), imageSize(2)],'visible','off');
+    figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize(1), imageSize(2)],'visible','on');
 end
 
 ESup=mapT+1.96*sdT;
@@ -26,7 +26,6 @@ plot(time(noNan),ESup(noNan),'--b')
 plot(time(noNan),ESinf(noNan),'--b')
 
 hline(0,'linetype','--r')
-hline([0.2 0.5 0.8],'linetype',':k')
 xlabel(xlab)
 ylabel('Effect Size \pm 95% CI')
 if ~isempty(xlimits)
@@ -48,7 +47,6 @@ for i=1:nx
 end
 xticklabels(xlabs)
 box off
-
 
 y=get(gca,'ylim');
 if ~isempty(yLimitES)
@@ -72,7 +70,12 @@ for t=1:size(clusters,1)-1
     end
 end
 
-set(gca, 'YTick', unique([[0 0.2 0.5 0.8], get(gca, 'YTick')]));
+ytlor=get(gca, 'YTick');
+ytladd=[0.2 0.5 0.8 1.2];
+ytladd(ytladd>max(ytlor))=[];
+hline(ytladd,'linetype',':k')
+ytlall=unique([ytlor ytladd]);
+set(gca, 'YTick', ytlall);
 set(gca,'FontSize',imageFontSize)
 
 end
