@@ -209,8 +209,8 @@ addParameter(p,'SnPMPos',[]); % postion of SnPM plot, default is bottom, any val
 addParameter(p,'aovColor','k'); % color of anova on SnPM plot (color or rgb)
 addParameter(p,'yLine',[]); % add vertical lines on mean plots. One line is contained in one cell (several lines can be plot is there are several cells). yLine{1}={50,'k--',2}; will plot a vertical black dotted line at the coordinate 50, with a linewidth of 2.
 addParameter(p,'xLine',[]); % add horizontal lines on mean plots. Specify the coordinate, color, linewith, linestyle. One line is contained in one cell (several lines can be plot is there are several cells). xLine{1}={0,'b-',1}; will plot a horizontal blue full line at the coordinate 0, with a linewidth of 1.
-addParameter(p,'xGrid',0); % 1 to display the horizontal grid on mean plots. Default is 0 (no grid), 1 to plot grid.
 addParameter(p,'yGrid',0); % 1 to display the vertical grid on mean plots. Default is 0 (no grid), 1 to plot grid.
+addParameter(p,'xGrid',0); % 1 to display the horizontal grid on mean plots. Default is 0 (no grid), 1 to plot grid.
 
 parse(p,varargin{:});
 
