@@ -13,7 +13,7 @@ if isempty(imageSize)
 elseif max(size(imageSize))==1
     figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize, imageSize],'visible','off');
 else
-    figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize(1), imageSize(2)],'visible','on');
+    figure('Units', 'Centimeter', 'OuterPosition', [0, 0, imageSize(1), imageSize(2)],'visible','off');
 end
 
 ESup=mapT+1.96*sdT;
