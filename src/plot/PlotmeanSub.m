@@ -1,4 +1,4 @@
-function PlotmeanSub(mapsAll,nameSub,effectsRm,effectNames,savedir,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,imageFontSize,imageSize,colorLine,colorMap,colorbarLabel,limitMeanMaps,transparancy1D)
+function PlotmeanSub(mapsAll,nameSub,effectsRm,effectNames,savedir,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,imageFontSize,imageSize,colorLine,colorMap,colorbarLabel,limitMeanMaps,transparancy1D,equalAxis,deleteAxis)
 warning('off', 'MATLAB:MKDIR:DirectoryExists');
 mkdir([savedir '\MeanSub'])
 nSuj=size(mapsAll,1);

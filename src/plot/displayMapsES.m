@@ -2,7 +2,7 @@
 
 %% OUTPUT
 
-function []=displayMapsES(map,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
+function []=displayMapsES(map,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap,equalAxis,deleteAxis)
 
 if isempty(imageSize)
     figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
@@ -62,6 +62,13 @@ xticklabels(xlabs)
 caxis([0 max(max(map))])
 box off
 set(gca,'FontSize',imageFontSize)
+
+if equalAxis==1
+    axis equal
+end
+if deleteAxis==1
+    set(findall(gca, 'type', 'axes'), 'visible', 'off')
+end
 
 end
 

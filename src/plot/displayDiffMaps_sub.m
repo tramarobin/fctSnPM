@@ -2,7 +2,10 @@
 
 %% OUTPUT
 
-function []=displayDiffMaps_sub(map,Fs,limitMeanMaps,diffRatio,colorMapDiff,ax)
+function []=displayDiffMaps_sub(map,Fs,limitMeanMaps,diffRatio,colorMapDiff,ax,equalAxis,deleteAxis)
+
+map(abs(map)==inf)=0;
+map(isnan(map))=0;
 
 imagesc(flipud(map)); hold on
 colormap(ax,colorMapDiff)
@@ -22,6 +25,14 @@ yticklabels('')
 xlabel('')
 ylabel('')
 box off
+
+if equalAxis==1
+    axis equal
+end
+if deleteAxis==1
+    set(findall(gca, 'type', 'axes'), 'visible', 'off')
+end
+
 
 end
 

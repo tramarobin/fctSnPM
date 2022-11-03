@@ -2,7 +2,7 @@
 
 %% OUTPUT
 
-function []=displayRelativeDiffMaps(map,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap,relativeRatio)
+function []=displayRelativeDiffMaps(map,Fs,xlab,ylab,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorMap,relativeRatio,equalAxis,deleteAxis)
 
 if isempty(imageSize)
     figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
@@ -16,6 +16,8 @@ if isempty(ylimits)
     ylimits=[0 size(map,1)];
 end
 
+map(abs(map)==inf)=0;
+map(isnan(map))=0;
 imagesc(flipud(map)); hold on
 ylabel(ylab)
 xlabel(xlab)
@@ -73,6 +75,13 @@ xticklabels(xlabs)
 box off
 
 set(gca,'FontSize',imageFontSize)
+
+if equalAxis==1
+    axis equal
+end
+if deleteAxis==1
+    set(findall(gca, 'type', 'axes'), 'visible', 'off')
+end
 
 end
 

@@ -198,6 +198,7 @@ snpmAnalysis=fctSnPM(data, independantEffects, repeatedMeasuresEffects, varargin
 * `independantEffects` is a cell array defining the independent effects. There must be 1 cell by effect. Each cell contains the name ('char') of each modality for the given subject and must correspond to the number of subjects/rows (x). For instance `independantEffects{1}={'Male' 'Male' 'Female' 'Female'}` if the two first subjects are `Male` and the two last are `Female`.
 * `repeatedMeasuresEffects` is a cell array defining the repeated measure effects. There must be 1 cell by effect. Each cell contains the name ('char') of each modality for the given condition and must correspond to the number of conditions/columns (y). For instance `repeatedMeasuresEffects{1}={'PRETEST' 'POSTTEST' 'RETEST'}` if there was 3 times of measurement.
 
+
 ### Optional inputs ###
 Optional inputs are available to personalize the figures.  
 ```matlab
@@ -252,6 +253,9 @@ Colormaps can be defined with cbrewer (distributed in this funtion): Charles (20
 * `lineWidth` is the linewidth of the contour plot. The default value is 2.5 (@isnumeric).
 * `diffRatio` scales the difference maps at limitMeanMaps*diffRatio. The default value is 0.33 (@isnumeric).
 * `relativeRatio` scales the relative differences maps at +-relativeRatio. By default, the maps wont necessary be with the same range but will be automatically scaled at their maximum (@isnumeric).
+* `equalAxis` enables the equal axis option for plots (useful for pressure/positional data). By default (0), the option is not enable. 1 to enable
+* `deleteAxis` deletes the axes (useful for pressure data). By default (0), the axes are displayed. 1 to enable (also delete the title of the graph)
+* `statLimit` default option (0) set the colorbar limit of the stat maps at the significance threshold, 1 will set the limit to the max 
 
 #### 1D plot parameters ####
 These option are specific to 1D plots.

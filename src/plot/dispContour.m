@@ -16,6 +16,10 @@ if min(size(maps))>1
                     hFills(2).ColorData(4) = 0;
                 end
             end
+
+        else
+            hold on
+            contour(flipud(maps),[2*max(max(maps)) 10*max(max(maps))])
         end
     end
 end

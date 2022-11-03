@@ -6,7 +6,7 @@
 %% OUTPUT
 % Figure of the anova results
 
-function []=displayAnova(mapF,Fthreshold,anovaEffects,Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,colorMap,imageSize,imageFontSize)
+function []=displayAnova(mapF,Fthreshold,anovaEffects,Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,colorMap,imageSize,imageFontSize,equalAxis,deleteAxis,statLimit)
 
 anovaEffects=anovaEffects(:)';
 
@@ -19,11 +19,11 @@ else
 end
 
 if dimensions(1)==1 | dimensions(2)==1 %1D
-    
+
     time=0:1/Fs:(max(size(mapF))-1)/Fs;
     plot(time,mapF,'k','linewidth',1); hold on
     ylim([0 1.05*max([max(mapF) Fthreshold])])
-    
+
     clusters=find(abs(diff(anovaEffects))==1);
     clusters=[0,clusters,max(size(mapF))];
     legendDone=0;
@@ -41,7 +41,7 @@ if dimensions(1)==1 | dimensions(2)==1 %1D
             vline([timeCluster(1),timeCluster(end)],'linetype','-.k','displayLegend',0)
         end
     end
-    
+
     xlabel(xlab)
     ylabel('SnPM (F)')
     if ~isempty(xlimits)
@@ -63,32 +63,32 @@ if dimensions(1)==1 | dimensions(2)==1 %1D
     end
     xticklabels(xlabs)
     box off
-    
+
     hline(Fthreshold,'displayLegend',1)
     if max(anovaEffects)==0
         legend({'F-value',['Threshold = ' sprintf('%0.3g',Fthreshold)]},'Location','eastoutside','Box','off');
     else
         legend({'F-value','Significant cluster',['Threshold = ' sprintf('%0.3g',Fthreshold)]},'Location','eastoutside','Box','off');
     end
-    
-    
+
+
 else %2D
-    
+
     if isempty(ny)
         ny=4;
     end
-    
+
     if isempty(ylimits)
         ylimits=[0 size(mapF,1)];
     end
-    
+
     imagesc(flipud(mapF))
     ylabel(ylab)
     xlabel(xlab);
     colormap(colorMap)
     Co=colorbar('EastOutside');
     Co.Label.String=('SnPM (F)');
-    
+
     if ~isempty(ylimits)
         ylabels=linspace(ylimits(end),ylimits(1),ny);
     else
@@ -105,7 +105,7 @@ else %2D
         end
     end
     yticklabels(ylabs)
-    
+
     if ~isempty(xlimits)
         xlabels=linspace(xlimits(1),xlimits(end),nx);
     else
@@ -123,14 +123,26 @@ else %2D
     end
     xticklabels(xlabs)
     box off
-    
-end
 
-if ~isnan(Fthreshold)
-    caxis([0 Fthreshold])
+    if statLimit==0
+        if ~isnan(Fthreshold)
+            caxis([0 max([max(mapF) Fthreshold])])
+        end
+    else
+        caxis([0 max(max(mapF))])
+    end
+
+    if equalAxis==1
+        axis equal
+    end
+    if deleteAxis==1
+        set(findall(gca, 'type', 'axes'), 'visible', 'off')
+    end
+
 end
 
 set(gca,'FontSize',imageFontSize)
+
 
 end
 

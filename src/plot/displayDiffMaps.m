@@ -2,7 +2,7 @@
 
 %% OUTPUT
 
-function []=displayDiffMaps(map,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap,diffRatio)
+function []=displayDiffMaps(map,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap,diffRatio,equalAxis,deleteAxis)
 
 if isempty(imageSize)
     figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','off');
@@ -16,6 +16,8 @@ if isempty(ylimits)
     ylimits=[0 size(map,1)];
 end
 
+map(abs(map)==inf)=0;
+map(isnan(map))=0;
 imagesc(flipud(map)); hold on
 ylabel(ylab)
 xlabel(xlab)
@@ -30,8 +32,8 @@ if ~isempty(limitMeanMaps)
     else
         caxis([-diffRatio*limitMeanMaps(2) diffRatio*limitMeanMaps(2)]);
     end
-    
-else 
+
+else
     caxis([-max(max(abs(map))) max(max(abs(map)))]);
 end
 
@@ -73,6 +75,13 @@ xticklabels(xlabs)
 box off
 
 set(gca,'FontSize',imageFontSize)
+
+if equalAxis==1
+    axis equal
+end
+if deleteAxis==1
+    set(findall(gca, 'type', 'axes'), 'visible', 'off')
+end
 
 end
 

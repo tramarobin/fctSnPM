@@ -198,6 +198,9 @@ addParameter(p,'transparancy',50,@isnumeric) % transparancy of the dashed zone (
 addParameter(p,'lineWidth',2.5,@isnumeric) % linewidth of the contour plot
 addParameter(p,'diffRatio',0.33,@isnumeric) % the differences map will be scale at limitMeanMaps*diffRatio.
 addParameter(p,'relativeRatio',[],@isnumeric) % the relative differences maps will be scale at +-relativeRatio
+addParameter(p,'equalAxis',0,@isnumeric) % enables the equal axis option for plots (useful for pressure/positional data). By default (0), the option is not enable. 1 to enable
+addParameter(p,'deleteAxis',0,@isnumeric) % deletes the axes (useful for pressure data). By default (0), the axes are displayed. 1 to enable (also delete the title of the graph)
+addParameter(p,'statLimit',0,@isnumeric) % default option set the colorbar limit of the stat maps at the significance threshold, 1 will set the limit to the max  
 
 % 1d plot parameters
 addParameter(p,'CI',[],@isnumeric); % confidence interval is used instead of standard deviation (0.7-->0.999), 0 to display SEM, , or negative value to not dispaly dispersion
@@ -229,7 +232,8 @@ xlimits=p.Results.xlimits;
 nTicksX=p.Results.nTicksX;
 nTicksY=p.Results.nTicksY;
 displayContour=p.Results.displaycontour;
-imageResolution=['-r' num2str(p.Results.imageResolution)];
+% imageResolution=['-r' num2str(p.Results.imageResolution)];
+imageResolution=p.Results.imageResolution;
 colorbarLabel=p.Results.colorbarLabel;
 limitMeanMaps=p.Results.limitMeanMaps;
 CI=p.Results.CI;
@@ -258,6 +262,10 @@ xLine=p.Results.xLine;
 yLine=p.Results.yLine;
 xGrid=p.Results.xGrid;
 yGrid=p.Results.yGrid;
+equalAxis=p.Results.equalAxis;
+deleteAxis=p.Results.deleteAxis;
+statLimit=p.Results.statLimit;
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Activate warnings and disable figure display 
@@ -267,22 +275,25 @@ set(0, 'DefaultFigureVisible', 'off');
 %% choose save directory if not specified
 savedir=chooseSavedir(savedir);
 
+%% Convert maps and effectRM if dimensions are higher than 2
+[mapsAll effectsRm]= convertMaps(mapsAll, effectsRm);
+
 %% Plot each condition (column) for each subject (row)
 if plotSub==1
-    PlotmeanSub(mapsAll,nameSub,effectsRm,effectNames,savedir,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,imageFontSize,imageSize,colorLine,colorMap,colorbarLabel,limitMeanMaps,transparancy1D)
+    PlotmeanSub(mapsAll,nameSub,effectsRm,effectNames,savedir,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,imageFontSize,imageSize,colorLine,colorMap,colorbarLabel,limitMeanMaps,transparancy1D,equalAxis,deleteAxis)
 end
 
 %% Converting data for SnPM analysis
 [maps1d,dimensions,sujets,nRm,nEffects,typeEffectsAll,modalitiesAll,indicesEffects]=findModalities(mapsAll,effectsRm,effectsInd);
 
 %% Choose and perform ANOVA
-[anovaEffects,anova]=fctAnova(maps1d,dimensions,indicesEffects,sujets,nEffects,nRm,effectNames,alpha,savedir,multiPerm,Perm,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,imageResolution,xlimits,maximalPerm,ignoreAnova,displayContour,contourColor,dashedColor,transparancy,lineWidth,linestyle,colorMap,imageSize,imageFontSize);
+[anovaEffects,anova]=fctAnova(maps1d,dimensions,indicesEffects,sujets,nEffects,nRm,effectNames,alpha,savedir,multiPerm,Perm,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,imageResolution,xlimits,maximalPerm,ignoreAnova,displayContour,contourColor,dashedColor,transparancy,lineWidth,linestyle,colorMap,imageSize,imageFontSize,equalAxis,deleteAxis,statLimit);
 
 %% Choose and perform post-hocs
 if min(dimensions)==1 %1D
     posthoc=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiPerm,Perm,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalPerm,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,alpha,transparancy1D,ratioSnPM,yLimitES,SnPMPos,aovColor,linestyle,xLine,yLine,xGrid,yGrid);
 else %2D
-    posthoc=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,contourColor,savedir,multiPerm,Perm,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalPerm,doAllInteractions,dashedColor,transparancy,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,alpha,linestyle);
+    posthoc=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,contourColor,savedir,multiPerm,Perm,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalPerm,doAllInteractions,dashedColor,transparancy,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,alpha,linestyle,equalAxis,deleteAxis,statLimit);
 end
 
 %% Save analysis
@@ -292,6 +303,5 @@ save([savedir '/snpmAnalysis'], 'snpmAnalysis')
 
 %% Activate figure display
 set(0, 'DefaultFigureVisible', 'on');
-
 
 end

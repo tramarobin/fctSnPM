@@ -6,7 +6,7 @@
 %% OUTPUT
 % Figure of the anova results
 
-function []=displayMeanMaps_sub(map,Fs,limitMeanMaps,colorMap)
+function []=displayMeanMaps_sub(map,Fs,limitMeanMaps,colorMap,equalAxis,deleteAxis)
 
 imagesc(flipud(map))
 colormap(colorMap)
@@ -23,6 +23,13 @@ yticklabels('')
 xlabel('')
 ylabel('')
 box off
+
+if equalAxis==1
+    axis equal
+end
+if deleteAxis==1
+    set(findall(gca, 'type', 'axes'), 'visible', 'off')
+end
 
 end
 

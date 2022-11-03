@@ -2,6 +2,7 @@ function posthoc=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modaliti
 close all
 
 savedir=[savedir '/Post hoc/'];
+imageResolution=['-r' num2str(imageResolution)];
 
 %% define alpha risk
 if isempty(alphaT)
@@ -135,7 +136,7 @@ if nEffects==1
             close
             
             % plot of SnPM analysis
-            displayTtest(posthoc{1}.tTests.Tcontinuum{1,comp},posthoc{1}.tTests.Tthreshold{comp},posthoc{1}.tTests.Tsignificant{1,comp},Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,transparancy1D)
+            plotTtest(posthoc{1}.tTests.Tcontinuum{1,comp},posthoc{1}.tTests.Tthreshold{comp},posthoc{1}.tTests.Tsignificant{1,comp},Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize)
             title([char(posthoc{1}.differences.names{1,comp}) ' - ' char(posthoc{1}.differences.names{2,comp})])
             print('-dtiff',imageResolution,[savedir 'SnPM/' verifSaveName([eNames{1} ' (' char(posthoc{1}.differences.names{1,comp}) ' - ' char(posthoc{1}.differences.names{2,comp}) ')'])])
             savefig([savedir '/FIG/SnPM/' verifSaveName([eNames{1} ' (' char(posthoc{1}.differences.names{1,comp}) ' - ' char(posthoc{1}.differences.names{2,comp}) ')'])])
@@ -303,7 +304,7 @@ if nEffects==2
                     posthoc{mainEffect(1)}.tTests.clusterP{comp}(c)=clustersT{c}.P*nComp;
                 end
                 % plot of SnPM analysis
-                displayTtest(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp},posthoc{mainEffect(1)}.tTests.Tthreshold{comp},posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp},Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,transparancy1D)
+                plotTtest(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp},posthoc{mainEffect(1)}.tTests.Tthreshold{comp},posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp},Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize)
                 title([char(posthoc{mainEffect(1)}.differences.names{1,comp}) ' - ' char(posthoc{mainEffect(1)}.differences.names{2,comp})])
                 savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/SnPM/'  verifSaveName([char(posthoc{mainEffect(1)}.differences.names{1,comp}) ' - ' char(posthoc{mainEffect(1)}.differences.names{2,comp})])])
                 print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/SnPM/'  verifSaveName([char(posthoc{mainEffect(1)}.differences.names{1,comp}) ' - ' char(posthoc{mainEffect(1)}.differences.names{2,comp})])])
@@ -473,7 +474,7 @@ if nEffects==3
                 
                 
                 % plot of SnPM analysis
-                displayTtest(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp},posthoc{mainEffect(1)}.tTests.Tthreshold{comp},posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp},Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,transparancy1D)
+                plotTtest(posthoc{mainEffect(1)}.tTests.Tcontinuum{1,comp},posthoc{mainEffect(1)}.tTests.Tthreshold{comp},posthoc{mainEffect(1)}.tTests.Tsignificant{1,comp},Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize)
                 title(strrep([char(posthoc{mainEffect(1)}.differences.names{1,comp}) ' - ' char(posthoc{mainEffect(1)}.differences.names{2,comp})],' x ',' \cap '))
                 savefig([savedir verifSaveName(eNames{mainEffect(1)}) '/FIG/SnPM/'  verifSaveName([char(posthoc{mainEffect(1)}.differences.names{1,comp}) ' - ' char(posthoc{mainEffect(1)}.differences.names{2,comp})])])
                 print('-dtiff',imageResolution,[savedir verifSaveName(eNames{mainEffect(1)}) '/SnPM/'  verifSaveName([char(posthoc{mainEffect(1)}.differences.names{1,comp}) ' - ' char(posthoc{mainEffect(1)}.differences.names{2,comp})])])
@@ -659,7 +660,7 @@ if nEffects==3
                 end
                 
                 % plot of SnPM analysis
-                displayTtest(posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tcontinuum{1,comp},posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp},posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tsignificant{1,comp},Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,transparancy1D)
+                plotTtest(posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tcontinuum{1,comp},posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tthreshold{comp},posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.Tsignificant{1,comp},Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize)
                 title(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{comp})
                 savefig([savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/FIG/SnPM/' verifSaveName(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{comp})])
                 print('-dtiff',imageResolution,[savedir verifSaveName([eNames{mainEffect(1)} ' x ' eNames{mainEffect(2)}]) '/' verifSaveName(eNames{mainEffect(eTested)}) '/SnPM/' verifSaveName(posthoc{3+anovaFixedCorr(fixedEffect)}.differences.names{comp})])
@@ -962,7 +963,7 @@ if nEffects>1
             posthoc{pos}.tTests.Tsignificant{1,comp}=realEffect{comp};
             
             % full plot of SnPM analysis
-            displayTtest(posthoc{pos}.tTests.Tcontinuum{1,comp},posthoc{pos}.tTests.Tthreshold{comp},posthoc{pos}.tTests.Tsignificant{1,comp},Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,transparancy1D)
+            plotTtest(posthoc{pos}.tTests.Tcontinuum{1,comp},posthoc{pos}.tTests.Tthreshold{comp},posthoc{pos}.tTests.Tsignificant{1,comp},Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize)
             title(posthoc{pos}.differences.names{comp})
             savefig([savedir savedir2 verifSaveName(eNames{testedEffect{comp}}) '/FIG/SnPM/' verifSaveName(posthoc{pos}.differences.names{comp})])
             print('-dtiff',imageResolution,[savedir savedir2 verifSaveName(eNames{testedEffect{comp}}) '/SnPM/' verifSaveName(posthoc{pos}.differences.names{comp})])
