@@ -200,7 +200,7 @@ addParameter(p,'diffRatio',0.33,@isnumeric) % the differences map will be scale 
 addParameter(p,'relativeRatio',[],@isnumeric) % the relative differences maps will be scale at +-relativeRatio
 addParameter(p,'equalAxis',0,@isnumeric) % enables the equal axis option for plots (useful for pressure/positional data). By default (0), the option is not enable. 1 to enable
 addParameter(p,'deleteAxis',0,@isnumeric) % deletes the axes (useful for pressure data). By default (0), the axes are displayed. 1 to enable (also delete the title of the graph)
-addParameter(p,'statLimit',0,@isnumeric) % default option set the colorbar limit of the stat maps at the significance threshold, 1 will set the limit to the max  
+addParameter(p,'statLimit',0,@isnumeric) % default option set the colorbar limit of the stat maps at the significance threshold, 1 will set the limit to the max
 
 % 1d plot parameters
 addParameter(p,'CI',[],@isnumeric); % confidence interval is used instead of standard deviation (0.7-->0.999), 0 to display SEM, , or negative value to not dispaly dispersion
@@ -268,7 +268,7 @@ statLimit=p.Results.statLimit;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Activate warnings and disable figure display 
+%% Activate warnings and disable figure display
 warning('on')
 set(0, 'DefaultFigureVisible', 'off');
 
@@ -276,7 +276,9 @@ set(0, 'DefaultFigureVisible', 'off');
 savedir=chooseSavedir(savedir);
 
 %% Convert maps and effectRM if dimensions are higher than 2
-[mapsAll effectsRm]= convertMaps(mapsAll, effectsRm);
+if numel(size(mapsAll))>2
+    [mapsAll, effectsRm]= convertMaps(mapsAll, effectsRm);
+end
 
 %% Plot each condition (column) for each subject (row)
 if plotSub==1
