@@ -21,10 +21,6 @@ if min(size(maps))>1
             hold on
             contour(flipud(maps),[2*max(max(maps)) 10*max(max(maps))])
         end
-    else
-        hold on
-        contour(flipud(maps),[2 10])
     end
-end
-hold off
+    hold off
 end
