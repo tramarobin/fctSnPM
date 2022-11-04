@@ -19,6 +19,7 @@ if min(size(maps))>1
 
         else
             hold on
+            drawnow;  % this is important, to ensure that FacePrims is ready in the next line!
             contour(flipud(maps),[2*max(max(maps)) 10*max(max(maps))])
         end
     end
