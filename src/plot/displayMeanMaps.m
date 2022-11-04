@@ -16,6 +16,8 @@ if isempty(ylimits)
     ylimits=[0 size(map,1)];
 end
 
+map(abs(map)==inf)=0;
+map(isnan(map))=0;
 imagesc(flipud(map))
 ylabel(ylab)
 xlabel(xlab)
@@ -78,6 +80,11 @@ end
 if deleteAxis==1
     set(findall(gca, 'type', 'axes'), 'visible', 'off')
 end
+
+% to force the axes to actualize
+hold on
+drawnow;
+contour(flipud(map),[2*max(max(map)) 10*max(max(map))])
 
 end
 

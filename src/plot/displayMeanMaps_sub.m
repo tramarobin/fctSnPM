@@ -31,5 +31,10 @@ if deleteAxis==1
     set(findall(gca, 'type', 'axes'), 'visible', 'off')
 end
 
+% to force the axes to actualize
+hold on
+drawnow;
+contour(flipud(map),[2*max(max(map)) 10*max(max(map))])
+
 end
 
