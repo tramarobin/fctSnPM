@@ -7,8 +7,9 @@ Update from the JOSS version : The pressure update on November 14th, 2022
 What's new:
 - On 1D plots: Inputs to draw vertical (`yLine`) and horizontal (`xLine`) lines and display vertical (`yGrid`) and horizontal (`xGrid`) grids. 
 - On 2D plots: Inputs to use the "equal axis" (`equalAxis`) and "delete axis" (`deleteAxis`) plot options to have a better visualization of the pressure data. Input (`statLimit`) to threshold the statistical tests (ANOVA F-value and Post-hoc t-value) graph to the maximal value and not the statistical threshold 
-These inputs have been included in fctSnPM, onlyPlot, and saveNplot functions. 
-New examples `D1_ANOVA1rm_GridLine.m` and `D2_ANOVA2rm_Pressure.m` explain how to use thiese new inputs.
+- Both: It is now possible to input the data and repeated measures effect in 3D and 4D structures. 
+These inputs have been included in `fctSnPM`, `onlyPlot`, and `saveNplot` functions. 
+New examples `D1_ANOVA1rm_GridLine.m` and `D2_ANOVA2rm_Pressure.m` explain how to use these new inputs.
 
 
 The general usage is:
