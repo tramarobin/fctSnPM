@@ -3,11 +3,18 @@ Using spm1d package (v.0.4.3), computes ANOVA and post-hoc tests from anova1 to 
 The type of ANOVA (if required) and post-hoc tests are chosen regarding the independent or repeated measure effects given in parameters.
 The function automatically adapts to 1D and 2D data.
 
+Update from the JOSS version : The pressure update on November 14th, 2022
+What's new:
+- On 1D plots: Inputs to draw vertical (`yLine`) and horizontal (`xLine`) lines and display vertical (`yGrid`) and horizontal (`xGrid`) grids. 
+- On 2D plots: Inputs to use the "equal axis" (`equalAxis`) and "delete axis" (`deleteAxis`) plot options to have a better visualization of the pressure data. Input (`statLimit`) to threshold the statistical tests (ANOVA F-value and Post-hoc t-value) graph to the maximal value and not the statistical threshold 
+These inputs have been included in fctSnPM, onlyPlot, and saveNplot functions. 
+New examples `D1_ANOVA1rm_GridLine.m` and `D2_ANOVA2rm_Pressure.m` explain how to use thiese new inputs.
+
+
 The general usage is:
 ```matlab
 snpmAnalysis=fctSnPM(data, independantEffects, repeatedMeasuresEffects, varargin)
 ```
-
 
 ## Table of contents ##
 - [Warnings](#Warnings)

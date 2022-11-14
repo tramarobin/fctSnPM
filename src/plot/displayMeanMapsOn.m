@@ -2,7 +2,7 @@
 
 %% OUTPUT
 
-function []=displayMeanMaps(map,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap)
+function []=displayMeanMaps(map,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap,equalAxis,deleteAxis)
 
 if isempty(imageSize)
     figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','on');
@@ -71,6 +71,19 @@ xticklabels(xlabs)
 box off
 
 set(gca,'FontSize',imageFontSize)
+
+if equalAxis==1
+    axis equal
+end
+if deleteAxis==1
+    set(findall(gca, 'type', 'axes'), 'visible', 'off')
+end
+
+% to force the axes to actualize
+hold on
+drawnow;
+contour(flipud(map),[2*max(max(map)) 10*max(max(map))])
+
 
 end
 

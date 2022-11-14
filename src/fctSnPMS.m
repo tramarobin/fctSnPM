@@ -1,4 +1,5 @@
-% Trama Robin (LIBM) 04/2021 --> JOSS
+% Trama Robin (LIBM) July 14th, 2021 --> JOSS
+% Trama Robin (HPL) November 14th, 2022 --> The pressure update
 % trama.robin@gmail.com
 
 % available at :
@@ -35,20 +36,20 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % OUTPUTS
-%`snpmAnalysis.mat` is a structure composed of the results of teh statistical analysis (ANOVA + Post Hoc). 
+%`snpmAnalysis.mat` is a structure composed of the results of teh statistical analysis (ANOVA + Post Hoc).
 
-%`snpmAnalysis.anova` is composed of different fields :  
+%`snpmAnalysis.anova` is composed of different fields :
 %* `type` is the type of ANOVA performed
 %* `effectNames` is a structure (one cell for each effect) that represent the names of the effects tested (mains and interactions)
-%* `alpha` is the alpha risk choosen for the anova (default is 0.05 (5%)).  
+%* `alpha` is the alpha risk choosen for the anova (default is 0.05 (5%)).
 %* `pCritical` is the alpha risk used for the anova. Warning message is displayed if this value is modified.
 %* `nPermutations` is the number of permutations performed for the anova.
 %* `maxPermutations` is the number of maximal permutations possible for the anova.
 %* `Fcontinuum` is a structure that represent the F-value for each node
 %* `Fthreshold` is a structure that represent the statistical threshold for the F-values (statistical inference)
-%* `Fsignificant` is a structure that contains the logical for the significance (Fcontinuum > Fthreshold) of each effect of the ANOVA (1 if significant, 0 if not).  
+%* `Fsignificant` is a structure that contains the logical for the significance (Fcontinuum > Fthreshold) of each effect of the ANOVA (1 if significant, 0 if not).
 %* `clusterLocation` is a structure (one for each significant cluster) that contains the location (start and end as indexes) of each significant cluster.
-%* `clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster. 
+%* `clusterP` is a structure (one for each significant cluster) that contains the p-value of each significant cluster.
 
 %`clusterLocation` and `clusterP` are created only in one dimension
 
@@ -79,7 +80,7 @@
 %`clusterLocation` and `clusterP` are created only in one dimension and are not corrected with the result of the ANOVA.
 
 %* `tTests.contourSignificant` represents a modified T-value continuum to display smoother contour plots.
-%`tTests.contourSignificant is created only in two dimensions.  
+%`tTests.contourSignificant is created only in two dimensions.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -140,6 +141,11 @@ doAllInteractions=p.Results.doAllInteractions;
 ignoreAnova=p.Results.ignoreAnova;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Convert maps and effectRM if dimensions are higher than 2
+if numel(size(mapsAll))>2
+    [mapsAll, effectsRm]= convertMaps(mapsAll, effectsRm);
+end
 
 %% Converting data for SnPM analysis
 [maps1d,dimensions,sujets,nRm,nEffects,typeEffectsAll,modalitiesAll,indicesEffects]=findModalities(mapsAll,effectsRm,effectsInd);

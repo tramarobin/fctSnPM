@@ -1,4 +1,5 @@
-% Trama Robin (LIBM) 04/2021 --> JOSS
+% Trama Robin (LIBM) July 14th, 2021 --> JOSS
+% Trama Robin (HPL) November 14th, 2022 --> The pressure update
 % trama.robin@gmail.com
 
 % available at :

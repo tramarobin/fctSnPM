@@ -51,7 +51,8 @@ toc
 tic
 onlyPlot(snpmAnalysis2,...
     'xlabel',xlab,'ylabel',ylab,'nTicksX',nTicksX,...
-    'xlimits',xlimits,'ylimits',ylimits,'nTicksY',nTicksY,'colorline',colorLine);
+    'xlimits',xlimits,'ylimits',ylimits,'nTicksY',nTicksY,'colorline',colorLine,...
+    'xLine',xLine,'xGrid',1,'yGrid',1);
 toc
 
 tic

@@ -46,7 +46,6 @@ if ~ignoreAnova
                 dispContour(anova.Fcontinuum,anova.Fthreshold,contourColor,dashedColor,transparency,lineWidth,linestyle)
             end
             title(anova.effectNames)
-            %             print('-dtiff',imageResolution,[savedir '/ANOVA/' verifSaveName(anova.effectNames)])
             exportgraphics(gcf,fullfile(savedir, 'ANOVA', [verifSaveName(anova.effectNames) '.tif']),'Resolution',imageResolution)
             savefig(fullfile(savedir, 'ANOVA', 'FIG', verifSaveName(anova.effectNames)))
             close

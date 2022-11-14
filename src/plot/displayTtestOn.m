@@ -6,7 +6,7 @@
 %% OUTPUT
 % Figure of the anova results
 
-function []=displayTtestOn(mapT,Tthreshold,anovaEffects,Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMap)
+function []=displayTtestOn(mapT,Tthreshold,anovaEffects,Fs,xlab,ylab,ylimits,dimensions,nx,ny,xlimits,imageFontSize,imageSize,colorMap,equalAxis,deleteAxis,statLimit)
 
 if isempty(imageSize)
     figure('Units', 'Pixels', 'OuterPosition', [0, 0, 720, 480],'visible','on');
@@ -19,10 +19,10 @@ end
 if dimensions(1)==1 | dimensions(2)==1 %1D
     time=0:1/Fs:(max(size(mapT))-1)/Fs;
     plot(time,mapT,'k','linewidth',1); hold on
-    
+
     hline([-Tthreshold Tthreshold],'displayLegend',0,'linetype',':w')
     hline(0,'linetype','--r')
-    
+
     clusters=find(abs(diff(anovaEffects'))==1)';
     clusters=transposeColmunIfNot(clusters);
     clusters=[0;clusters;max(size(mapT))];
@@ -41,7 +41,7 @@ if dimensions(1)==1 | dimensions(2)==1 %1D
             vline([timeCluster(1),timeCluster(end)],'linetype','-.k','displayLegend',0)
         end
     end
-    
+
     xlabel(xlab)
     ylabel('SnPM (t)')
     if ~isempty(xlimits)
@@ -63,21 +63,24 @@ if dimensions(1)==1 | dimensions(2)==1 %1D
     end
     xticklabels(xlabs)
     box off
-    
+
     hline([-Tthreshold Tthreshold],'displayLegend',1)
     if max(anovaEffects)==0
         legend({'t-value',['Threshold = \pm' sprintf('%0.3g',Tthreshold)]},'Location','eastoutside','Box','off');
     else
         legend({'t-value','Significant cluster',['Threshold = \pm' sprintf('%0.3g',Tthreshold)]},'Location','eastoutside','Box','off');
     end
-    
-    
+
+
 else % 2D
-    
+
+    mapT(abs(mapT)==inf)=0;
+    mapT(isnan(mapT))=0;
+
     if isempty(ylimits)
         ylimits=[0 size(mapT,1)];
     end
-    
+
     imagesc(flipud(mapT))
     ylabel(ylab)
     xlabel(xlab);
@@ -85,8 +88,8 @@ else % 2D
     Co=colorbar('EastOutside');
     Co.Label.String=('SnPM (t)');
     Co.FontSize=imageFontSize;
-    
-    
+
+
     if ~isempty(ylimits)
         ylabels=linspace(ylimits(end),ylimits(1),ny);
     else
@@ -103,8 +106,8 @@ else % 2D
         end
     end
     yticklabels(ylabs)
-    
-    
+
+
     if ~isempty(xlimits)
         xlabels=linspace(xlimits(1),xlimits(end),nx);
     else
@@ -124,9 +127,22 @@ else % 2D
     end
     xticklabels(xlabs)
     box off
-    
-    caxis([-Tthreshold Tthreshold]);
-    
+
+    if statLimit==0
+        caxis([-Tthreshold Tthreshold]);
+    else
+        caxis([-max(max(mapT)) max(max(mapT))])
+    end
+
+    set(gca,'FontSize',imageFontSize)
+
+    if equalAxis==1
+        axis equal
+    end
+    if deleteAxis==1
+        set(findall(gca, 'type', 'axes'), 'visible', 'off')
+    end
+
 end
 
 set(gca,'FontSize',imageFontSize)
