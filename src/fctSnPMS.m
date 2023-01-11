@@ -116,7 +116,7 @@ function snpmAnalysis=fctSnPMS(mapsAll,effectsInd,effectsRm,varargin)
 p = inputParser;
 
 % utilities
-addParameter(p,'effectsNames',{'A','B','C'},@iscell); % name of the different effect tested (changes the name of folder and files)
+addParameter(p,'effectNames',{'A','B','C'},@iscell); % name of the different effect tested (changes the name of folder and files)
 % the independant effects must be named first
 
 % statistical parameters
@@ -133,7 +133,7 @@ parse(p,varargin{:});
 
 alpha=p.Results.alpha;
 alphaT=p.Results.alphaT;
-effectNames=p.Results.effectsNames;
+effectNames=p.Results.effectNames;
 multiPerm=p.Results.multiPerm;
 Perm=p.Results.Perm;
 maximalPerm=p.Results.maximalPerm;

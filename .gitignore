@@ -2,3 +2,4 @@
 src/spm1d_Pataky/+spm1d/+stats/+anova/+designs/ANOVA3rm.m
 src/spm1d_Pataky/+spm1d/+stats/+anova/+designs/ANOVA3rm.m
 src/spm1d_Pataky/+spm1d/+stats/+anova/+designs/ANOVA3tworm.m
+src/spm1d_Pataky/+spm1d/+stats/+anova/+designs/ANOVA3onerm.m

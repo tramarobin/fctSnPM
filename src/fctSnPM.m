@@ -158,7 +158,7 @@ p = inputParser;
 
 % utilities
 addParameter(p,'savedir',''); % path to save directory
-addParameter(p,'effectsNames',{'A','B','C'},@iscell); % name of the different effect tested (changes the name of folder and files)
+addParameter(p,'effectNames',{'A','B','C'},@iscell); % name of the different effect tested (changes the name of folder and files)
 % the independant effects must be named first
 addParameter(p,'plotSub',0,@isnumeric) % 1 to plot the mean of each subject
 addParameter(p,'nameSub',[],@iscell) % names of the different subjects
@@ -225,7 +225,7 @@ ylab=p.Results.ylabel;
 xlab=p.Results.xlabel;
 Fs=p.Results.samplefrequency;
 savedir=p.Results.savedir;
-effectNames=p.Results.effectsNames;
+effectNames=p.Results.effectNames;
 multiPerm=p.Results.multiPerm;
 Perm=p.Results.Perm;
 ylimits=p.Results.ylimits;
