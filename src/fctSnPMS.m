@@ -148,18 +148,19 @@ if numel(size(mapsAll))>2
 end
 
 %% Converting data for SnPM analysis
-[maps1d,dimensions,sujets,nRm,nEffects,typeEffectsAll,modalitiesAll,indicesEffects]=findModalities(mapsAll,effectsRm,effectsInd);
+[maps1d,dimensions,sub,nRm,nEffects,typeEffectsAll,modalitiesAll,indicesEffects]=findModalities(mapsAll,effectsRm,effectsInd);
 
 %% Choose and perform ANOVA
-[anovaEffects,anova]=fctAnovaS(maps1d,dimensions,indicesEffects,sujets,nEffects,nRm,effectNames,alpha,multiPerm,Perm,maximalPerm,ignoreAnova);
+[anovaEffects,anova]=fctAnovaS(maps1d,dimensions,indicesEffects,sub,nEffects,nRm,effectNames,alpha,multiPerm,Perm,maximalPerm,ignoreAnova);
 
 %% Choose and perform post-hocs
 if min(dimensions)==1 %1D
-    posthoc=fctPostHoc1dS(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,multiPerm,Perm,anovaEffects,maximalPerm,doAllInteractions,alphaT,alpha);
+    posthoc=fctPostHoc1dS(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,multiPerm,Perm,anovaEffects,maximalPerm,doAllInteractions,alphaT,alpha,sub);
 else %2D
-    posthoc=fctPostHoc2dS(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,multiPerm,Perm,anovaEffects,maximalPerm,doAllInteractions,alphaT,alpha);
+    posthoc=fctPostHoc2dS(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,multiPerm,Perm,anovaEffects,maximalPerm,doAllInteractions,alphaT,alpha,sub);
 end
 
+saveNplot
 snpmAnalysis.anova=anova;
 snpmAnalysis.posthoc=posthoc;
 

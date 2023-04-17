@@ -71,7 +71,7 @@ box off
 if statLimit==0
     caxis([-Tthreshold Tthreshold]);
 else
-    caxis([-max(max(mapT)) max(max(mapT))])
+    caxis([-max(max(abs(mapT))) max(max(abs(mapT)))])
 end
 
 set(gca,'FontSize',imageFontSize)

@@ -45,7 +45,7 @@
 %* `alpha` is the alpha risk choosen for the anova (default is 0.05 (5%)).
 %* `pCritical` is the alpha risk used for the anova. Warning message is displayed if this value is modified.
 %* `nPermutations` is the number of permutations performed for the anova.
-%* `maxPermutations` is the number of maximal permutations possible for the anova.
+%* `maximalPerm` is the number of maximal permutations possible for the anova.
 %* `Fcontinuum` is a structure that represent the F-value for each node
 %* `Fthreshold` is a structure that represent the statistical threshold for the F-values (statistical inference)
 %* `Fsignificant` is a structure that contains the logical for the significance (Fcontinuum > Fthreshold) of each effect of the ANOVA (1 if significant, 0 if not).
@@ -83,7 +83,6 @@
 
 %* `tTests.contourSignificant` represents a modified T-value continuum to display smoother contour plots.
 %`tTests.contourSignificant is created only in two dimensions.
-
 
 
 %### Figures ###
@@ -287,16 +286,16 @@ if plotSub==1
 end
 
 %% Converting data for SnPM analysis
-[maps1d,dimensions,sujets,nRm,nEffects,typeEffectsAll,modalitiesAll,indicesEffects]=findModalities(mapsAll,effectsRm,effectsInd);
+[maps1d,dimensions,sub,nRm,nEffects,typeEffectsAll,modalitiesAll,indicesEffects]=findModalities(mapsAll,effectsRm,effectsInd);
 
 %% Choose and perform ANOVA
-[anovaEffects,anova]=fctAnova(maps1d,dimensions,indicesEffects,sujets,nEffects,nRm,effectNames,alpha,savedir,multiPerm,Perm,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,imageResolution,xlimits,maximalPerm,ignoreAnova,displayContour,contourColor,dashedColor,transparancy,lineWidth,linestyle,colorMap,imageSize,imageFontSize,equalAxis,deleteAxis,statLimit);
+[anovaEffects,anova]=fctAnova(maps1d,dimensions,indicesEffects,sub,nEffects,nRm,effectNames,alpha,savedir,multiPerm,Perm,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,imageResolution,xlimits,maximalPerm,ignoreAnova,displayContour,contourColor,dashedColor,transparancy,lineWidth,linestyle,colorMap,imageSize,imageFontSize,equalAxis,deleteAxis,statLimit);
 
 %% Choose and perform post-hocs
 if min(dimensions)==1 %1D
-    posthoc=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiPerm,Perm,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalPerm,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,alpha,transparancy1D,ratioSnPM,yLimitES,SnPMPos,aovColor,linestyle,xLine,yLine,xGrid,yGrid);
+    posthoc=fctPostHoc1d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,savedir,multiPerm,Perm,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,anovaEffects,maximalPerm,colorLine,doAllInteractions,imageFontSize,imageSize,alphaT,alpha,transparancy1D,ratioSnPM,yLimitES,SnPMPos,aovColor,linestyle,xLine,yLine,xGrid,yGrid,sub);
 else %2D
-    posthoc=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,contourColor,savedir,multiPerm,Perm,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalPerm,doAllInteractions,dashedColor,transparancy,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,alpha,linestyle,equalAxis,deleteAxis,statLimit);
+    posthoc=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,contourColor,savedir,multiPerm,Perm,xlab,ylab,Fs,ylimits,nTicksX,nTicksY,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalPerm,doAllInteractions,dashedColor,transparancy,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,alpha,linestyle,equalAxis,deleteAxis,statLimit,sub);
 end
 
 %% Save analysis

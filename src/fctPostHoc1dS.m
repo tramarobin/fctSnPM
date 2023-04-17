@@ -1,4 +1,4 @@
-function posthoc=fctPostHoc1dS(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,multiPerm,Perm,anovaEffects,maximalPerm,doAllInteractions,alphaT,alphaAOV)
+function posthoc=fctPostHoc1dS(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,multiPerm,Perm,anovaEffects,maximalPerm,doAllInteractions,alphaT,alphaAOV,sub)
 
 %% define alpha risk
 if isempty(alphaT)
@@ -31,6 +31,7 @@ if nEffects==1
         for i=1:nCombi
             
             meansData{i}=maps1d(indicesEffects==combi{i}(1),:);
+            meansData{i}=groupBysub(meansData{i},sub(indicesEffects==combi{i}(1),:));
             legendPlot=[legendPlot,{char(modalitiesAll{1}(combi{i}(1)))}];
             posthoc{1}.data.names{i}=[char(modalitiesAll{1}(combi{i}(1)))];
             
@@ -58,6 +59,7 @@ if nEffects==1
             for i=1:2
                 % comparison + name
                 DATA{i}=maps1d(indicesEffects==combi{Comp{comp}(i)}(1),:);
+                DATA{i}=groupBysub(DATA{i},sub(indicesEffects==combi{Comp{comp}(i)}(1),:));
                 posthoc{1}.differences.names{i,comp}=[char(modalitiesAll{1}(combi{Comp{comp}(i)}(1)))];
             end
             
@@ -141,7 +143,8 @@ if nEffects==2
             
             legendPlot=[];
             for i=1:nCombi
-                meansData{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1),:);
+    meansData{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1),:);
+                meansData{i}=groupBysub(meansData{i},sub(indicesEffects(:,mainEffect(1))==combi{i}(1)));
                 legendPlot=[legendPlot,{char(modalitiesAll{mainEffect(1)}(combi{i}(1)))}];
                 posthoc{mainEffect(1)}.data.names{i}=[char(modalitiesAll{mainEffect(1)}(combi{i}(1)))];
             end
@@ -166,7 +169,8 @@ if nEffects==2
                 
                 for i=1:2
                     % comparison + name
-                    DATA{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1),:);
+ DATA{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1),:);
+                    DATA{i}=groupBysub(DATA{i},sub(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1)));
                     posthoc{mainEffect(1)}.differences.names{i,comp}=[char(modalitiesAll{mainEffect(1)}(combi{Comp{comp}(i)}(1)))];
                 end
                 
@@ -253,6 +257,7 @@ if nEffects==3
             legendPlot=[];
             for i=1:nCombi
                 meansData{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1),:);
+                meansData{i}=groupBysub(meansData{i},sub(indicesEffects(:,mainEffect(1))==combi{i}(1),:));
                 legendPlot=[legendPlot,{char(modalitiesAll{mainEffect(1)}(combi{i}(1)))}];
                 posthoc{mainEffect(1)}.data.names{i}=[char(modalitiesAll{mainEffect(1)}(combi{i}(1)))];
             end
@@ -277,7 +282,8 @@ if nEffects==3
                 
                 for i=1:2
                     % comparison + name
-                    DATA{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1),:);
+                        DATA{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1),:);
+                   DATA{i}=groupBysub(DATA{i},sub(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1),:));
                     posthoc{mainEffect(1)}.differences.names{i,comp}=[char(modalitiesAll{mainEffect(1)}(combi{Comp{comp}(i)}(1)))];
                 end
                 
@@ -364,7 +370,8 @@ if nEffects==3
             
             legendPlot=[];
             for i=1:nCombi
-                meansData{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1) & indicesEffects(:,mainEffect(2))==combi{i}(2),:);
+                  meansData{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1) & indicesEffects(:,mainEffect(2))==combi{i}(2),:);
+                meansData{i}=groupBysub(meansData{i},sub(indicesEffects(:,mainEffect(1))==combi{i}(1) & indicesEffects(:,mainEffect(2))==combi{i}(2),:));
                 legendPlot=[legendPlot,{[char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' \cap ' char(modalitiesAll{mainEffect(2)}(combi{i}(2)))]}];
                 posthoc{3+anovaFixedCorr(fixedEffect)}.data.names{i}=[char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' \cap ' char(modalitiesAll{mainEffect(2)}(combi{i}(2)))];
             end
@@ -394,7 +401,8 @@ if nEffects==3
                 
                 for i=1:2
                     % comparison + name
-                    DATA{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1) & indicesEffects(:,mainEffect(2))==combi{Comp{comp}(i)}(2),:);
+                   DATA{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1) & indicesEffects(:,mainEffect(2))==combi{Comp{comp}(i)}(2),:);
+                                    DATA{i}=groupBysub(DATA{i},sub(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1) & indicesEffects(:,mainEffect(2))==combi{Comp{comp}(i)}(2),:));
                     intForInteractions{anovaFixedCorr(effectFixed)}.comp{comp}(i,:)=combi{Comp{comp}(i)};
                 end
                 [eFixed,eTested,modalFixed,modalTested]=findWhichTitle([combi{Comp{comp}(1)};combi{Comp{comp}(2)}]);
@@ -496,7 +504,8 @@ if nEffects>1
             
             legendPlot=[];
             for i=1:nCombi
-                meansData{i}=maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2),:);
+                  meansData{i}=maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2),:);
+                meansData{i}=groupBysub(meansData{i},sub(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2),:));
                 legendPlot=[legendPlot,{[char(modalitiesAll{1}(combi{i}(1))) ' \cap ' char(modalitiesAll{2}(combi{i}(2)))]}];
                 posthoc{pos}.data.names{i}=[char(modalitiesAll{1}(combi{i}(1))) ' \cap ' char(modalitiesAll{2}(combi{i}(2)))];
             end
@@ -521,7 +530,8 @@ if nEffects>1
             
             legendPlot=[];
             for i=1:nCombi
-                meansData{i}=maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2) & indicesEffects(:,3)==combi{i}(3),:);
+             meansData{i}=maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2) & indicesEffects(:,3)==combi{i}(3),:);
+                meansData{i}=groupBysub(meansData{i},sub(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2) & indicesEffects(:,3)==combi{i}(3),:));
                 legendPlot=[legendPlot,{[char(modalitiesAll{1}(combi{i}(1))) ' \cap ' char(modalitiesAll{2}(combi{i}(2))) ' \cap ' char(modalitiesAll{3}(combi{i}(3)))]}];
                 posthoc{pos}.data.names{i}=[char(modalitiesAll{1}(combi{i}(1))) ' \cap ' char(modalitiesAll{2}(combi{i}(2))) ' \cap ' char(modalitiesAll{3}(combi{i}(3)))];
             end
@@ -553,12 +563,14 @@ if nEffects>1
             
             for i=1:2
                 % comparison + name
-                if nEffects==2
+                 if nEffects==2
                     DATA{i}=maps1d(indicesEffects(:,1)==combi{Comp{comp}(i)}(1) & indicesEffects(:,2)==combi{Comp{comp}(i)}(2),:);
+                    DATA{i}=groupBysub(DATA{i},sub(indicesEffects(:,1)==combi{Comp{comp}(i)}(1) & indicesEffects(:,2)==combi{Comp{comp}(i)}(2),:));
                     [eFixed,eTested,modalFixed,modalTested]=findWhichTitle([combi{Comp{comp}(1)};combi{Comp{comp}(2)}]);
                     posthoc{pos}.differences.names{comp}=char([modalitiesAll{eFixed}{modalFixed} ' (' modalitiesAll{eTested}{modalTested(1)} ' - ' modalitiesAll{eTested}{modalTested(2)} ')']);
                 elseif nEffects==3
                     DATA{i}=maps1d(indicesEffects(:,1)==combi{Comp{comp}(i)}(1) & indicesEffects(:,2)==combi{Comp{comp}(i)}(2) & indicesEffects(:,3)==combi{Comp{comp}(i)}(3),:);
+                    DATA{i}=groupBysub(DATA{i},sub(indicesEffects(:,1)==combi{Comp{comp}(i)}(1) & indicesEffects(:,2)==combi{Comp{comp}(i)}(2),:));
                     [eFixed,eTested,modalFixed,modalTested]=findWhichTitle([combi{Comp{comp}(1)};combi{Comp{comp}(2)}]);
                     posthoc{pos}.differences.names{comp}=char([modalitiesAll{eFixed(1)}{modalFixed(1)} ' x ' modalitiesAll{eFixed(2)}{modalFixed(2)} ' (' modalitiesAll{eTested}{modalTested(1)} ' - ' modalitiesAll{eTested}{modalTested(2)} ')']);
                 end

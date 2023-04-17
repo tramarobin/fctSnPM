@@ -10,6 +10,9 @@ end
 maxPermutations=ANOVA.nPermUnique;
 maxPermutations=min([maximalPerm,maxPermutations]);
 requiredIterations=1/alphaOriginal;
+if requiredIterations<10
+requiredIterations=10;
+end
 nWarning=0;
 
 if permutations>=maximalPerm && maxPermutations>=maximalPerm

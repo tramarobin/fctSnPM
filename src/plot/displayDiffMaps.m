@@ -23,7 +23,7 @@ ylabel(ylab)
 xlabel(xlab)
 colormap(colorMap)
 Co=colorbar('EastOutside');
-Co.Label.String=(['Differences of ' lower(colorbarLabel)]);
+Co.Label.String=(['Differences of ' (colorbarLabel)]);
 Co.FontSize=imageFontSize;
 
 if ~isempty(limitMeanMaps)

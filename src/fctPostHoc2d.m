@@ -1,4 +1,4 @@
-function posthoc=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,contourColor,savedir,multiPerm,Perm,xlab,ylab,Fs,ylimits,nx,ny,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalPerm,doAllInteractions,dashedColor,transparency,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,alphaAOV,linestyle,equalAxis,deleteAxis,statLimit)
+function posthoc=fctPostHoc2d(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,eNames,contourColor,savedir,multiPerm,Perm,xlab,ylab,Fs,ylimits,nx,ny,colorbarLabel,imageResolution,displayContour,limitMeanMaps,xlimits,anovaEffects,maximalPerm,doAllInteractions,dashedColor,transparency,lineWidth,imageFontSize,imageSize,colorMap,colorMapDiff,diffRatio,relativeRatio,alphaT,alphaAOV,linestyle,equalAxis,deleteAxis,statLimit,sub)
 close all
 if isempty(nx)
     nx=5;
@@ -48,8 +48,10 @@ if nEffects==1
     for i=1:nCombi
 
         % means
-        meansData=reshape(mean(maps1d(indicesEffects==combi{i}(1),:)),dimensions(1),dimensions(2));
-        stdData=reshape(std(maps1d(indicesEffects==combi{i}(1),:)),dimensions(1),dimensions(2));
+        groupData=groupBysub(maps1d(indicesEffects==combi{i}(1),:)),sub(maps1d(indicesEffects==combi{i}(1),:));
+        meansData=reshape(mean(groupData),dimensions(1),dimensions(2));
+        stdData=reshape(std(groupData),dimensions(1),dimensions(2));
+
         posthoc{1}.data.names{i}=[char(modalitiesAll{1}(combi{i}(1)))];
         posthoc{1}.data.meanContinuum{i}=meansData;
         posthoc{1}.data.sdContinuum{i}=stdData;
@@ -96,6 +98,7 @@ if nEffects==1
         for i=1:2
             % comparison + name
             DATA{i}=maps1d(indicesEffects==combi{Comp{comp}(i)}(1),:);
+            DATA{i}=groupBysub(DATA{i},sub(indicesEffects==combi{Comp{comp}(i)}(1),:));
         end
         posthoc{1}.differences.names{1,comp}=char([modalitiesAll{1}{combi{Comp{comp}(1)}(1)} ' - ' modalitiesAll{1}{combi{Comp{comp}(2)}(1)}]);
 
@@ -247,8 +250,9 @@ if nEffects==2
         end
         for i=1:nCombi
             % means
-            meansData=reshape(mean(maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1),:)),dimensions(1),dimensions(2));
-            stdData=reshape(std(maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1),:)),dimensions(1),dimensions(2));
+            groupData=groupBysub(maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1),:),sub(indicesEffects(:,mainEffect(1))==combi{i}(1),:));
+            meansData=reshape(mean(groupData),dimensions(1),dimensions(2));
+            stdData=reshape(std(groupData),dimensions(1),dimensions(2));
             posthoc{mainEffect(1)}.data.names{i}=[char(modalitiesAll{mainEffect(1)}(combi{i}(1)))];
             posthoc{mainEffect(1)}.data.meanContinuum{i}=meansData;
             posthoc{mainEffect(1)}.data.sdContinuum{i}=stdData;
@@ -295,6 +299,7 @@ if nEffects==2
             for i=1:2
                 % comparison + name
                 DATA{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1),:);
+                DATA{i}=groupBysub(DATA{i},sub(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1),:));
             end
             posthoc{mainEffect(1)}.differences.names{1,comp}=char([modalitiesAll{mainEffect(1)}{combi{Comp{comp}(1)}(1)} ' - ' modalitiesAll{mainEffect(1)}{combi{Comp{comp}(2)}(1)}]);
 
@@ -452,8 +457,10 @@ if nEffects==3
         for i=1:nCombi
 
             % means
-            meansData=reshape(mean(maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1),:)),dimensions(1),dimensions(2));
-            stdData=reshape(std(maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1),:)),dimensions(1),dimensions(2));
+            groupData=groupBysub(maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1),:),sub(indicesEffects(:,mainEffect(1))==combi{i}(1),:));
+            meansData=reshape(mean(groupData),dimensions(1),dimensions(2));
+            stdData=reshape(std(groupData),dimensions(1),dimensions(2));
+
             posthoc{mainEffect(1)}.data.names{i}=[char(modalitiesAll{mainEffect(1)}(combi{i}(1)))];
             posthoc{mainEffect(1)}.data.meanContinuum{i}=meansData;
             posthoc{mainEffect(1)}.data.sdContinuum{i}=stdData;
@@ -501,6 +508,7 @@ if nEffects==3
             for i=1:2
                 % comparison + name
                 DATA{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1),:);
+                DATA{i}=groupBysub(DATA{i},sub(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1),:));
             end
             posthoc{mainEffect(1)}.differences.names{1,comp}=char([modalitiesAll{mainEffect(1)}{combi{Comp{comp}(1)}(1)} ' - ' modalitiesAll{mainEffect(1)}{combi{Comp{comp}(2)}(1)}]);
 
@@ -663,8 +671,10 @@ if nEffects==3
             for i=1:nCombi
 
                 % means
-                meansData=reshape(mean(maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1) & indicesEffects(:,mainEffect(2))==combi{i}(2),:)),dimensions(1),dimensions(2));
-                stdData=reshape(std(maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1) & indicesEffects(:,mainEffect(2))==combi{i}(2),:)),dimensions(1),dimensions(2));
+                groupData=groupBysub(maps1d(indicesEffects(:,mainEffect(1))==combi{i}(1) & indicesEffects(:,mainEffect(2))==combi{i}(2),:),sub(indicesEffects(:,mainEffect(1))==combi{i}(1) & indicesEffects(:,mainEffect(2))==combi{i}(2),:));
+                meansData=reshape(mean(groupData),dimensions(1),dimensions(2));
+                stdData=reshape(std(groupData),dimensions(1),dimensions(2));
+
                 posthoc{3+anovaFixedCorr(fixedEffect)}.data.names{i}=[char(modalitiesAll{mainEffect(1)}(combi{i}(1))) ' x ' char(modalitiesAll{mainEffect(2)}(combi{i}(2)))];
                 posthoc{3+anovaFixedCorr(fixedEffect)}.data.meanContinuum{i}=meansData;
                 posthoc{3+anovaFixedCorr(fixedEffect)}.data.sdContinuum{i}=stdData;
@@ -721,6 +731,7 @@ if nEffects==3
                 for i=1:2
                     % comparison + name
                     DATA{i}=maps1d(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1) & indicesEffects(:,mainEffect(2))==combi{Comp{comp}(i)}(2),:);
+                    DATA{i}=groupBysub(DATA{i},sub(indicesEffects(:,mainEffect(1))==combi{Comp{comp}(i)}(1) & indicesEffects(:,mainEffect(2))==combi{Comp{comp}(i)}(2),:));
                     intForInteractions{anovaFixedCorr(eff_fixed)}.comp{comp}(i,:)=combi{Comp{comp}(i)};
                 end
                 [eFixed,eTested,modalFixed,modalTested]=findWhichTitle([combi{Comp{comp}(1)};combi{Comp{comp}(2)}]);
@@ -901,19 +912,19 @@ if nEffects>1
 
             for i=1:nCombi
 
-                if size(maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2),:),1)>1
-                    meansData=reshape(mean(maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2),:)),dimensions(1),dimensions(2));
-                    stdData=reshape(std(maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2),:)),dimensions(1),dimensions(2));
+                groupData=groupBysub(maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2),:),sub(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2),:));
+                meansData=reshape(mean(groupData),dimensions(1),dimensions(2));
+                stdData=reshape(std(groupData),dimensions(1),dimensions(2));
 
+                if size(maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2),:),1)>1
                     % full plot of sd
                     displayMeanMaps(stdData,Fs,xlab,ylab,ylimits,nx,ny,[],xlimits,imageFontSize,imageSize,colorbarLabel,colorMap,equalAxis,deleteAxis)
                     title([char(modalitiesAll{1}(combi{i}(1))) ' \cap ' char(modalitiesAll{2}(combi{i}(2)))])
                     exportgraphics(gcf,fullfile(savedir, savedir2, 'SD', [verifSaveName([char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2)))]) '.tif']),'Resolution',imageResolution)
                     savefig(fullfile(savedir, savedir2, 'FIG', 'SD', verifSaveName([char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2)))])))
                     close
-                else
-                    meansData=reshape(maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2),:),dimensions(1),dimensions(2));
                 end
+
                 positionDiffPlot=[positionDiffPlot,(i-1)*nCombi+i+1:(i-1)*nCombi+i+1+nCombi-i-1];
                 positionSnPMPlot=[positionSnPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
 
@@ -950,17 +961,19 @@ if nEffects>1
 
             for i=1:nCombi
 
+                groupData=groupBysub(maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2) & indicesEffects(:,3)==combi{i}(3),:),sub(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2) & indicesEffects(:,3)==combi{i}(3),:));
+                meansData=reshape(mean(groupData),dimensions(1),dimensions(2));
+                stdData=reshape(std(groupData),dimensions(1),dimensions(2));
+
                 if size(maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2) & indicesEffects(:,3)==combi{i}(3),:),1)>1
-                    meansData=reshape(mean(maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2) & indicesEffects(:,3)==combi{i}(3),:)),dimensions(1),dimensions(2));
-                    stdData=reshape(std(maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2) & indicesEffects(:,3)==combi{i}(3),:)),dimensions(1),dimensions(2));
+
                     % full plot std
                     displayMeanMaps(stdData,Fs,xlab,ylab,ylimits,nx,ny,[],xlimits,imageFontSize,imageSize,colorbarLabel,colorMap,equalAxis,deleteAxis)
                     title([char(modalitiesAll{1}(combi{i}(1))) ' \cap ' char(modalitiesAll{2}(combi{i}(2))) ' \cap ' char(modalitiesAll{3}(combi{i}(3)))])
                     exportgraphics(gcf,fullfile(savedir, savedir2, 'SD', [verifSaveName([char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2))) ' x ' char(modalitiesAll{3}(combi{i}(3)))]) '.tif']),'Resolution',imageResolution)
                     savefig(fullfile(savedir, savedir2, 'FIG', 'SD', verifSaveName([char(modalitiesAll{1}(combi{i}(1))) ' x ' char(modalitiesAll{2}(combi{i}(2))) ' x ' char(modalitiesAll{3}(combi{i}(3)))])))
+
                     close
-                else
-                    meansData=reshape(maps1d(indicesEffects(:,1)==combi{i}(1) & indicesEffects(:,2)==combi{i}(2) & indicesEffects(:,3)==combi{i}(3),:),dimensions(1),dimensions(2));
                 end
                 positionDiffPlot=[positionDiffPlot,(i-1)*nCombi+i+1:(i-1)*nCombi+i+1+nCombi-i-1];
                 positionSnPMPlot=[positionSnPMPlot,(i)*nCombi+i:nCombi:nCombi.^2-1];
@@ -1015,10 +1028,12 @@ if nEffects>1
                 % comparison + name
                 if nEffects==2
                     DATA{i}=maps1d(indicesEffects(:,1)==combi{Comp{comp}(i)}(1) & indicesEffects(:,2)==combi{Comp{comp}(i)}(2),:);
+                    DATA{i}=groupBysub(DATA{i},sub(indicesEffects(:,1)==combi{Comp{comp}(i)}(1) & indicesEffects(:,2)==combi{Comp{comp}(i)}(2),:));
                     [eFixed,eTested,modalFixed,modalTested]=findWhichTitle([combi{Comp{comp}(1)};combi{Comp{comp}(2)}]);
                     posthoc{pos}.differences.names{1,comp}=char([modalitiesAll{eFixed}{modalFixed} ' (' modalitiesAll{eTested}{modalTested(1)} ' - ' modalitiesAll{eTested}{modalTested(2)} ')']);
                 elseif nEffects==3
                     DATA{i}=maps1d(indicesEffects(:,1)==combi{Comp{comp}(i)}(1) & indicesEffects(:,2)==combi{Comp{comp}(i)}(2) & indicesEffects(:,3)==combi{Comp{comp}(i)}(3),:);
+                    DATA{i}=groupBysub(DATA{i},sub(indicesEffects(:,1)==combi{Comp{comp}(i)}(1) & indicesEffects(:,2)==combi{Comp{comp}(i)}(2) & indicesEffects(:,3)==combi{Comp{comp}(i)}(3),:));
                     [eFixed,eTested,modalFixed,modalTested]=findWhichTitle([combi{Comp{comp}(1)};combi{Comp{comp}(2)}]);
                     posthoc{pos}.differences.names{1,comp}=char([modalitiesAll{eFixed(1)}{modalFixed(1)} ' x ' modalitiesAll{eFixed(2)}{modalFixed(2)} ' (' modalitiesAll{eTested}{modalTested(1)} ' - ' modalitiesAll{eTested}{modalTested(2)} ')']);
                 end
