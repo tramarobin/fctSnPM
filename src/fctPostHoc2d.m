@@ -216,7 +216,7 @@ if nEffects==1
     savefig(fullfile(savedir, 'FIG', verifSaveName(eNames{1})))
     close
 
-    clear Comp combi isPlot
+    clear DATA Comp combi isPlot
 
 end
 
@@ -418,7 +418,7 @@ if nEffects==2
         close
 
         mainForInteraction{mainEffect}=posthoc{mainEffect(1)}.tTests.Tsignificant;
-        clear Comp combi isPlot
+        clear DATA Comp combi isPlot
 
     end
 
@@ -623,7 +623,7 @@ if nEffects==3
         close
 
         mainForInteraction{mainEffect}=posthoc{mainEffect(1)}.tTests.Tsignificant;
-        clear Comp combi isPlot
+        clear DATA Comp combi isPlot
 
     end
 end
@@ -851,7 +851,7 @@ if nEffects==3
             close
 
             intForInteractions{anovaFixedCorr(eff_fixed)}.t=realEffect;
-            clear Comp combi isPlot realEffect
+            clear DATA Comp combi isPlot realEffect
 
         end
     end
@@ -1170,7 +1170,7 @@ if nEffects>1
         savefig(fullfile(savedir, savedir2, 'FIG', figname))
         close
 
-        clear Comp combi isPlot
+        clear DATA Comp combi isPlot
 
     end
 

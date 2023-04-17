@@ -116,7 +116,7 @@ if nEffects==1
 
     end
 
-    clear Comp combi isPlot
+    clear DATA Comp combi isPlot
 
 end
 
@@ -230,7 +230,7 @@ if nEffects==2
         end
 
         mainForInteraction{mainEffect}=posthoc{mainEffect(1)}.tTests.Tsignificant;
-        clear Comp combi isPlot
+        clear DATA Comp combi isPlot
 
     end
 end
@@ -343,7 +343,7 @@ if nEffects==3
         end
 
         mainForInteraction{mainEffect}=posthoc{mainEffect(1)}.tTests.Tsignificant;
-        clear Comp combi isPlot
+        clear DATA Comp combi isPlot
 
     end
 end
@@ -474,7 +474,7 @@ if nEffects==3
 
 
             intForInteractions{anovaFixedCorr(eff_fixed)}.t=realEffect;
-            clear Comp combi isPlot realEffect
+            clear DATA Comp combi isPlot realEffect
 
         end
     end
@@ -660,7 +660,7 @@ if nEffects>1
 
         end
 
-        clear Comp combi isPlot
+        clear DATA Comp combi isPlot
 
     end
 

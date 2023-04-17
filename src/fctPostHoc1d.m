@@ -178,7 +178,7 @@ if nEffects==1
         savefig([savedir '/FIG/' verifSaveName(eNames{1}) ' + SnPMsubNoAOV'])
         close
 
-        clear comp combi
+        clear comp combi DATA
 
     end
 end
@@ -346,7 +346,7 @@ if nEffects==2
             close
 
             mainForInteraction{mainEffect}=posthoc{mainEffect(1)}.tTests.Tsignificant;
-            clear Comp combi legendPlot
+            clear Comp combi legendPlot DATA
 
         end
     end
@@ -518,7 +518,7 @@ if nEffects==3
             close
 
             mainForInteraction{mainEffect}=posthoc{mainEffect(1)}.tTests.Tsignificant;
-            clear Comp combi legendPlot
+            clear Comp combi legendPlot DATA
 
         end
     end
@@ -741,7 +741,7 @@ if nEffects==3
 
             posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.combi=combi;
             intForInteractions{anovaFixedCorr(effectFixed)}.t=realEffect;
-            clear Comp combi legendPlot
+            clear Comp combi legendPlot DATA
 
         end
     end
@@ -1098,7 +1098,7 @@ if nEffects>1
         end
 
         posthoc{pos}.tTests.combi=combi;
-        clear Comp combi legendPlot
+        clear Comp combi legendPlot DATA
     end
 
 end
