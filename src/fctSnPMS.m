@@ -160,7 +160,6 @@ else %2D
     posthoc=fctPostHoc2dS(nEffects,indicesEffects,maps1d,dimensions,modalitiesAll,typeEffectsAll,effectNames,multiPerm,Perm,anovaEffects,maximalPerm,doAllInteractions,alphaT,alpha,sub);
 end
 
-saveNplot
 snpmAnalysis.anova=anova;
 snpmAnalysis.posthoc=posthoc;
 
