@@ -48,7 +48,7 @@ if nEffects==1
     for i=1:nCombi
 
         % means
-        groupData=groupBysub(maps1d(indicesEffects==combi{i}(1),:)),sub(maps1d(indicesEffects==combi{i}(1),:));
+        groupData=groupBysub(maps1d(indicesEffects==combi{i}(1),:),sub(indicesEffects==combi{i}(1),:));
         meansData=reshape(mean(groupData),dimensions(1),dimensions(2));
         stdData=reshape(std(groupData),dimensions(1),dimensions(2));
 
