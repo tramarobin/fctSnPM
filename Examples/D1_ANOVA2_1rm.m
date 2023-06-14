@@ -25,7 +25,6 @@ colorLine{1}=[rgb('blue'); rgb('magenta')];
 lineStyle{1}={'-' '-.'; '--' '--'}; % first row is for the means, second row for the sd
 
 % There are 20 subjects
-
 repeatedMeasuresEffects{1}={'Right','Left'};
 colorLine{2}=[rgb('green'); rgb('red')];
 
