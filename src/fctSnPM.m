@@ -1,5 +1,7 @@
 % Trama Robin (LIBM) July 14th, 2021 --> JOSS
 % Trama Robin (HPL) November 14th, 2022 --> The pressure update
+% Trama Robin (HPL) July 4th, 2023 --> Lots of bug fixes
+
 % trama.robin@gmail.com
 
 % available at :
@@ -282,7 +284,7 @@ end
 
 %% Plot each condition (column) for each subject (row)
 if plotSub==1
-    PlotmeanSub(mapsAll,nameSub,effectsRm,effectNames,savedir,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,imageFontSize,imageSize,colorLine,colorMap,colorbarLabel,limitMeanMaps,transparancy1D,equalAxis,deleteAxis)
+    PlotmeanSub(mapsAll,nameSub,effectsRm,effectNames,savedir,xlab,ylab,Fs,imageResolution,CI,ylimits,nTicksX,nTicksY,xlimits,imageFontSize,imageSize,colorLine,colorMap,colorbarLabel,limitMeanMaps,transparancy1D,equalAxis,deleteAxis,xLine,yLine,xGrid,yGrid)
 end
 
 %% Converting data for SnPM analysis

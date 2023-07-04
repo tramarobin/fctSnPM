@@ -1,4 +1,4 @@
-function PlotmeanSub(mapsAll,nameSub,effectsRm,effectNames,savedir,xlab,ylab,Fs,imageResolution,CI,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorLine,colorMap,colorbarLabel,limitMeanMaps,transparancy1D,equalAxis,deleteAxis)
+function PlotmeanSub(mapsAll,nameSub,effectsRm,effectNames,savedir,xlab,ylab,Fs,imageResolution,CI,ylimits,nx,ny,xlimits,imageFontSize,imageSize,colorLine,colorMap,colorbarLabel,limitMeanMaps,transparancy1D,equalAxis,deleteAxis,xLine,yLine,xGrid,yGrid)
 warning('off', 'MATLAB:MKDIR:DirectoryExists');
 mkdir([savedir '\MeanSub'])
 nSuj=size(mapsAll,1);
@@ -20,7 +20,7 @@ for i=1:nSuj
     for cond=1:nCond
         if min(size(mapsAll{i,cond}))==1
             Dataplot{1}=mapsAll{i,cond}';
-            plotmean(Dataplot,CI,xlab,ylab,Fs,xlimits,nx,ny,colorLine,imageFontSize,imageSize,transparancy1D,ylimits)
+            plotmean(Dataplot,CI,xlab,ylab,Fs,xlimits,nx,ny,colorLine,imageFontSize,imageSize,transparancy1D,ylimits,xLine,yLine,xGrid,yGrid)
         else
             Dataplot=mapsAll{i,cond};
             displayMeanMaps(Dataplot,Fs,xlab,ylab,ylimits,nx,ny,limitMeanMaps,xlimits,imageFontSize,imageSize,colorbarLabel,colorMap,equalAxis,deleteAxis)
@@ -36,13 +36,13 @@ for i=1:nSuj
         if ~isempty(t)
             mkdir(fullfile(savedir, 'MeanSub', nameSub{i}))
             if min(size(mapsAll{i,cond}))==1
-                print('-dtiff',imageResolution,[savedir '\MeanSub\' nameSub{i} '\' t '.tiff'])
+                print('-dtiff',['-r' num2str(imageResolution)],[savedir '\MeanSub\' nameSub{i} '\' t '.tiff'])
             else
                 exportgraphics(gcf,fullfile(savedir, 'MeanSub', verifSaveName(nameSub{i}), t, '.tif'),'Resolution',imageResolution)
             end
         else
             if min(size(mapsAll{i,cond}))==1
-                print('-dtiff',imageResolution,[savedir '\MeanSub\' nameSub{i} '.tiff'])
+                print('-dtiff',['-r' num2str(imageResolution)],[savedir '\MeanSub\' nameSub{i} '.tiff'])
             else
                 exportgraphics(gcf,fullfile(savedir, 'MeanSub', [verifSaveName(nameSub{i}) '.tif']),'Resolution',imageResolution)
             end
