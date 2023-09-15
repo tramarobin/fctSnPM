@@ -16,7 +16,7 @@ end
 nWarning=0;
 
 if permutations>=maximalPerm && maxPermutations>=maximalPerm
-    permutations=maximalPerm;
+    permutations=-1; % allow the maximal number of permutations without replacement.
 end
 
 
@@ -40,10 +40,10 @@ if permutations>maxPermutations && maxPermutations<requiredIterations
         '. Please consider increasing the number of subjects to get a valid analysis for a p-value of ' ...
         num2str(alphaOriginal)])
     
-    permutations=maxPermutations;
+    permutations=-1; % allow the maximal number of permutations without replacement.
     nWarning=2;
-    alphaOriginal=1/permutations;
-    alphaCorrected=1/permutations;
+    alphaOriginal=1/maximalPerm;
+    alphaCorrected=1/maximalPerm;
     
 elseif permutations>maxPermutations && maxPermutations>=requiredIterations
     
@@ -54,7 +54,7 @@ elseif permutations>maxPermutations && maxPermutations>=requiredIterations
         '. Please consider increasing the number of subjects if you want to perform ' ...
         num2str(permutations) ' permutations'])
     
-    permutations=maxPermutations;
+    permutations=-1; % allow the maximal number of permutations without replacement.
     nWarning=1;
     alphaCorrected=alphaOriginal;
     

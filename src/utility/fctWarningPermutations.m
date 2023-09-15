@@ -6,9 +6,9 @@ if alphaOriginal<0.05
 end
 
 if isempty(Perm)
-permutations=multiPerm/alphaOriginal;
+    permutations=multiPerm/alphaOriginal;
 else
-permutations=Perm;
+    permutations=Perm;
 end
 maxPermutations=ANOVA.nPermUnique;
 maxPermutations=min([maximalPerm,maxPermutations]);
@@ -19,7 +19,7 @@ end
 nWarning=0;
 
 if permutations>=maximalPerm && maxPermutations>=maximalPerm
-    permutations=maximalPerm;
+    permutations=-1;  % allow the maximal number of permutations without replacement.
 end
 
 
@@ -42,34 +42,34 @@ if permutations>maxPermutations && maxPermutations<requiredIterations
         num2str(1/maxPermutations) ...
         '. Please consider increasing the number of subjects to get a valid analysis for a p-value of ' ...
         num2str(alphaOriginal)])
-    
-    permutations=maxPermutations;
+
+    permutations=-1;  % allow the maximal number of permutations without replacement.
     nWarning=2;
-    alphaOriginal=1/permutations;
-    alphaCorrected=1/permutations;
-    
+    alphaOriginal=1/maxPermutations;
+    alphaCorrected=1/maxPermutations;
+
 elseif permutations>maxPermutations && maxPermutations>=requiredIterations
-    
+
     warning(['The number of maximal possible permutations with the dataset is ' ...
         num2str(maxPermutations) ...
         '. The number of permutations was set to ' ...
         num2str(maxPermutations) ...
         '. Please consider increasing the number of subjects if you want to perform ' ...
         num2str(permutations) ' permutations'])
-    
-    permutations=maxPermutations;
+
+    permutations=-1;  % allow the maximal number of permutations without replacement.
     nWarning=1;
     alphaCorrected=alphaOriginal;
-    
+
 elseif permutations<requiredIterations && requiredIterations<=maxPermutations
-    
+
     permutations=requiredIterations;
     warning(['The number of permutations was set to ' ...
         num2str(requiredIterations) ...
         ' to obtain a p-value of ' num2str(alphaOriginal)])
-    
+
     nWarning=1;
-    
+
 end
 
 permutations=round(permutations);
