@@ -1,4 +1,4 @@
-function [nWarning,permutations,alphaCorrected]=fctWarningPermutations(ANOVA,alphaOriginal,multiPerm,maximalPerm,Perm)
+function [nWarning,permutations,alphaCorrected]=fctWarningPermutations(Ttest,alphaOriginal,multiPerm,maximalPerm,Perm)
 alphaCorrected=alphaOriginal;
 
 if alphaOriginal<0.05
@@ -10,7 +10,7 @@ if isempty(Perm)
 else
     permutations=Perm;
 end
-maxPermutations=ANOVA.nPermUnique;
+maxPermutations=Ttest.nPermUnique;
 maxPermutations=min([maximalPerm,maxPermutations]);
 requiredIterations=1/alphaOriginal;
 if requiredIterations<10
@@ -19,7 +19,7 @@ end
 nWarning=0;
 
 if permutations>=maximalPerm && maxPermutations>=maximalPerm
-    permutations=-1;  % allow the maximal number of permutations without replacement.
+    permutations=maximalPerm;
 end
 
 
@@ -43,10 +43,10 @@ if permutations>maxPermutations && maxPermutations<requiredIterations
         '. Please consider increasing the number of subjects to get a valid analysis for a p-value of ' ...
         num2str(alphaOriginal)])
 
-    permutations=-1;  % allow the maximal number of permutations without replacement.
+    permutations=maxPermutations;
     nWarning=2;
-    alphaOriginal=1/maxPermutations;
-    alphaCorrected=1/maxPermutations;
+    alphaOriginal=1/permutations;
+    alphaCorrected=1/permutations;
 
 elseif permutations>maxPermutations && maxPermutations>=requiredIterations
 
@@ -57,7 +57,7 @@ elseif permutations>maxPermutations && maxPermutations>=requiredIterations
         '. Please consider increasing the number of subjects if you want to perform ' ...
         num2str(permutations) ' permutations'])
 
-    permutations=-1;  % allow the maximal number of permutations without replacement.
+    permutations=maxPermutations;
     nWarning=1;
     alphaCorrected=alphaOriginal;
 
@@ -73,4 +73,9 @@ elseif permutations<requiredIterations && requiredIterations<=maxPermutations
 end
 
 permutations=round(permutations);
+
+if permutations==Ttest.nPermUnique
+    permutations=-1;
+end
+
 end

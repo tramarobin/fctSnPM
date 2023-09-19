@@ -16,7 +16,7 @@ end
 nWarning=0;
 
 if permutations>=maximalPerm && maxPermutations>=maximalPerm
-    permutations=-1; % allow the maximal number of permutations without replacement.
+    permutations=maximalPerm;
 end
 
 
@@ -40,10 +40,10 @@ if permutations>maxPermutations && maxPermutations<requiredIterations
         '. Please consider increasing the number of subjects to get a valid analysis for a p-value of ' ...
         num2str(alphaOriginal)])
     
-    permutations=-1; % allow the maximal number of permutations without replacement.
+    permutations=maxPermutations;
     nWarning=2;
-    alphaOriginal=1/maximalPerm;
-    alphaCorrected=1/maximalPerm;
+    alphaOriginal=1/permutations;
+    alphaCorrected=1/permutations;
     
 elseif permutations>maxPermutations && maxPermutations>=requiredIterations
     
@@ -54,7 +54,7 @@ elseif permutations>maxPermutations && maxPermutations>=requiredIterations
         '. Please consider increasing the number of subjects if you want to perform ' ...
         num2str(permutations) ' permutations'])
     
-    permutations=-1; % allow the maximal number of permutations without replacement.
+    permutations=maxPermutations;
     nWarning=1;
     alphaCorrected=alphaOriginal;
     
@@ -70,4 +70,9 @@ elseif permutations<requiredIterations && requiredIterations<=maxPermutations
 end
 
 permutations=round(permutations);
+
+if permutations==ANOVA.nPermUnique
+    permutations=-1;
+end
+
 end
