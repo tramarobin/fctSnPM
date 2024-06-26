@@ -114,7 +114,7 @@ if nEffects==1
             end
         end
 
-        clear comp combi DATA
+        clear comp combi DATA Comp
 
     end
 end
@@ -226,7 +226,7 @@ if nEffects==2
             end
 
             mainForInteraction{mainEffect}=posthoc{mainEffect(1)}.tTests.Tsignificant;
-            clear comp combi DATA legendPlot
+            clear comp combi DATA legendPlot Comp
 
         end
     end
@@ -340,7 +340,7 @@ if nEffects==3
             end
 
             mainForInteraction{mainEffect}=posthoc{mainEffect(1)}.tTests.Tsignificant;
-            clear comp combi DATA legendPlot
+            clear comp combi DATA legendPlot Comp
         end
     end
 end
@@ -467,7 +467,7 @@ if nEffects==3
 
             intForInteractions{anovaFixedCorr(effectFixed)}.t=realEffect;
             posthoc{3+anovaFixedCorr(fixedEffect)}.tTests.combi=combi;
-            clear comp combi DATA legendPlot
+            clear comp combi DATA legendPlot Comp
 
         end
     end
@@ -657,7 +657,7 @@ if nEffects>1
         end
 
         posthoc{pos}.tTests.combi=combi;
-        clear comp combi DATA legendPlot
+        clear comp combi DATA legendPlot Comp
 
     end
 end

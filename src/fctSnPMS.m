@@ -165,4 +165,7 @@ end
 snpmAnalysis.anova=anova;
 snpmAnalysis.posthoc=posthoc;
 
+%% Activate figure display
+set(0, 'DefaultFigureVisible', 'on');
+
 end

@@ -22,13 +22,13 @@ if permutations>=maximalPerm && maxPermutations>=maximalPerm
     permutations=maximalPerm;
 end
 
-
-if requiredIterations>permutations
-    permutations=requiredIterations;
-    warning(['The number of permutations was set to the minimal value of ' num2str(requiredIterations)])
-elseif permutations>maximalPerm
-    warning(['The number of permutations was set to the defined value of ' num2str(maximalPerm)]);
-end
+ 
+% if requiredIterations>permutations
+%     permutations=requiredIterations;
+%     warning(['The number of permutations was set to the minimal value of ' num2str(requiredIterations)])
+% elseif permutations>maximalPerm
+%     warning(['The number of permutations was set to the defined value of ' num2str(maximalPerm)]);
+% end
 
 
 if permutations>maxPermutations && maxPermutations<requiredIterations
